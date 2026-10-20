@@ -138,7 +138,11 @@
         <h2>问 AI 的模板</h2>
       </div>
       <p class="small muted">复制下面这段，替换尖括号里的内容即可。</p>
-      <textarea id="ai-template" rows="8" spellcheck="false">请判断手机 SoC「<SoC 型号>」的定位：
+      <div class="note">
+        使用前请先在 AI 客户端打开<strong>联网搜索</strong>和<strong>深度思考</strong>（推理模式）。SoC 的命名与代际信息更新很快，不联网很容易得到过时结论。
+      </div>
+      <textarea id="ai-template" rows="9" spellcheck="false">请使用联网搜索获取最新信息后回答，并说明推理过程。
+请判断手机 SoC「<SoC 型号>」的定位：
 1. 它属于当代旗舰、上代旗舰、次旗舰、中高端还是中端？
 2. 它是否只是某颗上代旗舰的改名、超频或降频版本？如果是，原型号是什么？
 3. 与「<对比 SoC 型号>」相比，CPU、GPU 和中低负载能效大致谁更强？
