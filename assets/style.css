@@ -471,6 +471,18 @@ table.data td.best::after { content: " ●"; font-size: 0.55em; vertical-align: 
 .pager .next { text-align: right; margin-left: auto; }
 
 /* ---------- 产品线 ---------- */
+.brand-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 13px 0 0;
+}
+.brand-links { display: flex; flex-wrap: wrap; gap: 4px 15px; }
+.brand-links a { font-size: 0.86rem; color: var(--muted); }
+.brand-links a:hover { color: var(--accent); }
+.brand-hint { margin-left: auto; }
+
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -671,6 +683,7 @@ table.compare col.col-actions { width: 46px; }
   .nav { margin-left: 0; }
   .brand-mark span.brand-text { display: none; }
   .filter-bar { position: static; }
+  .brand-hint { margin-left: 0; }
   .page-head { padding: 2.2rem 0 1.6rem; }
   .hero { padding: 3rem 0 2.4rem; }
   .glossary-item { grid-template-columns: 1fr; gap: 2px; }
