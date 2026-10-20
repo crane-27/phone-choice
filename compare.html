@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>机型对比台 · 从零开始的手机选购指南</title>
+<meta name="description" content="手动录入任意数量的手机，逐项对比 SoC、影像、电池、屏幕、价格，自动高亮最优项。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="compare">
+<header id="site-header"></header>
+
+<main>
+  <div class="wrap">
+    <div class="page-head">
+      <div class="eyebrow">第三步 / 4</div>
+      <h1>货比三家</h1>
+      <p class="lede">把候选机型录进来，逐项对比后压缩到 2–3 台。表格没有行数限制，支持从 Excel 粘贴、导出 CSV 和复制 Markdown。</p>
+    </div>
+
+    <div class="compare-toolbar">
+      <button class="btn btn-sm" type="button" id="add-row">+ 添加机型</button>
+      <button class="btn btn-ghost btn-sm" type="button" id="load-demo">载入示例</button>
+      <button class="btn btn-ghost btn-sm" type="button" id="copy-md">复制 Markdown</button>
+      <button class="btn btn-ghost btn-sm" type="button" id="export-csv">导出 CSV</button>
+      <button class="btn btn-ghost btn-sm" type="button" id="clear-all">清空</button>
+      <span class="spacer"></span>
+      <span class="small muted" id="status">自动保存在本机</span>
+    </div>
+
+    <div class="compare-wrap">
+      <table class="compare" id="compare-table">
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="name">型号 <span class="arrow">↕</span></th>
+            <th>SoC</th>
+            <th class="sortable" data-sort="socTier">档位 <span class="arrow">↕</span></th>
+            <th>影像 / 摄像头</th>
+            <th class="sortable" data-sort="battery">电池 (mAh) <span class="arrow">↕</span></th>
+            <th>分辨率 (宽×高)</th>
+            <th>机身 (长×宽 mm)</th>
+            <th class="sortable" data-sort="density">屏幕密度参考 <span class="arrow">↕</span></th>
+            <th class="sortable" data-sort="price">价格 (元) <span class="arrow">↕</span></th>
+            <th>存储规格</th>
+            <th>备注</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="compare-body"></tbody>
+      </table>
+    </div>
+
+    <div class="row mt-2 small muted">
+      <span>屏幕密度参考 = 分辨率宽×高 ÷ 机身长×宽（mm），用于粗略比较，数值越大越细腻。</span>
+    </div>
+
+    <details class="paste-box">
+      <summary>批量粘贴导入（从 Excel / 表格软件直接复制）</summary>
+      <div class="inner">
+        <p class="small muted">
+          每行一台，列顺序为：<code>型号, SoC, 档位(1–5), 影像, 电池, 分辨率, 机身尺寸, 价格, 存储, 备注</code>。
+          支持 Tab 或逗号分隔，缺的列留空即可。档位：5 当代旗舰 / 4 上代旗舰或次旗舰 / 3 中高端 / 2 中端 / 1 入门。
+        </p>
+        <textarea id="paste-input" placeholder="示例机型 A&#9;骁龙 8 Elite Gen 5&#9;5&#9;50MP 主摄&#9;7000&#9;2712×1220&#9;162.9×75.4&#9;4999&#9;12+256&#9;"></textarea>
+        <div class="btn-row mt-1">
+          <button class="btn btn-sm" type="button" id="do-paste">导入</button>
+          <span class="small muted" id="paste-status"></span>
+        </div>
+      </div>
+    </details>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="num">3.1</span>
+        <h2>对比时看什么</h2>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>先看 SoC</h3>
+          <p class="small muted mb-0">
+            在 <a href="https://socpk.com/" target="_blank" rel="noopener">socpk.com</a> 查能效曲线。没收录的，按经验关系判断：
+            高通骁龙 N 代旗舰 ≥ 联发科天玑 N 代旗舰 ＞ 骁龙 N−1 代旗舰 ≈ 骁龙 N 代次旗舰 ＞ 天玑 N 代中端 ＞ 其它产线。
+            一颗 SoC 是当代旗舰还是上代旗舰改名，建议向 AI 确认。
+          </p>
+        </div>
+        <div class="card">
+          <h3>再看影像、屏幕、电池</h3>
+          <p class="small muted mb-0">
+            影像在手机基本没有影像功能时可以完全交给 AI 对比；屏幕看分辨率 ÷（机身长×宽）；电池容量更大者优先。结合预算逐步缩小到 2–3 台。
+          </p>
+        </div>
+        <div class="card">
+          <h3>初筛规则</h3>
+          <p class="small muted mb-0">
+            有音游需求：强烈不推荐华为，优先 iPhone，并查目标机型的触控采样率；有高强度录像需求：优先 iPhone Pro 及以上。
+          </p>
+        </div>
+        <div class="card">
+          <h3>价格怎么记</h3>
+          <p class="small muted mb-0">
+            官网价可能虚高，以京东自营或天猫官方旗舰店的到手价为准，并且一定要把价格和存储规格写在一起（如 12+256）。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="pager">
+      <a href="lines.html"><span class="dir">上一步</span>产品线地图</a>
+      <a class="next" href="final.html"><span class="dir">下一步</span>最终决定与验机 →</a>
+    </div>
+  </div>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const { store } = window.App;
+  const KEY = "pc.compare.v1";
+
+  const FIELDS = [
+    { key: "name", label: "型号", type: "text", cls: "name-cell", placeholder: "机型名称" },
+    { key: "soc", label: "SoC", type: "text", cls: "soc-cell", placeholder: "如 骁龙 8 Elite Gen 5" },
+    { key: "socTier", label: "SoC 档位", type: "select", cls: "" },
+    { key: "camera", label: "影像 / 摄像头", type: "text", placeholder: "如 50MP 主摄 + 3× 长焦" },
+    { key: "battery", label: "电池 (mAh)", type: "number", placeholder: "7000" },
+    { key: "res", label: "分辨率 (宽×高)", type: "text", placeholder: "2712×1220" },
+    { key: "size", label: "机身 (长×宽 mm)", type: "text", placeholder: "162.9×75.4" },
+    { key: "price", label: "价格 (元)", type: "number", placeholder: "4999" },
+    { key: "storage", label: "存储规格", type: "text", placeholder: "12+256" },
+    { key: "note", label: "备注", type: "text", placeholder: "渠道 / 颜色 / 其他" },
+  ];
+
+  const TIER_OPTIONS = [
+    { value: "", label: "未填" },
+    { value: "5", label: "5 当代旗舰" },
+    { value: "4", label: "4 上代旗舰 / 次旗舰" },
+    { value: "3", label: "3 中高端" },
+    { value: "2", label: "2 中端" },
+    { value: "1", label: "1 入门" },
+  ];
+
+  let seq = 1;
+  let rows = load();
+  let sortKey = null;
+  let sortDir = 1;
+
+  const tbody = document.getElementById("compare-body");
+  const status = document.getElementById("status");
+  const pasteStatus = document.getElementById("paste-status");
+
+  function uid() {
+    return "r" + seq++;
+  }
+
+  function blank() {
+    return {
+      id: uid(),
+      name: "",
+      soc: "",
+      socTier: "",
+      camera: "",
+      battery: "",
+      res: "",
+      size: "",
+      price: "",
+      storage: "",
+      note: "",
+    };
+  }
+
+  function load() {
+    const saved = store.get(KEY, null);
+    if (Array.isArray(saved) && saved.length) {
+      saved.forEach((r) => {
+        if (!r.id) r.id = uid();
+        else {
+          const n = parseInt(String(r.id).replace(/\D/g, ""), 10);
+          if (!isNaN(n) && n >= seq) seq = n + 1;
+        }
+      });
+      return saved;
+    }
+    return [blank(), blank(), blank()];
+  }
+
+  function save() {
+    store.set(KEY, rows);
+    status.textContent = "已保存 · " + new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function parseDims(value) {
+    const m = String(value || "").match(/(\d+(?:\.\d+)?)\s*[×xX*]\s*(\d+(?:\.\d+)?)/);
+    return m ? [parseFloat(m[1]), parseFloat(m[2])] : null;
+  }
+
+  function density(row) {
+    const res = parseDims(row.res);
+    const size = parseDims(row.size);
+    if (!res || !size) return null;
+    const area = size[0] * size[1];
+    if (!area) return null;
+    return (res[0] * res[1]) / area;
+  }
+
+  function cellHTML(row, f) {
+    if (f.type === "select") {
+      return `<select data-field="socTier" aria-label="${f.label}">${TIER_OPTIONS.map(
+        (o) => `<option value="${o.value}"${String(row.socTier) === o.value ? " selected" : ""}>${o.label}</option>`
+      ).join("")}</select>`;
+    }
+    const val = row[f.key] == null ? "" : String(row[f.key]);
+    return `<input type="${f.type}" data-field="${f.key}" value="${val.replace(/"/g, "&quot;")}" placeholder="${f.placeholder || ""}" aria-label="${f.label}">`;
+  }
+
+  function render() {
+    if (!rows.length) {
+      tbody.innerHTML = `<tr><td colspan="12" style="padding:28px;text-align:center;color:var(--muted)">还没有机型。点“添加机型”，或展开下方批量粘贴。</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = rows
+      .map(
+        (r) => `
+        <tr data-id="${r.id}">
+          ${FIELDS.map((f) => {
+            const td = `<td class="${f.cls || ""}">${cellHTML(r, f)}</td>`;
+            return f.key === "size" ? td + `<td class="calc" data-calc="density">—</td>` : td;
+          }).join("")}
+          <td class="row-actions">
+            <button type="button" class="dup" title="复制此行" aria-label="复制此行">⧉</button>
+            <button type="button" class="del" title="删除此行" aria-label="删除此行">✕</button>
+          </td>
+        </tr>`
+      )
+      .join("");
+    refreshDerived();
+  }
+
+  function refreshDerived() {
+    const nums = (key) => rows.map((r) => Number(r[key])).filter((v) => v > 0 && !isNaN(v));
+    const maxBattery = Math.max(0, ...nums("battery"));
+    const prices = nums("price");
+    const minPrice = prices.length ? Math.min(...prices) : 0;
+    const maxTier = Math.max(0, ...rows.map((r) => Number(r.socTier) || 0));
+    const densities = rows.map(density).filter((v) => v != null);
+    const maxDensity = densities.length ? Math.max(...densities) : 0;
+
+    rows.forEach((r) => {
+      const tr = tbody.querySelector(`tr[data-id="${r.id}"]`);
+      if (!tr) return;
+      const d = density(r);
+      const dc = tr.querySelector('[data-calc="density"]');
+      if (dc) {
+        dc.textContent = d == null ? "—" : d.toFixed(0);
+        dc.classList.toggle("best", d != null && maxDensity > 0 && Math.abs(d - maxDensity) < 0.001);
+      }
+
+      const batteryCell = tr.children[4];
+      const priceCell = tr.children[8];
+      const tierCell = tr.children[2];
+      if (batteryCell) batteryCell.classList.toggle("best", maxBattery > 0 && Number(r.battery) === maxBattery);
+      if (priceCell) priceCell.classList.toggle("best", minPrice > 0 && Number(r.price) === minPrice);
+      if (tierCell) tierCell.classList.toggle("best", maxTier > 0 && Number(r.socTier) === maxTier);
+    });
+  }
+
+  function rowById(id) {
+    return rows.find((r) => r.id === id);
+  }
+
+  // 输入：只更新数据，不重建 DOM，避免丢焦点
+  tbody.addEventListener("input", function (e) {
+    const el = e.target;
+    if (!el.dataset.field) return;
+    const tr = el.closest("tr[data-id]");
+    if (!tr) return;
+    const row = rowById(tr.dataset.id);
+    if (!row) return;
+    row[el.dataset.field] = el.value;
+    refreshDerived();
+    save();
+  });
+
+  tbody.addEventListener("change", function (e) {
+    const el = e.target;
+    if (el.tagName === "SELECT" && el.dataset.field) {
+      const tr = el.closest("tr[data-id]");
+      const row = rowById(tr.dataset.id);
+      if (row) {
+        row[el.dataset.field] = el.value;
+        refreshDerived();
+        save();
+      }
+    }
+  });
+
+  // 删除 / 复制
+  tbody.addEventListener("click", function (e) {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    const tr = btn.closest("tr[data-id]");
+    if (!tr) return;
+    const id = tr.dataset.id;
+    if (btn.classList.contains("del")) {
+      rows = rows.filter((r) => r.id !== id);
+      render();
+      save();
+    } else if (btn.classList.contains("dup")) {
+      const src = rowById(id);
+      if (!src) return;
+      const copy = Object.assign({}, src, { id: uid(), name: src.name ? src.name + "（副本）" : "" });
+      const idx = rows.findIndex((r) => r.id === id);
+      rows.splice(idx + 1, 0, copy);
+      render();
+      save();
+    }
+  });
+
+  // 排序
+  document.querySelector("thead").addEventListener("click", function (e) {
+    const th = e.target.closest("th.sortable");
+    if (!th) return;
+    const key = th.dataset.sort;
+    if (sortKey === key) sortDir *= -1;
+    else {
+      sortKey = key;
+      sortDir = 1;
+    }
+    document.querySelectorAll("th.sortable .arrow").forEach((a) => (a.textContent = "↕"));
+    th.querySelector(".arrow").textContent = sortDir > 0 ? "↑" : "↓";
+
+    rows.sort((a, b) => {
+      let va, vb;
+      if (key === "density") {
+        va = density(a);
+        vb = density(b);
+        va = va == null ? -Infinity : va;
+        vb = vb == null ? -Infinity : vb;
+      } else if (key === "name") {
+        va = a.name || "";
+        vb = b.name || "";
+        return va.localeCompare(vb, "zh-CN") * sortDir;
+      } else {
+        va = Number(a[key]) || -Infinity;
+        vb = Number(b[key]) || -Infinity;
+      }
+      return (va - vb) * sortDir;
+    });
+    render();
+    save();
+  });
+
+  document.getElementById("add-row").addEventListener("click", function () {
+    rows.push(blank());
+    render();
+    save();
+    const last = tbody.querySelector("tr:last-child input");
+    if (last) last.focus();
+  });
+
+  document.getElementById("clear-all").addEventListener("click", function () {
+    if (!confirm("确定清空全部机型？此操作不可撤销。")) return;
+    rows = [blank(), blank(), blank()];
+    render();
+    save();
+  });
+
+  document.getElementById("load-demo").addEventListener("click", function () {
+    if (rows.some((r) => r.name) && !confirm("载入示例会覆盖当前表格，继续？")) return;
+    rows = [
+      { id: uid(), name: "示例机型 A", soc: "当代旗舰 SoC", socTier: "5", camera: "50MP 主摄 + 3× 长焦", battery: "7000", res: "2712×1220", size: "162.9×75.4", price: "4999", storage: "12+256", note: "演示数据" },
+      { id: uid(), name: "示例机型 B", soc: "上代旗舰 SoC", socTier: "4", camera: "50MP 主摄", battery: "6500", res: "2800×1260", size: "160.0×74.0", price: "3299", storage: "12+512", note: "演示数据" },
+      { id: uid(), name: "示例机型 C", soc: "中端 SoC", socTier: "2", camera: "50MP 主摄", battery: "6000", res: "2400×1080", size: "163.0×76.0", price: "1799", storage: "8+256", note: "演示数据" },
+    ];
+    render();
+    save();
+  });
+
+  // 批量粘贴
+  document.getElementById("do-paste").addEventListener("click", function () {
+    const raw = document.getElementById("paste-input").value.trim();
+    if (!raw) {
+      pasteStatus.textContent = "请先粘贴内容。";
+      return;
+    }
+    const keys = ["name", "soc", "socTier", "camera", "battery", "res", "size", "price", "storage", "note"];
+    let added = 0;
+    raw.split(/\r?\n/).forEach((line) => {
+      if (!line.trim()) return;
+      let parts = line.split("\t");
+      if (parts.length < 3) parts = line.split(",");
+      if (parts.length < 2) return;
+      const row = blank();
+      keys.forEach((k, i) => {
+        row[k] = (parts[i] || "").trim();
+      });
+      rows.push(row);
+      added++;
+    });
+    if (!added) {
+      pasteStatus.textContent = "没有解析出有效行。";
+      return;
+    }
+    document.getElementById("paste-input").value = "";
+    pasteStatus.textContent = `已导入 ${added} 台。`;
+    render();
+    save();
+  });
+
+  // 导出
+  function csvEscape(v) {
+    const s = String(v == null ? "" : v);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+
+  function tableData() {
+    return rows.map((r) => {
+      const d = density(r);
+      return {
+        型号: r.name,
+        SoC: r.soc,
+        "SoC 档位": (TIER_OPTIONS.find((o) => o.value === String(r.socTier)) || {}).label || "",
+        影像: r.camera,
+        "电池(mAh)": r.battery,
+        "分辨率": r.res,
+        "机身(mm)": r.size,
+        屏幕密度: d == null ? "" : d.toFixed(0),
+        "价格(元)": r.price,
+        存储: r.storage,
+        备注: r.note,
+      };
+    });
+  }
+
+  function download(filename, text, type) {
+    const blob = new Blob([text], { type: type || "text/plain;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  document.getElementById("export-csv").addEventListener("click", function () {
+    const data = tableData();
+    if (!data.length) return;
+    const headers = Object.keys(data[0]);
+    const lines = [headers.join(",")].concat(
+      data.map((d) => headers.map((h) => csvEscape(d[h])).join(","))
+    );
+    download("phone-compare.csv", "\uFEFF" + lines.join("\r\n"), "text/csv;charset=utf-8");
+  });
+
+  document.getElementById("copy-md").addEventListener("click", async function () {
+    const data = tableData();
+    if (!data.length) return;
+    const headers = Object.keys(data[0]);
+    const lines = [
+      "| " + headers.join(" | ") + " |",
+      "| " + headers.map(() => "---").join(" | ") + " |",
+    ].concat(data.map((d) => "| " + headers.map((h) => String(d[h] || "").replace(/\|/g, "\\|")).join(" | ") + " |"));
+    try {
+      await navigator.clipboard.writeText(lines.join("\n"));
+      const btn = document.getElementById("copy-md");
+      const old = btn.textContent;
+      btn.textContent = "已复制";
+      setTimeout(() => (btn.textContent = old), 1600);
+    } catch (e) {
+      alert("复制失败，请改用导出 CSV。");
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

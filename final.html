@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>最终决定与验机 · 从零开始的手机选购指南</title>
+<meta name="description" content="推算新机存储规格，带上线下体验清单和开箱验收清单。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="final">
+<header id="site-header"></header>
+
+<main>
+  <div class="wrap">
+    <div class="page-head">
+      <div class="eyebrow">第四步 / 4</div>
+      <h1>最终决定</h1>
+      <p class="lede">先定存储规格，再去线下摸一摸系统。收到快递时，记得从拆包开始录像。</p>
+    </div>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="num">4.1</span>
+        <h2>存储规格计算器</h2>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="field">
+            <label for="brand">手机品牌</label>
+            <select id="brand">
+              <option value="other">其他 Android 品牌</option>
+              <option value="xiaomi">小米 / 红米</option>
+              <option value="huawei">华为</option>
+              <option value="apple">苹果</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="total">当前手机的总存储</label>
+            <select id="total">
+              <option value="128">128 GB</option>
+              <option value="256" selected>256 GB</option>
+              <option value="512">512 GB</option>
+              <option value="1024">1 TB</option>
+              <option value="2048">2 TB</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="used">已经使用的存储 <span class="hint">在“设置 → 关于手机 → 手机存储”里查看</span></label>
+            <input type="number" id="used" value="120" min="0" step="1">
+          </div>
+          <p class="small muted mb-0">规则：已用超过一半，则新机存储至少翻倍；否则可以保持不变。</p>
+        </div>
+        <div class="card" id="storage-result" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="num">4.2</span>
+        <h2>线下体验清单</h2>
+      </div>
+      <p class="small muted">不一定能看到你选中的机型，但可以找价格接近的机型，重点试系统。</p>
+      <div class="card">
+        <div class="check-list" id="offline-list">
+          <label class="check-item"><input type="checkbox" data-check="offline-0"><span>确认门店有价格接近的机型可试</span></label>
+          <label class="check-item"><input type="checkbox" data-check="offline-1"><span>滑动桌面、切换应用，观察动画和流畅度</span></label>
+          <label class="check-item"><input type="checkbox" data-check="offline-2"><span>检查系统广告、推送和预装应用能否关闭</span></label>
+          <label class="check-item"><input type="checkbox" data-check="offline-3"><span>握持手感：重量、宽度、单手握持是否吃力</span></label>
+          <label class="check-item"><input type="checkbox" data-check="offline-4"><span>外观：颜色、材质、摄像头凸起</span></label>
+          <label class="check-item"><input type="checkbox" data-check="offline-5"><span>屏幕：亮度、色彩、低亮度下是否刺眼</span></label>
+          <label class="check-item"><input type="checkbox" data-check="offline-6"><span>相机：快门响应、变焦切换、录像稳定性</span></label>
+          <label class="check-item"><input type="checkbox" data-check="offline-7"><span>如果有音游需求，实际试玩并感受触控延迟</span></label>
+          <label class="check-item"><input type="checkbox" data-check="offline-8"><span>确认系统第一印象是否符合喜好</span></label>
+        </div>
+        <div class="row mt-2">
+          <span class="small muted" id="offline-progress"></span>
+          <button class="btn btn-ghost btn-sm" type="button" data-reset="offline">重置清单</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="num">4.3</span>
+        <h2>开箱验收清单</h2>
+      </div>
+      <div class="note note-warn">
+        <strong>最重要的一条：</strong>收到快递时，用另一台可以录像的设备，录制从打开快递到拿出手机的全过程，以防手机出现“自己发生”的损坏。
+      </div>
+      <div class="card">
+        <div class="check-list" id="unbox-list">
+          <label class="check-item"><input type="checkbox" data-check="unbox-0"><span>准备一台可以录像的设备，并确认电量充足</span></label>
+          <label class="check-item"><input type="checkbox" data-check="unbox-1"><span>从拆快递外包装开始全程录像，直到取出手机</span></label>
+          <label class="check-item"><input type="checkbox" data-check="unbox-2"><span>检查包装封条、塑封是否完整</span></label>
+          <label class="check-item"><input type="checkbox" data-check="unbox-3"><span>检查机身外观、屏幕、摄像头有无划痕或磕碰</span></label>
+          <label class="check-item"><input type="checkbox" data-check="unbox-4"><span>核对包装、机身、系统里的序列号是否一致</span></label>
+          <label class="check-item"><input type="checkbox" data-check="unbox-5"><span>开机激活，检查屏幕、扬声器、相机、充电</span></label>
+          <label class="check-item"><input type="checkbox" data-check="unbox-6"><span>保留包装、发票和赠品，确认退换货期限</span></label>
+        </div>
+        <div class="row mt-2">
+          <span class="small muted" id="unbox-progress"></span>
+          <button class="btn btn-ghost btn-sm" type="button" data-reset="unbox">重置清单</button>
+          <button class="btn btn-ghost btn-sm" type="button" id="print-btn">打印清单</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="pager">
+      <a href="compare.html"><span class="dir">上一步</span>对比台</a>
+      <a class="next" href="glossary.html"><span class="dir">参考</span>名词表 →</a>
+    </div>
+  </div>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const { store } = window.App;
+  const KEY = "pc.final.v1";
+
+  /* ---------- 存储计算器 ---------- */
+  const brandEl = document.getElementById("brand");
+  const totalEl = document.getElementById("total");
+  const usedEl = document.getElementById("used");
+  const out = document.getElementById("storage-result");
+  const STEPS = [128, 256, 512, 1024, 2048];
+
+  function label(gb) {
+    if (gb >= 1024) return (gb / 1024) + "TB";
+    return gb + "GB";
+  }
+
+  function ramAdvice(brand) {
+    if (brand === "xiaomi") return { ram: "16GB", why: "小米设备最好不低于 16GB。" };
+    if (brand === "huawei" || brand === "apple") return { ram: "8GB 起", why: "华为 / 苹果没有 12GB 的硬性要求，按预算选择即可。" };
+    return { ram: "12GB", why: "非华为 / 苹果设备最好不低于 12GB。" };
+  }
+
+  function calc() {
+    const brand = brandEl.value;
+    const total = Number(totalEl.value);
+    const used = Math.max(0, Number(usedEl.value) || 0);
+    const overHalf = used > total / 2;
+    let target = overHalf ? total * 2 : total;
+    target = STEPS.find((s) => s >= target) || 2048;
+    const ram = ramAdvice(brand);
+
+    const spec = `${String(ram.ram).replace(/[^\d]/g, "") || "8"}+${label(target).replace("GB", "").replace("TB", "T")}`;
+
+    out.innerHTML = `
+      <h3 class="mt-0">建议规格</h3>
+      <p style="font-size:1.6rem;font-weight:650;letter-spacing:-0.02em;margin:0 0 6px">${spec}</p>
+      <p class="small muted">约等于 ${ram.ram} 内存 + ${label(target)} 存储</p>
+      <dl class="kv mt-2">
+        <dt>内存</dt><dd>${ram.why}</dd>
+        <dt>存储</dt><dd>当前已用 ${used}GB / ${label(total)}，${overHalf ? "已超过一半，建议至少翻倍。" : "未超过一半，可以保持不变。"}</dd>
+        <dt>推算</dt><dd>${overHalf ? `${label(total)} × 2 = ${label(target)}` : `保持 ${label(total)}`}</dd>
+      </dl>
+      <p class="small muted mt-2 mb-0">实际购买时按常见组合挑选，优先保证存储，其次再考虑内存。</p>
+    `;
+  }
+
+  brandEl.addEventListener("change", calc);
+  totalEl.addEventListener("change", calc);
+  usedEl.addEventListener("input", calc);
+  calc();
+
+  /* ---------- 清单 ---------- */
+  const saved = store.get(KEY, {});
+  const lists = { offline: [], unbox: [] };
+
+  document.querySelectorAll("[data-check]").forEach((box) => {
+    const key = box.dataset.check;
+    if (saved[key]) box.checked = true;
+    box.closest(".check-item").classList.toggle("done", box.checked);
+    box.addEventListener("change", function () {
+      box.closest(".check-item").classList.toggle("done", box.checked);
+      saved[key] = box.checked;
+      store.set(KEY, saved);
+      updateProgress();
+    });
+  });
+
+  function updateProgress() {
+    ["offline", "unbox"].forEach((name) => {
+      const boxes = Array.from(document.querySelectorAll(`[data-check^="${name}-"]`));
+      const done = boxes.filter((b) => b.checked).length;
+      const el = document.getElementById(name + "-progress");
+      if (el) el.textContent = `${done} / ${boxes.length} 已完成`;
+    });
+  }
+
+  document.querySelectorAll("[data-reset]").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const prefix = btn.dataset.reset + "-";
+      document.querySelectorAll(`[data-check^="${prefix}"]`).forEach((box) => {
+        box.checked = false;
+        box.closest(".check-item").classList.remove("done");
+        delete saved[box.dataset.check];
+      });
+      store.set(KEY, saved);
+      updateProgress();
+    });
+  });
+
+  document.getElementById("print-btn").addEventListener("click", () => window.print());
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>

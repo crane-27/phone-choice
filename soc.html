@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SoC 梯队 · 从零开始的手机选购指南</title>
+<meta name="description" content="用一条经验不等式和命名规则，快速判断一颗手机 SoC 的大致定位。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="soc">
+<header id="site-header"></header>
+
+<main>
+  <div class="wrap">
+    <div class="page-head">
+      <div class="eyebrow">第三步 / 4 · 参考</div>
+      <h1>SoC 梯队</h1>
+      <p class="lede">SoC 是手机对比里最容易被营销话术绕晕的一项。先记住一条经验关系，再学会看命名。</p>
+    </div>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="num">3.1</span>
+        <h2>一条经验关系</h2>
+      </div>
+      <div class="quote">
+        高通骁龙 N 代旗舰 ≥ 联发科天玑 N 代旗舰 ＞ 高通骁龙 N−1 代旗舰 ≈ 高通骁龙 N 代次旗舰 ＞ 联发科天玑 N 代中端 ＞ 其它高通 / 联发科 SoC 产线
+      </div>
+      <p class="small muted mt-1">
+        取 N = 5 时：<code>骁龙 8 Elite Gen 5 ≥ 天玑 9500（又名天玑 9600M）＞ 骁龙 8 Elite ≈ 骁龙 8 Gen 5 ＞ 天玑 8500</code>。
+      </p>
+      <div class="note">
+        这只是一条用于快速排序的经验关系，不是精确性能表。真正的依据是能效曲线——尤其要看中低负载下的能效，因为那才是日常使用的大头。
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="num">3.2</span>
+        <h2>五档速查</h2>
+      </div>
+      <div class="table-wrap">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>档位</th>
+              <th>典型命名</th>
+              <th>原文示例</th>
+              <th>大致对应</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>5 当代旗舰</strong></td>
+              <td>骁龙 8 Elite Gen N / 天玑 9N00</td>
+              <td>骁龙 8 Elite Gen 5、天玑 9500</td>
+              <td>高负载手游、影像旗舰</td>
+            </tr>
+            <tr>
+              <td><strong>4 上代旗舰 / 次旗舰</strong></td>
+              <td>骁龙 8 Elite、骁龙 8 Gen N、天玑 9400 系</td>
+              <td>骁龙 8 Elite、骁龙 8 Gen 5</td>
+              <td>高负载手游的性价比选择</td>
+            </tr>
+            <tr>
+              <td><strong>3 中高端</strong></td>
+              <td>骁龙 8s Gen N、天玑 8500 等</td>
+              <td>天玑 8500</td>
+              <td>中等负载手游，日常流畅</td>
+            </tr>
+            <tr>
+              <td><strong>2 中端</strong></td>
+              <td>骁龙 7 系、天玑 8 系中端</td>
+              <td>—</td>
+              <td>轻度游戏，日常够用</td>
+            </tr>
+            <tr>
+              <td><strong>1 入门</strong></td>
+              <td>骁龙 6 / 4 系、天玑 6 系</td>
+              <td>—</td>
+              <td>扫码、通话、备用机</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted mt-1">表格中的“典型命名”用于识别层级，不代表具体型号的绝对性能。跨代比较时以能效曲线为准。</p>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="num">3.3</span>
+        <h2>命名解码</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>高通骁龙</h3>
+          <p class="small muted mb-0">
+            <strong>8</strong> 系是旗舰，<strong>7 / 6 / 4</strong> 系依次下探。<br>
+            <code>Elite</code> 是新的旗舰前缀，<code>Gen N</code> 是代际；<code>8s</code> 通常低于同代 <code>8</code>。<br>
+            注意“上代旗舰改名”常出现在次旗舰位上。
+          </p>
+        </div>
+        <div class="card">
+          <h3>联发科天玑</h3>
+          <p class="small muted mb-0">
+            <strong>9xxx</strong> 为旗舰，<strong>8xxx</strong> 次旗舰 / 中高端，<strong>7xxx / 6xxx</strong> 往下。<br>
+            数字大不代表一定更强，要看代际和定位；同一颗芯片可能有多个市场名称（如天玑 9500 / 9600M）。
+          </p>
+        </div>
+        <div class="card">
+          <h3>苹果 / 华为</h3>
+          <p class="small muted mb-0">
+            苹果 <strong>A 系列</strong>数字代际清晰，<code>Pro</code> 后缀为增强版。<br>
+            华为 <strong>麒麟</strong>以 9 系为旗舰，代际数字越大越新，但性能受制程与供应影响，需单独看实测。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="num">3.4</span>
+        <h2>判断流程</h2>
+      </div>
+      <ol class="prose">
+        <li>先在 <a href="https://socpk.com/" target="_blank" rel="noopener">socpk.com</a> 搜这颗 SoC，看有没有“能效曲线”。</li>
+        <li>有曲线：比较峰值性能、功耗墙，以及中低负载区间的能效——后者更影响发热和续航。</li>
+        <li>没有曲线：用上面的经验关系粗略定位，并确认它是不是某颗上代旗舰的改名或超频版。</li>
+        <li>仍然不确定：把型号丢给 AI，要求它说明“当代旗舰 / 上代旗舰 / 次旗舰 / 中端”的定位和依据。</li>
+        <li>把结论填进对比台的“档位”列，用档位而不是型号名来做横向排序。</li>
+      </ol>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="num">3.5</span>
+        <h2>问 AI 的模板</h2>
+      </div>
+      <p class="small muted">复制下面这段，替换尖括号里的内容即可。</p>
+      <textarea id="ai-template" rows="8" spellcheck="false">请判断手机 SoC「<SoC 型号>」的定位：
+1. 它属于当代旗舰、上代旗舰、次旗舰、中高端还是中端？
+2. 它是否只是某颗上代旗舰的改名、超频或降频版本？如果是，原型号是什么？
+3. 与「<对比 SoC 型号>」相比，CPU、GPU 和中低负载能效大致谁更强？
+4. 请给出结论和依据，并说明信息来源的时间。</textarea>
+      <div class="btn-row mt-1">
+        <button class="btn btn-sm" type="button" id="copy-template">复制模板</button>
+        <span class="small muted" id="copy-status"></span>
+      </div>
+    </section>
+
+    <div class="pager">
+      <a href="compare.html"><span class="dir">返回</span>对比台</a>
+      <a class="next" href="final.html"><span class="dir">下一步</span>最终决定与验机 →</a>
+    </div>
+  </div>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const ta = document.getElementById("ai-template");
+  const status = document.getElementById("copy-status");
+  document.getElementById("copy-template").addEventListener("click", async function () {
+    try {
+      await navigator.clipboard.writeText(ta.value);
+      status.textContent = "已复制到剪贴板。";
+      setTimeout(() => (status.textContent = ""), 2000);
+    } catch (e) {
+      ta.select();
+      status.textContent = "复制失败，已为你选中文本，请按 Ctrl+C。";
+    }
+  });
+})();
+</script>
+</body>
+</html>

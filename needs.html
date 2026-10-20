@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>需求诊断 · 从零开始的手机选购指南</title>
+<meta name="description" content="回答性能、影像、系统和预算四组问题，得到需求画像与值得关注的产品线。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="needs">
+<header id="site-header"></header>
+
+<main>
+  <div class="wrap">
+    <div class="page-head">
+      <div class="eyebrow">第一步 / 4</div>
+      <h1>明确需求</h1>
+      <p class="lede">需求分为预算和使用场景两个层面。先回答下面几组问题，再决定看哪些产品线——不要先从型号开始。</p>
+    </div>
+
+    <form id="quiz" novalidate>
+      <section class="section">
+        <div class="section-head">
+          <span class="num">1.1</span>
+          <h2>性能</h2>
+        </div>
+        <p class="small muted">对性能的需求通常由你在手游上的需求决定，也可以参考上一台手机的日用状况。</p>
+        <div class="radio-list">
+          <label class="radio-card">
+            <input type="radio" name="perf" value="none" required>
+            <span>
+              <span class="rc-title">基本没有性能需求</span>
+              <span class="rc-desc">几乎不玩手机游戏，或只玩负载较低的游戏；上一台手机很少烫手、严重卡顿。</span>
+            </span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="perf" value="some">
+            <span>
+              <span class="rc-title">需要一定的性能</span>
+              <span class="rc-desc">会玩原神等较早期的 3D 大世界二游；上一台手机经常明显发热或卡顿，但不要求极致。</span>
+            </span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="perf" value="high">
+            <span>
+              <span class="rc-title">需要极致的性能</span>
+              <span class="rc-desc">会玩鸣潮、终末地等较新的高负载手游；上一台手机几乎无法运行部分应用，或非常烫手、卡顿严重。</span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <span class="num">1.2</span>
+          <h2>影像</h2>
+        </div>
+        <p class="small muted">对影像的需求主要由你使用手机拍照的需要决定。</p>
+        <div class="radio-list">
+          <label class="radio-card">
+            <input type="radio" name="camera" value="none" required>
+            <span>
+              <span class="rc-title">不太需要影像表现</span>
+              <span class="rc-desc">摄像头的使用基本仅限扫码，或用前摄开会。</span>
+            </span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="camera" value="basic">
+            <span>
+              <span class="rc-title">需要基础的影像表现</span>
+              <span class="rc-desc">会经常拍一些照片，但基本只是随手拍。</span>
+            </span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="camera" value="high">
+            <span>
+              <span class="rc-title">需要较高的影像表现</span>
+              <span class="rc-desc">经常在演唱会、漫展等场景拍照，对手机摄影要求很高。</span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <span class="num">1.3</span>
+          <h2>系统与特殊需求</h2>
+        </div>
+        <p class="small muted">现在各厂商的操作系统事实上没有质的差异，这一部分更多是个人喜好。以下按需勾选。</p>
+        <div class="card">
+          <div class="check-list">
+            <label class="check-item">
+              <input type="checkbox" name="special" value="android">
+              <span>需要安装国内小众的 Android 软件（需通过 Google Play 或浏览器安装包）</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="special" value="secret">
+              <span>有工作带来的保密需要</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="special" value="rhythm">
+              <span>有音游游玩需求</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="special" value="video">
+              <span>有高强度录像需求</span>
+            </label>
+          </div>
+        </div>
+        <div class="note">
+          华为的 HarmonyOS 经过几年迭代，已经可以满足大部分日用场景，但少数特殊场景仍有适配问题。购买前务必确认你常用的 App 能否较好适配。
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <span class="num">1.4</span>
+          <h2>预算</h2>
+        </div>
+        <p class="small muted">如果对“一台手机该值多少钱”没有概念，可以按下面的价位区间来选。</p>
+        <div class="radio-list">
+          <label class="radio-card">
+            <input type="radio" name="budget" value="entry">
+            <span><span class="rc-title">入门级 · 2000 元以内</span><span class="rc-desc">建议不超过 1500 元。适合几乎不用手机的人，或作为备用机。</span></span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="budget" value="mid">
+            <span><span class="rc-title">中端机 · 2000–3500 元</span><span class="rc-desc">建议不超过 3000 元。以性能为重，大多不适合拍照。</span></span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="budget" value="upper">
+            <span><span class="rc-title">中高端机 · 3000–5000 元</span><span class="rc-desc">建议不超过 4000 元。性能与影像二选一。</span></span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="budget" value="flagship">
+            <span><span class="rc-title">旗舰 · 4000–8000 元</span><span class="rc-desc">建议不超过 7000 元。性能和影像都较强。</span></span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="budget" value="ultra">
+            <span><span class="rc-title">超旗舰 · 万元或更高</span><span class="rc-desc">适合不在乎预算的购机者，往往有折叠屏等独特卖点。</span></span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="budget" value="unknown" checked>
+            <span><span class="rc-title">还不确定</span><span class="rc-desc">先看需求匹配的产品线，再反过来判断预算。</span></span>
+          </label>
+        </div>
+      </section>
+
+      <div class="btn-row">
+        <button class="btn" type="submit">生成需求画像 →</button>
+        <button class="btn btn-ghost" type="button" id="reset-btn">清空重填</button>
+        <span class="small muted" id="form-hint"></span>
+      </div>
+    </form>
+
+    <section id="result" class="result mt-3 hidden" aria-live="polite"></section>
+
+    <div class="pager">
+      <a href="index.html"><span class="dir">返回</span>首页</a>
+      <a class="next" href="lines.html"><span class="dir">下一步</span>在产品线地图中筛选 →</a>
+    </div>
+  </div>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const { store, param, esc } = window.App;
+  const { NEEDS, TIERS, LINES } = window.GUIDE;
+  const KEY = "pc.needs.v1";
+  const form = document.getElementById("quiz");
+  const result = document.getElementById("result");
+  const hint = document.getElementById("form-hint");
+
+  const needById = Object.fromEntries(NEEDS.map((n) => [n.id, n]));
+  const tierById = Object.fromEntries(TIERS.map((t) => [t.id, t]));
+  const ADJACENT = {
+    entry: ["entry", "mid"],
+    mid: ["mid", "entry", "upper"],
+    upper: ["upper", "mid", "flagship"],
+    flagship: ["flagship", "upper", "ultra"],
+    ultra: ["ultra", "flagship"],
+  };
+
+  function readForm() {
+    const perf = form.querySelector('input[name="perf"]:checked');
+    const camera = form.querySelector('input[name="camera"]:checked');
+    const budget = form.querySelector('input[name="budget"]:checked');
+    return {
+      perf: perf ? perf.value : null,
+      camera: camera ? camera.value : null,
+      budget: budget ? budget.value : "unknown",
+      special: Array.from(form.querySelectorAll('input[name="special"]:checked')).map((i) => i.value),
+    };
+  }
+
+  function decideNeeds(perf, camera, budget) {
+    let needs;
+    if (perf === "high") {
+      if (camera === "high") needs = ["cameraflag"];
+      else if (camera === "basic") needs = ["flagship"];
+      else needs = ["highperf"];
+    } else if (perf === "some") {
+      if (camera === "high") needs = ["camera", "cameraflag"];
+      else if (camera === "basic") needs = ["camera"];
+      else needs = ["perf"];
+    } else {
+      if (camera === "none") needs = ["none"];
+      else if (budget === "entry") needs = ["none"];
+      else needs = ["camera"];
+    }
+    return needs;
+  }
+
+  function matchLines(needs, budget) {
+    const byNeed = LINES.filter((l) => l.needs.some((n) => needs.includes(n)));
+    if (budget === "unknown") return { lines: byNeed, exact: true };
+    const exact = byNeed.filter((l) => l.tiers.includes(budget));
+    if (exact.length >= 3) return { lines: exact, exact: true };
+    const near = ADJACENT[budget] || [budget];
+    return {
+      lines: byNeed.filter((l) => l.tiers.some((t) => near.includes(t))),
+      exact: false,
+    };
+  }
+
+  function specialNotes(special) {
+    const out = [];
+    if (special.includes("android"))
+      out.push("<strong>小众 Android 应用：</strong>不要贸然购买华为设备和 iPhone，先确认应用能否安装与正常运行。");
+    if (special.includes("secret")) out.push("<strong>保密需要：</strong>优先考虑华为设备。");
+    if (special.includes("rhythm"))
+      out.push("<strong>音游：</strong>强烈不推荐华为设备，优先 iPhone；其余厂商差距不大，但请搜索目标机型的“触控采样率”，高者优先。");
+    if (special.includes("video")) out.push("<strong>高强度录像：</strong>优先 iPhone Pro 及以上设备。");
+    return out;
+  }
+
+  function render(data) {
+    const needs = decideNeeds(data.perf, data.camera, data.budget);
+    const tier = tierById[data.budget] || null;
+    const matched = matchLines(needs, data.budget);
+    const notes = specialNotes(data.special);
+
+    if (needs.includes("cameraflag") && ["entry", "mid"].includes(data.budget)) {
+      notes.unshift("<strong>预算提醒：</strong>影像旗舰通常落在旗舰价位，你选的预算可能不足以覆盖，建议放宽预算或降低影像要求。");
+    }
+    if (needs.includes("none") && ["flagship", "ultra"].includes(data.budget)) {
+      notes.unshift("<strong>预算提醒：</strong>你的需求很低，但预算高于需求。可以关注高产品线里的减配款或老款，也可以把预算留给存储和屏幕。");
+    }
+
+    const needPills = needs
+      .map((n) => `<span class="need-pill">${esc(needById[n].short)}</span>`)
+      .join("");
+
+    const lineTags = matched.lines.length
+      ? matched.lines
+          .map(
+            (l) =>
+              `<a class="tag" href="lines.html?need=${needs.join(",")}&tier=${data.budget === "unknown" ? "" : data.budget}">${esc(l.brand)} ${esc(l.name)} · ${esc(l.example)}</a>`
+          )
+          .join("")
+      : '<span class="small muted">没有完全匹配的产品线，试试放宽预算或调整需求。</span>';
+
+    result.innerHTML = `
+      <div class="eyebrow">需求画像</div>
+      <h2>${needs.map((n) => needById[n].title).join(" / ")}</h2>
+      <p class="verdict">${needs.map((n) => needById[n].desc).join(" ")}</p>
+
+      <div class="result-block">
+        <h3>需求分组</h3>
+        <div>${needPills}</div>
+      </div>
+
+      <div class="result-block">
+        <h3>预算档位</h3>
+        ${
+          tier
+            ? `<p class="mb-0"><strong>${esc(tier.name)}</strong> · ${esc(tier.range)}（${esc(tier.advice)}）<br><span class="small muted">${esc(tier.desc)}</span></p>`
+            : `<p class="mb-0 small muted">尚未确定预算。建议先按产品线范围询价，再倒推能接受的上限。</p>`
+        }
+      </div>
+
+      <div class="result-block">
+        <h3>值得重点看的产品线${matched.exact ? "" : "（含邻近价位）"}</h3>
+        <div class="result-lines">${lineTags}</div>
+        ${matched.exact ? "" : '<p class="small muted mt-1">完全匹配的产品线较少，这里同时列出了邻近价位的选项。</p>'}
+      </div>
+
+      ${
+        notes.length
+          ? `<div class="result-block"><h3>注意事项</h3><ul class="small" style="margin-bottom:0">${notes.map((n) => `<li>${n}</li>`).join("")}</ul></div>`
+          : ""
+      }
+
+      <div class="btn-row mt-3">
+        <a class="btn" href="lines.html?need=${needs.join(",")}&tier=${data.budget === "unknown" ? "" : data.budget}">在产品线地图中查看 →</a>
+        <button class="btn btn-ghost" type="button" id="copy-result">复制结论</button>
+      </div>
+    `;
+    result.classList.remove("hidden");
+
+    const copyBtn = document.getElementById("copy-result");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", async function () {
+        const text = [
+          "手机需求画像",
+          `需求：${needs.map((n) => needById[n].title).join(" / ")}`,
+          tier ? `预算：${tier.name}（${tier.range}）` : "预算：未确定",
+          `建议产品线：${matched.lines.map((l) => l.brand + " " + l.name).join("、")}`,
+          notes.length ? "注意：" + notes.map((n) => n.replace(/<[^>]+>/g, "")).join("；") : "",
+        ]
+          .filter(Boolean)
+          .join("\n");
+        try {
+          await navigator.clipboard.writeText(text);
+          copyBtn.textContent = "已复制";
+          setTimeout(() => (copyBtn.textContent = "复制结论"), 1600);
+        } catch (e) {
+          copyBtn.textContent = "复制失败";
+        }
+      });
+    }
+  }
+
+  function restore() {
+    const saved = store.get(KEY, null);
+    if (!saved) return;
+    if (saved.perf) {
+      const el = form.querySelector(`input[name="perf"][value="${saved.perf}"]`);
+      if (el) el.checked = true;
+    }
+    if (saved.camera) {
+      const el = form.querySelector(`input[name="camera"][value="${saved.camera}"]`);
+      if (el) el.checked = true;
+    }
+    if (saved.budget) {
+      const el = form.querySelector(`input[name="budget"][value="${saved.budget}"]`);
+      if (el) el.checked = true;
+    }
+    (saved.special || []).forEach((v) => {
+      const el = form.querySelector(`input[name="special"][value="${v}"]`);
+      if (el) el.checked = true;
+    });
+    if (saved.perf && saved.camera) render(saved);
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const data = readForm();
+    if (!data.perf || !data.camera) {
+      hint.textContent = "请先选择性能与影像需求。";
+      const missing = form.querySelector(`input[name="${!data.perf ? "perf" : "camera"}"]`);
+      if (missing) missing.focus();
+      return;
+    }
+    hint.textContent = "";
+    store.set(KEY, data);
+    render(data);
+    result.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  document.getElementById("reset-btn").addEventListener("click", function () {
+    form.reset();
+    store.remove(KEY);
+    result.classList.add("hidden");
+    hint.textContent = "已清空。";
+  });
+
+  // 从产品线页跳回时，若带有 need 参数则预选
+  const presetNeed = param("need");
+  if (presetNeed) {
+    const map = { none: "none", perf: "some", camera: "some", highperf: "high", flagship: "high", cameraflag: "high" };
+    const camMap = { none: "none", perf: "none", camera: "basic", highperf: "none", flagship: "basic", cameraflag: "high" };
+    const first = presetNeed.split(",")[0];
+    if (map[first]) {
+      const p = form.querySelector(`input[name="perf"][value="${map[first]}"]`);
+      if (p) p.checked = true;
+      const c = form.querySelector(`input[name="camera"][value="${camMap[first]}"]`);
+      if (c) c.checked = true;
+    }
+  }
+
+  restore();
+})();
+</script>
+</body>
+</html>
