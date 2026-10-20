@@ -540,13 +540,19 @@ table.data td.best::after { content: " ●"; font-size: 0.55em; vertical-align: 
 }
 .compare-toolbar .spacer { flex: 1; }
 
-.compare-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.compare-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
 table.compare {
   border-collapse: separate;
   border-spacing: 0;
   font-size: 0.84rem;
-  min-width: 1180px;
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
 }
 table.compare th, table.compare td {
   border-bottom: 1px solid var(--line);
@@ -555,54 +561,107 @@ table.compare th, table.compare td {
   vertical-align: middle;
 }
 table.compare th:last-child, table.compare td:last-child { border-right: 0; }
+
 table.compare thead th {
   position: sticky;
   top: 0;
   z-index: 3;
   background: var(--surface-2);
-  font-size: 0.73rem;
+  font-size: 0.74rem;
   font-weight: 650;
   color: var(--muted);
   text-align: left;
-  padding: 8px 10px;
+  padding: 7px 10px;
   white-space: nowrap;
 }
-table.compare thead th.sortable { cursor: pointer; user-select: none; }
-table.compare thead th.sortable:hover { color: var(--text); }
-table.compare thead th .arrow { opacity: 0.45; font-size: 0.9em; }
-table.compare tbody tr:hover { background: color-mix(in srgb, var(--surface-2) 55%, transparent); }
-table.compare tbody td { background: transparent; }
-table.compare input, table.compare select {
+table.compare thead th.model-col { min-width: 200px; }
+
+table.compare th.row-label,
+table.compare td.row-label {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: 148px;
+  min-width: 148px;
+  background: var(--surface-2);
+  font-size: 0.76rem;
+  font-weight: 650;
+  color: var(--muted);
+  padding: 9px 10px;
+  white-space: nowrap;
+}
+table.compare thead th.row-label { z-index: 4; }
+
+table.compare tbody tr:hover td { background: color-mix(in srgb, var(--surface-2) 55%, transparent); }
+table.compare tbody tr:hover td.row-label { background: var(--surface-2); }
+
+table.compare td[data-id] { min-width: 200px; }
+table.compare td input, table.compare td select {
+  width: 100%;
   border: 0;
   border-radius: 0;
   background: transparent;
-  padding: 7px 9px;
+  padding: 9px 10px;
   font-size: 0.84rem;
-  min-width: 70px;
 }
-table.compare input:focus, table.compare select:focus {
+table.compare td input:focus, table.compare td select:focus {
   outline: 2px solid var(--accent);
   outline-offset: -2px;
 }
-table.compare td.calc { padding: 7px 9px; font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
-table.compare td.calc.best { color: var(--accent); font-weight: 650; }
+table.compare td.calc {
+  padding: 9px 10px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  white-space: nowrap;
+}
 table.compare td.best { background: var(--accent-soft); }
 table.compare td.best input { color: var(--accent); font-weight: 650; }
-table.compare td.row-actions { text-align: center; padding: 4px; white-space: nowrap; }
-table.compare .row-actions button {
+
+.model-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.model-head .idx { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.05em; }
+.model-head .head-actions { display: flex; gap: 2px; }
+.model-head button {
   border: 0;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  font-size: 0.95rem;
-  padding: 4px 6px;
-  border-radius: 5px;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 3px 5px;
+  border-radius: 4px;
 }
-table.compare .row-actions button:hover { background: var(--surface-2); color: var(--text); }
-table.compare .row-actions button.del:hover { color: #b23b3b; }
-table.compare td.soc-cell { min-width: 150px; }
-table.compare td.name-cell { min-width: 150px; font-weight: 600; }
-table.compare col.col-actions { width: 46px; }
+.model-head button:hover { background: var(--surface); color: var(--text); }
+.model-head button.del-model:hover { color: #b23b3b; }
+
+.price-list { display: grid; gap: 4px; padding: 6px; }
+.price-item { display: flex; align-items: center; gap: 4px; border-radius: 5px; }
+.price-item.best { background: var(--accent-soft); }
+.price-item input { padding: 5px 6px; font-size: 0.8rem; }
+.price-item input[data-price-field="storage"] { width: 76px; }
+.price-item input[data-price-field="price"] { width: 78px; }
+.price-item.best input { color: var(--accent); font-weight: 650; }
+.price-item .del-price {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0 3px;
+  font-size: 0.78rem;
+  line-height: 1;
+}
+.price-item .del-price:hover { color: #b23b3b; }
+.add-price {
+  border: 1px dashed var(--line-strong);
+  background: transparent;
+  color: var(--muted);
+  border-radius: 5px;
+  padding: 3px 6px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  font-family: inherit;
+  justify-self: start;
+}
+.add-price:hover { border-color: var(--accent); color: var(--accent); }
 
 .paste-box { margin-top: 14px; }
 .paste-box summary { cursor: pointer; font-size: 0.86rem; color: var(--muted); }
