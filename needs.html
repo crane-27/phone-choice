@@ -300,7 +300,8 @@
       (l) =>
         lineMeets(l, profile.req) &&
         (allowEntry || !l.tiers.includes("entry")) &&
-        !(filters.hideHuawei && l.brand === "华为")
+        !(filters.hideHuawei && l.brand === "华为") &&
+        !(filters.hideApple && l.brand === "苹果")
     );
     if (budget === "unknown") {
       return {
@@ -352,7 +353,8 @@
           lineMeets(l, req) &&
           linePerfOver(l, req) &&
           (allowEntry || !l.tiers.includes("entry")) &&
-          !(filters.hideHuawei && l.brand === "华为")
+          !(filters.hideHuawei && l.brand === "华为") &&
+          !(filters.hideApple && l.brand === "苹果")
       );
       const matchedIds = new Set(lines.map((l) => l.brand + "|" + l.name + "|" + l.example));
       const candidates = pool.filter(
@@ -395,7 +397,8 @@
     const profile = { needs, primary: primary.id, req };
     const tier = tierById[data.budget] || null;
     const hideHuawei = data.special.includes("android") || data.special.includes("rhythm");
-    const filters = { hideHuawei, budget: data.budget };
+    const hideApple = data.special.includes("android");
+    const filters = { hideHuawei, hideApple, budget: data.budget };
     const matched = matchLines(profile, data.budget, filters);
     const split = splitRecommendations(matched.lines, req, filters);
     const featured = split.featured;
@@ -437,7 +440,8 @@
         (l) =>
           l.tiers.includes("entry") &&
           lineMeets(l, req) &&
-          !(hideHuawei && l.brand === "华为")
+          !(hideHuawei && l.brand === "华为") &&
+          !(hideApple && l.brand === "苹果")
       );
     if (lowEndHidden) {
       notes.push(
@@ -445,9 +449,15 @@
       );
     }
 
-    if (hideHuawei) {
+    const excludedBrands = [];
+    if (hideHuawei) excludedBrands.push("华为");
+    if (hideApple) excludedBrands.push("iPhone");
+    if (excludedBrands.length) {
+      const reasons = [];
+      if (data.special.includes("android")) reasons.push("小众 Android 应用");
+      if (data.special.includes("rhythm")) reasons.push("音游");
       notes.push(
-        "<strong>已排除华为：</strong>你选择了小众 Android 应用或音游需求，华为设备可能无法满足这些场景。"
+        `<strong>已排除${excludedBrands.join("、")}：</strong>你选择了${reasons.join(" / ")}需求，这些设备可能无法满足对应场景。`
       );
     }
 
@@ -572,7 +582,12 @@
           data.special.length
             ? "特殊需求：" + data.special.map((s) => SPECIAL_LABELS[s] || s).join("、")
             : "",
-          notes.length ? "注意：" + notes.map((n) => n.replace(/<[^>]+>/g, "")).join("；") : "",
+          notes.length
+            ? "注意：" +
+              notes
+                .map((n) => n.replace(/<[^>]+>/g, "").replace(/。\s*$/, ""))
+                .join("；")
+            : "",
         ]
           .filter(Boolean)
           .join("\n");
