@@ -112,11 +112,13 @@
 
   // URL 预选（从需求诊断跳转而来）
   const urlNeeds = (param("need") || "").split(",").filter(Boolean);
-  const urlTier = param("tier") || "";
+  const urlTiers = (param("tier") || "").split(",").filter(Boolean);
   urlNeeds.forEach((n) => {
     if (needById[n]) state.needs.add(n);
   });
-  if (tierById[urlTier]) state.tiers.add(urlTier);
+  urlTiers.forEach((t) => {
+    if (tierById[t]) state.tiers.add(t);
+  });
 
   function syncChips() {
     needChips.querySelectorAll("[data-need]").forEach((b) => {

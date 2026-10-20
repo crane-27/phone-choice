@@ -214,6 +214,31 @@
     ultra: ["ultra", "flagship"],
   };
 
+  // 需求的两个维度：性能与影像，数值越大要求越高。
+  const PERF_RANK = { none: 0, some: 1, high: 2 };
+  const CAMERA_RANK = { none: 0, basic: 1, high: 2 };
+  // 每个需求分组对应的（性能, 影像）档位；rich 只有价位含义，不参与匹配。
+  const NEED_RANK = {
+    none: [0, 0],
+    perf: [1, 0],
+    camera: [1, 1],
+    highperf: [2, 0],
+    flagship: [2, 1],
+    cameraflag: [2, 2],
+  };
+  const TIER_ORDER = { entry: 0, mid: 1, upper: 2, flagship: 3, ultra: 4 };
+  const PERF_LABEL = { none: "无性能需求", some: "一定性能需求", high: "较高性能需求" };
+  const CAMERA_LABEL = { none: "无影像需求", basic: "基本影像表现", high: "较高影像表现" };
+
+  function needRank(id) {
+    return NEED_RANK[id] || null;
+  }
+
+  function lineTierRank(line) {
+    const ranks = line.tiers.map((t) => TIER_ORDER[t]).filter((n) => n != null);
+    return ranks.length ? Math.min.apply(null, ranks) : null;
+  }
+
   function readForm() {
     const perf = form.querySelector('input[name="perf"]:checked');
     const camera = form.querySelector('input[name="camera"]:checked');
@@ -226,34 +251,133 @@
     };
   }
 
-  function decideNeeds(perf, camera, budget) {
-    let needs;
-    if (perf === "high") {
-      if (camera === "high") needs = ["cameraflag"];
-      else if (camera === "basic") needs = ["flagship"];
-      else needs = ["highperf"];
-    } else if (perf === "some") {
-      if (camera === "high") needs = ["camera", "cameraflag"];
-      else if (camera === "basic") needs = ["camera"];
-      else needs = ["perf"];
-    } else {
-      if (camera === "none") needs = ["none"];
-      else if (budget === "entry") needs = ["none"];
-      else needs = ["camera"];
-    }
-    return needs;
+  // 找出同时不低于性能、影像要求的最低需求分组，作为需求画像。
+  function decideNeeds(perf, camera) {
+    const p = PERF_RANK[perf];
+    const c = CAMERA_RANK[camera];
+    let best = null;
+    let bestScore = Infinity;
+    NEEDS.forEach((n) => {
+      const rank = needRank(n.id);
+      if (!rank || rank[0] < p || rank[1] < c) return;
+      const score = rank[0] - p + (rank[1] - c);
+      if (score < bestScore) {
+        best = n.id;
+        bestScore = score;
+      }
+    });
+    return best ? [best] : [];
   }
 
-  function matchLines(needs, budget) {
-    const byNeed = LINES.filter((l) => l.needs.some((n) => needs.includes(n)));
-    if (budget === "unknown") return { lines: byNeed, exact: true };
+  // 产品线必须在性能、影像两个指标上都不低于需求，才能进入推荐。
+  function lineMeets(line, req) {
+    return line.needs.some((id) => {
+      const rank = needRank(id);
+      return rank && rank[0] >= req.perf && rank[1] >= req.camera;
+    });
+  }
+
+  function linePerfOver(line, req) {
+    return line.needs.some((id) => {
+      const rank = needRank(id);
+      return rank && rank[0] > req.perf;
+    });
+  }
+
+  // 一条产品线在各需求维度上的最高档位（目前每条产品线只有一个需求分组）。
+  function lineRankOf(line) {
+    const ranks = line.needs.map(needRank).filter(Boolean);
+    if (!ranks.length) return null;
+    return [
+      Math.max.apply(null, ranks.map((r) => r[0])),
+      Math.max.apply(null, ranks.map((r) => r[1])),
+    ];
+  }
+
+  function matchLines(profile, budget, filters) {
+    const allowEntry = budget === "entry";
+    const byNeed = LINES.filter(
+      (l) =>
+        lineMeets(l, profile.req) &&
+        (allowEntry || !l.tiers.includes("entry")) &&
+        !(filters.hideHuawei && l.brand === "华为")
+    );
+    if (budget === "unknown") {
+      return {
+        lines: byNeed.filter((l) => l.needs.includes(profile.primary)),
+        exact: true,
+        overBudget: false,
+        partial: false,
+      };
+    }
+    const budgetRank = TIER_ORDER[budget];
     const exact = byNeed.filter((l) => l.tiers.includes(budget));
-    if (exact.length >= 3) return { lines: exact, exact: true };
+    if (exact.length >= 3) {
+      return { lines: exact, exact: true, overBudget: false, partial: false };
+    }
     const near = ADJACENT[budget] || [budget];
-    return {
-      lines: byNeed.filter((l) => l.tiers.some((t) => near.includes(t))),
-      exact: false,
-    };
+    const nearLines = byNeed.filter((l) => l.tiers.some((t) => near.includes(t)));
+    if (nearLines.length) {
+      return {
+        lines: nearLines,
+        exact: false,
+        overBudget: nearLines.some((l) => lineTierRank(l) > budgetRank),
+        partial: exact.length > 0,
+      };
+    }
+    // 预算内没有匹配：退回到最接近的更高档位，并明确标记为超预算。
+    const above = byNeed.filter((l) => lineTierRank(l) > budgetRank);
+    if (above.length) {
+      const nearest = Math.min.apply(null, above.map(lineTierRank));
+      return {
+        lines: above.filter((l) => lineTierRank(l) === nearest),
+        exact: false,
+        overBudget: true,
+        partial: false,
+      };
+    }
+    return { lines: [], exact: false, overBudget: false, partial: false };
+  }
+
+  // 新款：性能刚好达到需求的产线；老款栏：性能更高、但影像仍然达标的产线。
+  // 若当前结果里没有更高性能的产线，再从全量数据里找最接近的一档补进老款栏。
+  function splitRecommendations(lines, req, filters) {
+    const featured = lines.filter((l) => !linePerfOver(l, req));
+    let alternatives = lines.filter((l) => linePerfOver(l, req));
+
+    if (!alternatives.length) {
+      const allowEntry = filters.budget === "entry";
+      const pool = LINES.filter(
+        (l) =>
+          lineMeets(l, req) &&
+          linePerfOver(l, req) &&
+          (allowEntry || !l.tiers.includes("entry")) &&
+          !(filters.hideHuawei && l.brand === "华为")
+      );
+      const matchedIds = new Set(lines.map((l) => l.brand + "|" + l.name + "|" + l.example));
+      const candidates = pool.filter(
+        (l) => !matchedIds.has(l.brand + "|" + l.name + "|" + l.example)
+      );
+      if (candidates.length) {
+        const minPerf = Math.min.apply(null, candidates.map((l) => lineRankOf(l)[0]));
+        const step = candidates.filter((l) => lineRankOf(l)[0] === minPerf);
+        const budgetRank = TIER_ORDER[filters.budget];
+        let bestDistance = Infinity;
+        let bestTier = Infinity;
+        step.forEach((l) => {
+          const tier = lineTierRank(l);
+          if (tier == null) return;
+          const distance = budgetRank == null ? tier : Math.abs(tier - budgetRank);
+          if (distance < bestDistance || (distance === bestDistance && tier < bestTier)) {
+            bestDistance = distance;
+            bestTier = tier;
+          }
+        });
+        alternatives = step.filter((l) => lineTierRank(l) === bestTier);
+      }
+    }
+
+    return { featured, alternatives };
   }
 
   function syncDetails() {
@@ -264,38 +388,120 @@
   }
 
   function render(data) {
-    const needs = decideNeeds(data.perf, data.camera, data.budget);
+    const needs = decideNeeds(data.perf, data.camera);
+    const primary = needById[needs[0]];
+    if (!primary) return;
+    const req = { perf: PERF_RANK[data.perf], camera: CAMERA_RANK[data.camera] };
+    const profile = { needs, primary: primary.id, req };
     const tier = tierById[data.budget] || null;
-    const matched = matchLines(needs, data.budget);
+    const hideHuawei = data.special.includes("android") || data.special.includes("rhythm");
+    const filters = { hideHuawei, budget: data.budget };
+    const matched = matchLines(profile, data.budget, filters);
+    const split = splitRecommendations(matched.lines, req, filters);
+    const featured = split.featured;
+    const alternatives = split.alternatives;
     const notes = [];
 
-    if (needs.includes("cameraflag") && ["entry", "mid"].includes(data.budget)) {
+    const altTip = alternatives.length
+      ? "可以优先看「老款 / 低配参考」，或提高预算。"
+      : "可以关注同系列的上一代或减配型号，或提高预算。";
+
+    if (
+      !matched.overBudget &&
+      primary.id === "cameraflag" &&
+      ["entry", "mid"].includes(data.budget)
+    ) {
       notes.unshift("<strong>预算提醒：</strong>影像旗舰通常落在旗舰价位，你选的预算可能不足以覆盖，建议放宽预算或降低影像要求。");
     }
-    if (needs.includes("none") && ["flagship", "ultra"].includes(data.budget)) {
-      notes.unshift("<strong>预算提醒：</strong>你的需求很低，但预算高于需求。可以关注高产品线里的减配款或老款，也可以把预算留给存储和屏幕。");
+
+    if (matched.overBudget) {
+      notes.unshift(
+        matched.partial
+          ? `<strong>部分结果超出预算：</strong>标记为「超预算」的产品线高于你选择的档位；${altTip}`
+          : `<strong>预算不足：</strong>所选预算内没有满足需求的产品线，下面列出的是最接近的需求类型；${altTip}`
+      );
+    } else {
+      const altOverBudget = alternatives.some(
+        (l) => lineTierRank(l) > TIER_ORDER[data.budget]
+      );
+      if (altOverBudget) {
+        notes.push(
+          "<strong>老款参考超出预算：</strong>带「超预算」标记的系列高于你选择的档位，可以到这些系列里找上一代或减配型号。"
+        );
+      }
     }
+
+    const lowEndHidden =
+      data.budget !== "entry" &&
+      LINES.some(
+        (l) =>
+          l.tiers.includes("entry") &&
+          lineMeets(l, req) &&
+          !(hideHuawei && l.brand === "华为")
+      );
+    if (lowEndHidden) {
+      notes.push(
+        "<strong>入门级未推荐：</strong>2000 元以内的低端机只在预算选择「入门级 · 2000 元以内」时推荐。"
+      );
+    }
+
+    if (hideHuawei) {
+      notes.push(
+        "<strong>已排除华为：</strong>你选择了小众 Android 应用或音游需求，华为设备可能无法满足这些场景。"
+      );
+    }
+
+    if (!featured.length && !alternatives.length) {
+      notes.push(
+        "<strong>没有匹配的产品线：</strong>当前范围内没有同时满足性能与影像要求的产品线，建议提高预算，或明确降低其中一项需求。"
+      );
+    }
+
+    const displayed = featured.concat(alternatives);
+    const linkNeeds = displayed.length
+      ? Array.from(new Set(displayed.flatMap((l) => l.needs))).filter((id) => needById[id])
+      : needs;
+    const linkTiers = displayed.length
+      ? Array.from(new Set(displayed.flatMap((l) => l.tiers)))
+      : data.budget === "unknown"
+        ? []
+        : [data.budget];
 
     const needPills = needs
       .map((n) => `<span class="need-pill">${esc(needById[n].short)}</span>`)
       .join("");
 
-    const lineTags = matched.lines.length
-      ? matched.lines
-          .map(
-            (l) =>
-              `<a class="tag" href="lines.html?need=${needs.join(",")}&tier=${data.budget === "unknown" ? "" : data.budget}">${esc(l.brand)} ${esc(l.name)} · ${esc(l.example)}</a>`
-          )
-          .join("")
-      : '<span class="small muted">没有完全匹配的产品线，试试放宽预算或调整需求。</span>';
+    const budgetRank = TIER_ORDER[data.budget];
+    const lineTag = (l) => {
+      const overBudget = budgetRank != null && lineTierRank(l) > budgetRank;
+      return `<a class="tag" href="lines.html?need=${l.needs.join(",")}&tier=${l.tiers.join(",")}">${esc(l.brand)} ${esc(l.name)} · ${esc(l.example)}${
+        overBudget ? ' <span class="small muted">（超预算）</span>' : ""
+      }</a>`;
+    };
+    const lineTags = featured.length
+      ? featured.map(lineTag).join("")
+      : alternatives.length
+        ? '<span class="small muted">没有性能刚好匹配的新款，请看「老款 / 低配参考」。</span>'
+        : '<span class="small muted">暂无可推荐的产品线。</span>';
+    const altTags = alternatives.length
+      ? alternatives.map(lineTag).join("")
+      : '<span class="small muted">暂无性能更高的参考产品线。</span>';
+    const linesHeading =
+      !matched.lines.length || matched.exact
+        ? ""
+        : matched.overBudget
+          ? matched.partial
+            ? "（含超出预算的选项）"
+            : "（超出预算）"
+          : "（含邻近价位）";
 
     result.innerHTML = `
       <div class="eyebrow">需求画像</div>
-      <h2>${needs.map((n) => needById[n].title).join(" / ")}</h2>
-      <p class="verdict">${needs.map((n) => needById[n].desc).join(" ")}</p>
+      <h2>${esc(PERF_LABEL[data.perf])}，${esc(CAMERA_LABEL[data.camera])}</h2>
+      <p class="verdict">${esc(primary.desc)}</p>
 
       <div class="result-block">
-        <h3>需求分组</h3>
+        <h3>最低满足的需求分组</h3>
         <div>${needPills}</div>
       </div>
 
@@ -309,9 +515,20 @@
       </div>
 
       <div class="result-block">
-        <h3>值得重点看的产品线${matched.exact ? "" : "（含邻近价位）"}</h3>
-        <div class="result-lines">${lineTags}</div>
-        ${matched.exact ? "" : '<p class="small muted mt-1">完全匹配的产品线较少，这里同时列出了邻近价位的选项。</p>'}
+        <h3>值得重点看的产品线${linesHeading}</h3>
+        <p class="result-legend small muted"><span>图例</span><span class="tag">品牌 系列 · 示例机型</span> 示例机型仅用于说明该产品线，不是推荐的唯一型号。</p>
+        <div class="result-cols">
+          <div class="result-col">
+            <h4>新款机型</h4>
+            <div class="result-lines">${lineTags}</div>
+          </div>
+          <div class="result-col">
+            <h4>老款 / 低配参考</h4>
+            <div class="result-lines">${altTags}</div>
+          </div>
+        </div>
+        ${matched.exact || matched.overBudget || !matched.lines.length ? "" : '<p class="small muted mt-1">完全匹配的产品线较少，这里同时列出了邻近价位的选项。</p>'}
+        <p class="small muted mt-1 mb-0">「老款 / 低配参考」列出性能高于你需求、但影像仍然达标的产品线；可以到这些系列里找上一代或减配型号，通常更划算。</p>
       </div>
 
       ${
@@ -329,7 +546,7 @@
       }
 
       <div class="btn-row mt-3">
-        <a class="btn" href="lines.html?need=${needs.join(",")}&tier=${data.budget === "unknown" ? "" : data.budget}">在产品线地图中查看 →</a>
+        <a class="btn" href="lines.html?need=${linkNeeds.join(",")}&tier=${linkTiers.join(",")}">在产品线地图中查看 →</a>
         <button class="btn btn-ghost" type="button" id="copy-result">复制结论</button>
       </div>
     `;
@@ -340,9 +557,18 @@
       copyBtn.addEventListener("click", async function () {
         const text = [
           "手机需求画像",
-          `需求：${needs.map((n) => needById[n].title).join(" / ")}`,
-          tier ? `预算：${tier.name}（${tier.range}）` : "预算：未确定",
-          `建议产品线：${matched.lines.map((l) => l.brand + " " + l.name).join("、")}`,
+          `需求：${PERF_LABEL[data.perf]}，${CAMERA_LABEL[data.camera]}`,
+          tier
+            ? `预算：${tier.name}（${tier.range}）${matched.overBudget ? "（不足）" : ""}`
+            : "预算：未确定",
+          featured.length
+            ? `新款机型：${featured.map((l) => l.brand + " " + l.name).join("、")}`
+            : "",
+          alternatives.length
+            ? `老款/低配参考：${alternatives
+                .map((l) => l.brand + " " + l.name + "（" + l.example + "）")
+                .join("、")}`
+            : "",
           data.special.length
             ? "特殊需求：" + data.special.map((s) => SPECIAL_LABELS[s] || s).join("、")
             : "",
