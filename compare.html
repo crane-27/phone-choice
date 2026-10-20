@@ -92,6 +92,10 @@
       <p class="small muted">
         从表格里的 SoC 自动生成，每颗一段、分别询问，避免 AI 把多颗芯片混在一起比较。定位只分档，不需要查制程和规格。
       </p>
+      <div class="btn-row" style="margin-bottom: 12px">
+        <button class="btn btn-ghost btn-sm" type="button" id="refresh-soc">根据表格更新</button>
+        <span class="small muted" id="soc-status"></span>
+      </div>
       <div id="soc-questions" class="stack"></div>
     </section>
 
@@ -196,7 +200,6 @@
   const aiPrompt = document.getElementById("ai-prompt");
   const promptStatus = document.getElementById("copy-status");
   const socBox = document.getElementById("soc-questions");
-  const refreshSocQuestions = window.App.debounce(renderSocQuestions, 300);
 
   function uid() {
     return "r" + seq++;
@@ -300,8 +303,8 @@
     });
     if (!list.length) {
       socBox.innerHTML =
-        '<p class="small muted">表格里还没有填写 SoC。填好后这里会自动生成，每颗一段。</p>';
-      return;
+        '<p class="small muted">表格里还没有填写 SoC。填好后点上方按钮生成，每颗一段。</p>';
+      return 0;
     }
     socBox.innerHTML = list
       .map(
@@ -314,6 +317,7 @@
         </div>`
       )
       .join("");
+    return list.length;
   }
 
   /* ---------- 渲染 ---------- */
@@ -435,7 +439,6 @@
     refreshDerived();
     save();
     markPromptStale();
-    if (el.dataset.field === "soc") refreshSocQuestions();
   });
 
   table.addEventListener("click", function (e) {
@@ -747,6 +750,13 @@ ${base}
     } catch (err) {
       btn.textContent = "复制失败";
     }
+  });
+
+  document.getElementById("refresh-soc").addEventListener("click", function () {
+    const n = renderSocQuestions();
+    const el = document.getElementById("soc-status");
+    el.textContent = n ? "已更新，共 " + n + " 颗 SoC。" : "表格里还没有填写 SoC。";
+    setTimeout(() => (el.textContent = ""), 2200);
   });
 
   /* ---------- 初始化 ---------- */
