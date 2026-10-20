@@ -640,6 +640,15 @@ table.compare td.best input { color: var(--accent); font-weight: 650; }
 .price-item input[data-price-field="storage"] { width: 76px; }
 .price-item input[data-price-field="price"] { width: 78px; }
 .price-item.best input { color: var(--accent); font-weight: 650; }
+
+.soc-q-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.soc-q p { white-space: pre-line; }
 .price-item .del-price {
   border: 0;
   background: transparent;

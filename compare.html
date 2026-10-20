@@ -58,11 +58,50 @@
     <section class="section">
       <div class="section-head">
         <span class="num">3.1</span>
-        <h2>问 AI 的对比模板</h2>
+        <h2>先自己查好三样东西</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>摄像头型号</h3>
+          <p class="small muted mb-0">
+            官网通常不写传感器型号。用
+            <a href="https://www.jiuphone.com/" target="_blank" rel="noopener">九机网</a>
+            搜索后填入上表，<strong>不要让 AI 去搜</strong>。
+          </p>
+        </div>
+        <div class="card">
+          <h3>SoC 定位</h3>
+          <p class="small muted mb-0">
+            参考 <a href="soc.html">SoC 梯队</a> 的五档定义，或使用下方逐颗判断工具。定位只看档位，不展开规格。
+          </p>
+        </div>
+        <div class="card">
+          <h3>能效曲线</h3>
+          <p class="small muted mb-0">
+            在 <a href="https://socpk.com/" target="_blank" rel="noopener">socpk.com</a> 截图，发给 AI 时一并附上。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="num">3.2</span>
+        <h2>逐 SoC 判断定位</h2>
       </div>
       <p class="small muted">
-        把当前表格整理成三段：SoC 规格、摄像头模组、总体对比。SoC 与摄像头按机型逐格对应，发给 AI 后先让它补齐 <code>?</code>，最后给整体结论。
-        建议同时打开<strong>联网搜索</strong>和<strong>深度思考</strong>。
+        从表格里的 SoC 自动生成，每颗一段、分别询问，避免 AI 把多颗芯片混在一起比较。定位只分档，不需要查制程和规格。
+      </p>
+      <div id="soc-questions" class="stack"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="num">3.3</span>
+        <h2>总体对比模板</h2>
+      </div>
+      <p class="small muted">
+        只保留总体对比。模板会带上当前表格的参数；发送时请一并附上 socpk 的能效曲线截图，并提醒 AI 不要自行联网补参数。
       </p>
       <textarea id="ai-prompt" rows="30" spellcheck="false"></textarea>
       <div class="btn-row mt-1">
@@ -74,7 +113,7 @@
 
     <section class="section">
       <div class="section-head">
-        <span class="num">3.2</span>
+        <span class="num">3.4</span>
         <h2>对比时看什么</h2>
       </div>
       <div class="grid grid-2">
@@ -156,6 +195,8 @@
   const pasteStatus = document.getElementById("paste-status");
   const aiPrompt = document.getElementById("ai-prompt");
   const promptStatus = document.getElementById("copy-status");
+  const socBox = document.getElementById("soc-questions");
+  const refreshSocQuestions = window.App.debounce(renderSocQuestions, 300);
 
   function uid() {
     return "r" + seq++;
@@ -232,6 +273,47 @@
 
   function rowById(id) {
     return rows.find((r) => r.id === id);
+  }
+
+  /* ---------- 逐 SoC 判断定位 ---------- */
+  function buildSocPrompt(soc) {
+    return `请只判断手机 SoC「${soc}」的定位，不需要展开制程、CPU、GPU 等规格。
+
+这里的“定位”指：这颗芯片在同期手机芯片中的性能与市场层级，用于粗略排序，而不是精确跑分。分为五档：
+5 当代旗舰 / 4 上代旗舰或次旗舰 / 3 中高端 / 2 中端 / 1 入门。
+
+请回答：
+1. 它属于哪一档？
+2. 判断依据：代数、是否上代旗舰改名或超频、与相邻档位的差距。
+3. 信息不足时，请说明不确定之处。`;
+  }
+
+  function renderSocQuestions() {
+    const seen = new Set();
+    const list = [];
+    rows.forEach((r) => {
+      const s = (r.soc || "").trim();
+      if (s && !seen.has(s)) {
+        seen.add(s);
+        list.push(s);
+      }
+    });
+    if (!list.length) {
+      socBox.innerHTML =
+        '<p class="small muted">表格里还没有填写 SoC。填好后这里会自动生成，每颗一段。</p>';
+      return;
+    }
+    socBox.innerHTML = list
+      .map(
+        (s) => `<div class="card soc-q" data-soc="${esc(s)}">
+          <div class="soc-q-head">
+            <strong class="mono">${esc(s)}</strong>
+            <button class="btn btn-ghost btn-sm copy-soc" type="button">复制提问</button>
+          </div>
+          <p class="small muted mb-0">${esc(buildSocPrompt(s))}</p>
+        </div>`
+      )
+      .join("");
   }
 
   /* ---------- 渲染 ---------- */
@@ -353,6 +435,7 @@
     refreshDerived();
     save();
     markPromptStale();
+    if (el.dataset.field === "soc") refreshSocQuestions();
   });
 
   table.addEventListener("click", function (e) {
@@ -608,55 +691,19 @@
       line("备注", (r) => val(r.note)),
     ].join("\n");
 
-    const socTable = [
-      headRow,
-      sepRow,
-      line("SoC 型号", (r) => val(r.soc)),
-      line("档位", (r) => val(tierLabel(r.socTier))),
-      line("制程", () => "?"),
-      line("CPU 架构", () => "?"),
-      line("GPU", () => "?"),
-      line("基带", () => "?"),
-      line("内存规格", () => "?"),
-    ].join("\n");
+    return `以下机型信息由我提供。请基于这些信息做总体对比，不要自行联网搜索或补充参数；我会另外附上 socpk 的能效曲线截图。
 
-    const camTable = [
-      headRow,
-      sepRow,
-      line("现有描述", (r) => val(r.camera)),
-      line("主摄传感器", () => "?"),
-      line("主摄尺寸 / 像素", () => "?"),
-      line("光圈 / OIS", () => "?"),
-      line("超广角", () => "?"),
-      line("长焦", () => "?"),
-      line("前摄", () => "?"),
-      line("视频规格", () => "?"),
-    ].join("\n");
-
-    return `你是一位手机硬件分析师。请先开启联网搜索，核对下列机型的最新参数，再按要求逐项对比。
-
-【机型与基础参数】
+【机型与参数】
 ${base}
 
-【一、SoC 规格对比】
-${socTable}
-请补齐上表中标 ? 的格子，并逐格回答：
-1. 每颗 SoC 属于当代旗舰 / 上代旗舰 / 次旗舰 / 中高端 / 中端？
-2. 是否存在改名、超频或降频？原型号是什么？
-3. 峰值性能与中低负载能效分别谁更强？
+【总体对比要求】
+1. 性能：只按 SoC 档位比较，不需要展开制程、CPU、GPU 等规格。
+2. 影像：按我提供的摄像头描述比较，不要替我查询传感器型号。
+3. 续航与屏幕：结合电池容量、屏幕分辨率与机身尺寸。
+4. 性价比：结合存储规格与价格。
+5. 每台机型适合的人群与使用场景。
+6. 最终推荐，以及需要提醒的风险（系统适配、发热、重量、价格波动）。
 
-【二、摄像头模组对比】
-${camTable}
-请补齐上表中标 ? 的格子，并逐格回答：
-1. 主摄、超广角、长焦分别谁更强？
-2. 夜景、人像、演唱会 / 远摄场景分别谁更合适？
-3. 录像稳定性与防抖谁更好？
-
-【三、总体对比】
-结合 SoC、影像、屏幕、电池与价格，给出：
-1. 性能、影像、续航、屏幕、性价比五项排序；
-2. 每台机型最适合的人群与使用场景；
-3. 最终推荐，以及需要提醒的风险（系统适配、发热、重量、价格波动）。
 请用表格逐项给出结论，最后写一段整体总结。`;
   }
 
@@ -687,8 +734,24 @@ ${camTable}
     }
   });
 
+  socBox.addEventListener("click", async function (e) {
+    const btn = e.target.closest(".copy-soc");
+    if (!btn) return;
+    const card = btn.closest("[data-soc]");
+    if (!card) return;
+    try {
+      await navigator.clipboard.writeText(buildSocPrompt(card.dataset.soc));
+      const old = btn.textContent;
+      btn.textContent = "已复制";
+      setTimeout(() => (btn.textContent = old), 1600);
+    } catch (err) {
+      btn.textContent = "复制失败";
+    }
+  });
+
   /* ---------- 初始化 ---------- */
   render();
+  renderSocQuestions();
   updatePrompt(true);
 })();
 </script>
