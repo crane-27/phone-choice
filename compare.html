@@ -113,6 +113,9 @@
         <button class="btn btn-ghost btn-sm" type="button" id="copy-prompt">复制模板</button>
         <span class="small muted" id="copy-status"></span>
       </div>
+      <p class="small muted mt-1 mb-0">
+        不知道怎么问 AI？<a href="https://deepseek.com" target="_blank" rel="noopener">DeepSeek 官网</a>
+      </p>
     </section>
 
     <section class="section">
@@ -280,7 +283,7 @@
 
   /* ---------- 逐 SoC 判断定位 ---------- */
   function buildSocPrompt(soc) {
-    return `请只判断手机 SoC「${soc}」的定位，不需要展开制程、CPU、GPU 等规格。
+    return `请先开启联网搜索，再判断手机 SoC「${soc}」的定位，不需要展开制程、CPU、GPU 等规格。
 
 这里的“定位”指：这颗芯片在同期手机芯片中的性能与市场层级，用于粗略排序，而不是精确跑分。分为五档：
 5 当代旗舰：最新最强的那**一颗**SoC
