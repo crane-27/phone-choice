@@ -71,7 +71,7 @@
             </tr>
             <tr>
               <td><strong>2 中端</strong></td>
-              <td>骁龙 7 系、天玑 8 系中端</td>
+              <td>骁龙 7 系</td>
               <td>—</td>
               <td>轻度游戏，日常够用</td>
             </tr>
@@ -132,27 +132,6 @@
       </ol>
     </section>
 
-    <section class="section">
-      <div class="section-head">
-        <span class="num">3.5</span>
-        <h2>问 AI 的模板</h2>
-      </div>
-      <p class="small muted">复制下面这段，替换尖括号里的内容即可。</p>
-      <div class="note">
-        使用前请先在 AI 客户端打开<strong>联网搜索</strong>和<strong>深度思考</strong>（推理模式）。SoC 的命名与代际信息更新很快，不联网很容易得到过时结论。
-      </div>
-      <textarea id="ai-template" rows="9" spellcheck="false">请使用联网搜索获取最新信息后回答，并说明推理过程。
-请判断手机 SoC「<SoC 型号>」的定位：
-1. 它属于当代旗舰、上代旗舰、次旗舰、中高端还是中端？
-2. 它是否只是某颗上代旗舰的改名、超频或降频版本？如果是，原型号是什么？
-3. 与「<对比 SoC 型号>」相比，CPU、GPU 和中低负载能效大致谁更强？
-4. 请给出结论和依据，并说明信息来源的时间。</textarea>
-      <div class="btn-row mt-1">
-        <button class="btn btn-sm" type="button" id="copy-template">复制模板</button>
-        <span class="small muted" id="copy-status"></span>
-      </div>
-    </section>
-
     <div class="pager">
       <a href="compare.html"><span class="dir">返回</span>对比台</a>
       <a class="next" href="final.html"><span class="dir">下一步</span>最终决定与验机 →</a>
@@ -164,21 +143,5 @@
 
 <script src="assets/data.js"></script>
 <script src="assets/app.js"></script>
-<script>
-(function () {
-  const ta = document.getElementById("ai-template");
-  const status = document.getElementById("copy-status");
-  document.getElementById("copy-template").addEventListener("click", async function () {
-    try {
-      await navigator.clipboard.writeText(ta.value);
-      status.textContent = "已复制到剪贴板。";
-      setTimeout(() => (status.textContent = ""), 2000);
-    } catch (e) {
-      ta.select();
-      status.textContent = "复制失败，已为你选中文本，请按 Ctrl+C。";
-    }
-  });
-})();
-</script>
 </body>
 </html>

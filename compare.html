@@ -78,7 +78,7 @@
         <div class="card">
           <h3>能效曲线</h3>
           <p class="small muted mb-0">
-            在 <a href="https://socpk.com/" target="_blank" rel="noopener">socpk.com</a> 截图，发给 AI 时一并附上。
+            在 <a href="https://socpk.com/" target="_blank" rel="noopener">socpk.com</a> 分别截取 <strong>CPU 多核</strong>和 <strong>GPU</strong> 两项曲线，发给 AI 时一并附上。
           </p>
         </div>
       </div>
@@ -105,7 +105,7 @@
         <h2>总体对比模板</h2>
       </div>
       <p class="small muted">
-        只保留总体对比。模板会带上当前表格的参数；发送时请一并附上 socpk 的能效曲线截图，并提醒 AI 不要自行联网补参数。
+        只保留总体对比。模板会带上当前表格的参数；发送时请附上 socpk 的 <strong>CPU 多核</strong>与 <strong>GPU</strong> 两项能效曲线截图，并提醒 AI 不要自行联网补参数。
       </p>
       <textarea id="ai-prompt" rows="30" spellcheck="false"></textarea>
       <div class="btn-row mt-1">
@@ -700,13 +700,13 @@
       line("备注", (r) => val(r.note)),
     ].join("\n");
 
-    return `以下机型信息由我提供。请基于这些信息做总体对比，不要自行联网搜索或补充参数；我会另外附上 socpk 的能效曲线截图。
+    return `以下机型信息由我提供。请基于这些信息做总体对比，不要自行联网搜索或补充参数；我会另外附上 socpk 的 CPU 多核与 GPU 两项能效曲线截图。
 
 【机型与参数】
 ${base}
 
 【总体对比要求】
-1. 性能：只按 SoC 档位比较，不需要展开制程、CPU、GPU 等规格。
+1. 性能：只按 SoC 档位比较，不需要展开制程、CPU、GPU 等规格；实际能效以我附上的 CPU 多核与 GPU 曲线截图为准。
 2. 影像：按我提供的摄像头描述比较，不要替我查询传感器型号。
 3. 续航与屏幕：结合电池容量、屏幕分辨率与机身尺寸。
 4. 性价比：结合存储规格与价格。
