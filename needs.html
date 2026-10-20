@@ -89,22 +89,42 @@
         <p class="small muted">现在各厂商的操作系统事实上没有质的差异，这一部分更多是个人喜好。以下按需勾选。</p>
         <div class="card">
           <div class="check-list">
-            <label class="check-item">
-              <input type="checkbox" name="special" value="android">
-              <span>需要安装国内小众的 Android 软件（需通过 Google Play 或浏览器安装包）</span>
-            </label>
-            <label class="check-item">
-              <input type="checkbox" name="special" value="secret">
-              <span>有工作带来的保密需要</span>
-            </label>
-            <label class="check-item">
-              <input type="checkbox" name="special" value="rhythm">
-              <span>有音游游玩需求</span>
-            </label>
-            <label class="check-item">
-              <input type="checkbox" name="special" value="video">
-              <span>有高强度录像需求</span>
-            </label>
+            <div class="check-block">
+              <label class="check-item">
+                <input type="checkbox" name="special" value="android">
+                <span>需要安装国内小众的 Android 软件（需通过 Google Play 或浏览器安装包）</span>
+              </label>
+              <p class="check-detail" data-detail="android" hidden>
+                不要贸然购买华为设备和 iPhone。HarmonyOS 对少数特殊场景仍有适配问题，购买前务必确认常用 App 能否正常安装与运行。
+              </p>
+            </div>
+            <div class="check-block">
+              <label class="check-item">
+                <input type="checkbox" name="special" value="secret">
+                <span>有工作带来的保密需要</span>
+              </label>
+              <p class="check-detail" data-detail="secret" hidden>
+                优先考虑华为设备。
+              </p>
+            </div>
+            <div class="check-block">
+              <label class="check-item">
+                <input type="checkbox" name="special" value="rhythm">
+                <span>有音游游玩需求</span>
+              </label>
+              <p class="check-detail" data-detail="rhythm" hidden>
+                强烈不推荐华为设备，优先 iPhone；其余厂商差距不大。请搜索目标机型的<strong>触控采样率</strong>，采样率高者优先。
+              </p>
+            </div>
+            <div class="check-block">
+              <label class="check-item">
+                <input type="checkbox" name="special" value="video">
+                <span>有高强度录像需求</span>
+              </label>
+              <p class="check-detail" data-detail="video" hidden>
+                优先 iPhone Pro 及以上设备。
+              </p>
+            </div>
           </div>
         </div>
         <div class="note">
@@ -177,6 +197,12 @@
 
   const needById = Object.fromEntries(NEEDS.map((n) => [n.id, n]));
   const tierById = Object.fromEntries(TIERS.map((t) => [t.id, t]));
+  const SPECIAL_LABELS = {
+    android: "小众 Android 应用",
+    secret: "保密需要",
+    rhythm: "音游",
+    video: "高强度录像",
+  };
   const ADJACENT = {
     entry: ["entry", "mid"],
     mid: ["mid", "entry", "upper"],
@@ -227,22 +253,18 @@
     };
   }
 
-  function specialNotes(special) {
-    const out = [];
-    if (special.includes("android"))
-      out.push("<strong>小众 Android 应用：</strong>不要贸然购买华为设备和 iPhone，先确认应用能否安装与正常运行。");
-    if (special.includes("secret")) out.push("<strong>保密需要：</strong>优先考虑华为设备。");
-    if (special.includes("rhythm"))
-      out.push("<strong>音游：</strong>强烈不推荐华为设备，优先 iPhone；其余厂商差距不大，但请搜索目标机型的“触控采样率”，高者优先。");
-    if (special.includes("video")) out.push("<strong>高强度录像：</strong>优先 iPhone Pro 及以上设备。");
-    return out;
+  function syncDetails() {
+    form.querySelectorAll('input[name="special"]').forEach((cb) => {
+      const detail = form.querySelector(`[data-detail="${cb.value}"]`);
+      if (detail) detail.hidden = !cb.checked;
+    });
   }
 
   function render(data) {
     const needs = decideNeeds(data.perf, data.camera, data.budget);
     const tier = tierById[data.budget] || null;
     const matched = matchLines(needs, data.budget);
-    const notes = specialNotes(data.special);
+    const notes = [];
 
     if (needs.includes("cameraflag") && ["entry", "mid"].includes(data.budget)) {
       notes.unshift("<strong>预算提醒：</strong>影像旗舰通常落在旗舰价位，你选的预算可能不足以覆盖，建议放宽预算或降低影像要求。");
@@ -290,6 +312,14 @@
       </div>
 
       ${
+        data.special.length
+          ? `<div class="result-block"><h3>特殊需求</h3><div class="result-lines">${data.special
+              .map((s) => `<span class="tag">${esc(SPECIAL_LABELS[s] || s)}</span>`)
+              .join("")}</div><p class="small muted mt-1 mb-0">对应的要求已在上方 1.3 展开。</p></div>`
+          : ""
+      }
+
+      ${
         notes.length
           ? `<div class="result-block"><h3>注意事项</h3><ul class="small" style="margin-bottom:0">${notes.map((n) => `<li>${n}</li>`).join("")}</ul></div>`
           : ""
@@ -310,6 +340,9 @@
           `需求：${needs.map((n) => needById[n].title).join(" / ")}`,
           tier ? `预算：${tier.name}（${tier.range}）` : "预算：未确定",
           `建议产品线：${matched.lines.map((l) => l.brand + " " + l.name).join("、")}`,
+          data.special.length
+            ? "特殊需求：" + data.special.map((s) => SPECIAL_LABELS[s] || s).join("、")
+            : "",
           notes.length ? "注意：" + notes.map((n) => n.replace(/<[^>]+>/g, "")).join("；") : "",
         ]
           .filter(Boolean)
@@ -344,6 +377,7 @@
       const el = form.querySelector(`input[name="special"][value="${v}"]`);
       if (el) el.checked = true;
     });
+    syncDetails();
     if (saved.perf && saved.camera) render(saved);
   }
 
@@ -364,9 +398,14 @@
 
   document.getElementById("reset-btn").addEventListener("click", function () {
     form.reset();
+    syncDetails();
     store.remove(KEY);
     result.classList.add("hidden");
     hint.textContent = "已清空。";
+  });
+
+  form.querySelectorAll('input[name="special"]').forEach((cb) => {
+    cb.addEventListener("change", syncDetails);
   });
 
   // 从产品线页跳回时，若带有 need 参数则预选

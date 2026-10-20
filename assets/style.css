@@ -366,6 +366,17 @@ textarea { resize: vertical; min-height: 96px; }
 }
 
 .check-list { display: grid; gap: 2px; }
+.check-block + .check-block { border-top: 1px dashed var(--line); }
+.check-detail {
+  margin: 0 0 10px 34px;
+  padding: 8px 12px;
+  border-left: 2px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+.check-detail strong { font-weight: 650; }
 .check-item {
   display: flex;
   gap: 10px;
