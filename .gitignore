@@ -1,0 +1,4 @@
+# 上游机型库（CC BY-NC-SA 4.0）：本地 clone，不提交
+data/MobileModels/
+
+# 注意：data/models.js 是生成物，需要提交，供页面直接加载

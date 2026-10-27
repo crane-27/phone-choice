@@ -7,8 +7,8 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>需求诊断 · 从零开始的手机选购指南</title>
-<meta name="description" content="回答性能、影像、系统和预算四组问题，得到需求画像与值得关注的产品线。">
-<link rel="stylesheet" href="assets/style.css?v=20261020">
+<meta name="description" content="先定预算，再按性能、影像与特殊需求，得到按品牌分组的具体机型推荐。">
+<link rel="stylesheet" href="assets/style.css?v=20261027c">
 </head>
 <body data-page="needs">
 <header id="site-header"></header>
@@ -18,129 +18,16 @@
     <div class="page-head">
       <div class="eyebrow">第一步 / 4</div>
       <h1>明确需求</h1>
-      <p class="lede">需求分为预算和使用场景两个层面。先回答下面几组问题，再决定看哪些产品线——不要先从型号开始。</p>
+      <p class="lede">先确定预算，再说明性能、影像和特殊需求。推荐会按品牌分组，并单独标出超预算的机型。</p>
     </div>
 
     <form id="quiz" novalidate>
       <section class="section">
         <div class="section-head">
           <span class="num">1.1</span>
-          <h2>性能</h2>
-        </div>
-        <p class="small muted">对性能的需求通常由你在手游上的需求决定，也可以参考上一台手机的日用状况。</p>
-        <div class="radio-list">
-          <label class="radio-card">
-            <input type="radio" name="perf" value="none" required>
-            <span>
-              <span class="rc-title">基本没有性能需求</span>
-              <span class="rc-desc">几乎不玩手机游戏，或只玩负载较低的游戏；上一台手机很少烫手、严重卡顿。</span>
-            </span>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="perf" value="some">
-            <span>
-              <span class="rc-title">需要一定的性能</span>
-              <span class="rc-desc">会玩原神等较早期的 3D 大世界二游；上一台手机经常明显发热或卡顿，但不要求极致。</span>
-            </span>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="perf" value="high">
-            <span>
-              <span class="rc-title">需要极致的性能</span>
-              <span class="rc-desc">会玩鸣潮、终末地等较新的高负载手游；上一台手机几乎无法运行部分应用，或非常烫手、卡顿严重。</span>
-            </span>
-          </label>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <span class="num">1.2</span>
-          <h2>影像</h2>
-        </div>
-        <p class="small muted">对影像的需求主要由你使用手机拍照的需要决定。</p>
-        <div class="radio-list">
-          <label class="radio-card">
-            <input type="radio" name="camera" value="none" required>
-            <span>
-              <span class="rc-title">不太需要影像表现</span>
-              <span class="rc-desc">摄像头的使用基本仅限扫码，或用前摄开会。</span>
-            </span>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="camera" value="basic">
-            <span>
-              <span class="rc-title">需要基础的影像表现</span>
-              <span class="rc-desc">会经常拍一些照片，但基本只是随手拍。</span>
-            </span>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="camera" value="high">
-            <span>
-              <span class="rc-title">需要较高的影像表现</span>
-              <span class="rc-desc">经常在演唱会、漫展等场景拍照，对手机摄影要求很高。</span>
-            </span>
-          </label>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <span class="num">1.3</span>
-          <h2>系统与特殊需求</h2>
-        </div>
-        <p class="small muted">现在各厂商的操作系统事实上没有质的差异，这一部分更多是个人喜好。以下按需勾选。</p>
-        <div class="card">
-          <div class="check-list">
-            <div class="check-block">
-              <label class="check-item">
-                <input type="checkbox" name="special" value="android">
-                <span>需要安装国内小众的 Android 软件（需通过 Google Play 或浏览器安装包）</span>
-              </label>
-              <p class="check-detail" data-detail="android" hidden>
-                不要贸然购买华为设备和 iPhone。HarmonyOS 对少数特殊场景仍有适配问题，购买前务必确认常用 App 能否正常安装与运行。
-              </p>
-            </div>
-            <div class="check-block">
-              <label class="check-item">
-                <input type="checkbox" name="special" value="secret">
-                <span>有工作带来的保密需要</span>
-              </label>
-              <p class="check-detail" data-detail="secret" hidden>
-                优先考虑华为设备。
-              </p>
-            </div>
-            <div class="check-block">
-              <label class="check-item">
-                <input type="checkbox" name="special" value="rhythm">
-                <span>有音游游玩需求</span>
-              </label>
-              <p class="check-detail" data-detail="rhythm" hidden>
-                强烈不推荐华为设备，优先 iPhone；其余厂商差距不大。请搜索目标机型的<strong>触控采样率</strong>，采样率高者优先。
-              </p>
-            </div>
-            <div class="check-block">
-              <label class="check-item">
-                <input type="checkbox" name="special" value="video">
-                <span>有高强度录像需求</span>
-              </label>
-              <p class="check-detail" data-detail="video" hidden>
-                优先 iPhone Pro 及以上设备。
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="note">
-          华为的 HarmonyOS 经过几年迭代，已经可以满足大部分日用场景，但少数特殊场景仍有适配问题。购买前务必确认你常用的 App 能否较好适配。
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <span class="num">1.4</span>
           <h2>预算</h2>
         </div>
-        <p class="small muted">如果对“一台手机该值多少钱”没有概念，可以按下面的价位区间来选。</p>
+        <p class="small muted">预算决定了推荐的范围。如果不在乎预算，可以直接看折叠屏；如果不想限制价位，选择「不限定预算」。</p>
         <div class="radio-list">
           <label class="radio-card">
             <input type="radio" name="budget" value="entry">
@@ -160,17 +47,130 @@
           </label>
           <label class="radio-card">
             <input type="radio" name="budget" value="ultra">
-            <span><span class="rc-title">超旗舰 · 万元或更高</span><span class="rc-desc">适合不在乎预算的购机者，往往有折叠屏等独特卖点。</span></span>
+            <span><span class="rc-title">不在乎预算</span><span class="rc-desc">直接看折叠屏等超旗舰。</span></span>
           </label>
           <label class="radio-card">
-            <input type="radio" name="budget" value="unknown" checked>
-            <span><span class="rc-title">还不确定</span><span class="rc-desc">先看需求匹配的产品线，再反过来判断预算。</span></span>
+            <input type="radio" name="budget" value="unknown">
+            <span><span class="rc-title">不限定预算</span><span class="rc-desc">按性能和影像需求推荐，不限制价位。</span></span>
           </label>
         </div>
+        <p class="budget-tip hidden" id="budget-tip">不在乎预算：下面直接推荐折叠屏。如果不想要折叠屏，选择「不限定预算」并说明性能/影像需求。</p>
       </section>
 
+      <div id="needs-fields">
+        <section class="section">
+          <div class="section-head">
+            <span class="num">1.2</span>
+            <h2>性能</h2>
+          </div>
+          <p class="small muted">对性能的需求通常由你在手游上的需求决定，也可以参考上一台手机的日用状况。</p>
+          <div class="radio-list">
+            <label class="radio-card">
+              <input type="radio" name="perf" value="none">
+              <span>
+                <span class="rc-title">基本没有性能需求</span>
+                <span class="rc-desc">几乎不玩手机游戏，或只玩负载较低的游戏；上一台手机很少烫手、严重卡顿。</span>
+              </span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="perf" value="some">
+              <span>
+                <span class="rc-title">需要一定的性能</span>
+                <span class="rc-desc">会玩原神等较早期的 3D 大世界二游；上一台手机经常明显发热或卡顿，但不要求极致。</span>
+              </span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="perf" value="high">
+              <span>
+                <span class="rc-title">需要极致的性能</span>
+                <span class="rc-desc">会玩鸣潮、终末地等较新的高负载手游；上一台手机几乎无法运行部分应用，或非常烫手、卡顿严重。</span>
+              </span>
+            </label>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <span class="num">1.3</span>
+            <h2>影像</h2>
+          </div>
+          <p class="small muted">对影像的需求主要由你使用手机拍照的需要决定。</p>
+          <div class="radio-list">
+            <label class="radio-card">
+              <input type="radio" name="camera" value="none">
+              <span>
+                <span class="rc-title">不太需要影像表现</span>
+                <span class="rc-desc">摄像头的使用基本仅限扫码，或用前摄开会。</span>
+              </span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="camera" value="basic">
+              <span>
+                <span class="rc-title">需要基础的影像表现</span>
+                <span class="rc-desc">会经常拍一些照片，但基本只是随手拍。</span>
+              </span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="camera" value="high">
+              <span>
+                <span class="rc-title">需要较高的影像表现</span>
+                <span class="rc-desc">经常在演唱会、漫展等场景拍照，对手机摄影要求很高。</span>
+              </span>
+            </label>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <span class="num">1.4</span>
+            <h2>系统与特殊需求</h2>
+          </div>
+          <p class="small muted">现在各厂商的操作系统事实上没有质的差异，这一部分更多是个人喜好。以下按需勾选。</p>
+          <div class="card">
+            <div class="check-list">
+              <div class="check-block">
+                <label class="check-item">
+                  <input type="checkbox" name="special" value="android">
+                  <span>需要安装国内小众的 Android 软件（需通过 Google Play 或浏览器安装包）</span>
+                </label>
+                <p class="check-detail" data-detail="android" hidden>
+                  不要贸然购买华为设备和 iPhone。HarmonyOS 对少数特殊场景仍有适配问题，购买前务必确认常用 App 能否正常安装与运行。
+                </p>
+              </div>
+              <div class="check-block">
+                <label class="check-item">
+                  <input type="checkbox" name="special" value="secret">
+                  <span>有工作带来的保密需要</span>
+                </label>
+                <p class="check-detail" data-detail="secret" hidden>
+                  优先考虑华为设备。
+                </p>
+              </div>
+              <div class="check-block">
+                <label class="check-item">
+                  <input type="checkbox" name="special" value="rhythm">
+                  <span>有音游游玩需求</span>
+                </label>
+                <p class="check-detail" data-detail="rhythm" hidden>
+                  强烈不推荐华为设备，优先 iPhone；其余厂商差距不大。请搜索目标机型的<strong>触控采样率</strong>，采样率高者优先。
+                </p>
+              </div>
+              <div class="check-block">
+                <label class="check-item">
+                  <input type="checkbox" name="special" value="video">
+                  <span>有高强度录像需求</span>
+                </label>
+                <p class="check-detail" data-detail="video" hidden>
+                  优先 iPhone Pro 及以上设备。
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
       <div class="btn-row">
-        <button class="btn" type="submit">生成需求画像 →</button>
+        <button class="btn" type="submit">生成推荐 →</button>
         <button class="btn btn-ghost" type="button" id="reset-btn">清空重填</button>
         <span class="small muted" id="form-hint"></span>
       </div>
@@ -187,199 +187,71 @@
 
 <footer id="site-footer"></footer>
 
-<script src="assets/data.js?v=20261020"></script>
-<script src="assets/app.js?v=20261020"></script>
+<script src="assets/data.js?v=20261027"></script>
+<script src="assets/app.js?v=20261027c"></script>
+<script src="data/models.js?v=20261027"></script>
+<script src="data/model-status.js?v=20261027b"></script>
+<script src="assets/recommend.js?v=20261027"></script>
 <script>
 (function () {
+  "use strict";
+
   const { store, param, esc } = window.App;
-  const { NEEDS, TIERS, LINES } = window.GUIDE;
+  const { TIERS } = window.GUIDE;
   const KEY = "pc.needs.v1";
+
   const form = document.getElementById("quiz");
   const result = document.getElementById("result");
   const hint = document.getElementById("form-hint");
+  const needsFields = document.getElementById("needs-fields");
+  const budgetTip = document.getElementById("budget-tip");
+  const submitBtn = form.querySelector('button[type="submit"]');
 
-  const needById = Object.fromEntries(NEEDS.map((n) => [n.id, n]));
   const tierById = Object.fromEntries(TIERS.map((t) => [t.id, t]));
+  const PERF_LABEL = { none: "无性能需求", some: "一定性能需求", high: "较高性能需求" };
+  const CAMERA_LABEL = { none: "无影像需求", basic: "基本影像表现", high: "较高影像表现" };
+  const PERF_CHIP = { low: "性能 低", medium: "性能 中", high: "性能 高" };
+  const CAMERA_CHIP = { low: "影像 低", medium: "影像 中", high: "影像 高" };
+  const TIER_LABEL = { entry: "入门级", mid: "中端机", upper: "中高端机", flagship: "旗舰", ultra: "超旗舰" };
   const SPECIAL_LABELS = {
     android: "小众 Android 应用",
     secret: "保密需要",
     rhythm: "音游",
     video: "高强度录像",
   };
-  const ADJACENT = {
-    entry: ["entry", "mid"],
-    mid: ["mid", "entry", "upper"],
-    upper: ["upper", "mid", "flagship"],
-    flagship: ["flagship", "upper", "ultra"],
-    ultra: ["ultra", "flagship"],
-  };
 
-  // 需求的两个维度：性能与影像，数值越大要求越高。
-  const PERF_RANK = { none: 0, some: 1, high: 2 };
-  const CAMERA_RANK = { none: 0, basic: 1, high: 2 };
-  // 每个需求分组对应的（性能, 影像）档位；rich 只有价位含义，不参与匹配。
-  const NEED_RANK = {
-    none: [0, 0],
-    perf: [1, 0],
-    camera: [1, 1],
-    highperf: [2, 0],
-    flagship: [2, 1],
-    cameraflag: [2, 2],
-  };
-  const TIER_ORDER = { entry: 0, mid: 1, upper: 2, flagship: 3, ultra: 4 };
-  const PERF_LABEL = { none: "无性能需求", some: "一定性能需求", high: "较高性能需求" };
-  const CAMERA_LABEL = { none: "无影像需求", basic: "基本影像表现", high: "较高影像表现" };
-
-  function needRank(id) {
-    return NEED_RANK[id] || null;
-  }
-
-  function lineTierRank(line) {
-    const ranks = line.tiers.map((t) => TIER_ORDER[t]).filter((n) => n != null);
-    return ranks.length ? Math.min.apply(null, ranks) : null;
+  function checkedValue(name) {
+    const el = form.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : null;
   }
 
   function readForm() {
-    const perf = form.querySelector('input[name="perf"]:checked');
-    const camera = form.querySelector('input[name="camera"]:checked');
-    const budget = form.querySelector('input[name="budget"]:checked');
     return {
-      perf: perf ? perf.value : null,
-      camera: camera ? camera.value : null,
-      budget: budget ? budget.value : "unknown",
+      budget: checkedValue("budget"),
+      perf: checkedValue("perf"),
+      camera: checkedValue("camera"),
       special: Array.from(form.querySelectorAll('input[name="special"]:checked')).map((i) => i.value),
     };
   }
 
-  // 找出同时不低于性能、影像要求的最低需求分组，作为需求画像。
-  function decideNeeds(perf, camera) {
-    const p = PERF_RANK[perf];
-    const c = CAMERA_RANK[camera];
-    let best = null;
-    let bestScore = Infinity;
-    NEEDS.forEach((n) => {
-      const rank = needRank(n.id);
-      if (!rank || rank[0] < p || rank[1] < c) return;
-      const score = rank[0] - p + (rank[1] - c);
-      if (score < bestScore) {
-        best = n.id;
-        bestScore = score;
-      }
-    });
-    return best ? [best] : [];
+  function isRichBudget(data) {
+    return data.budget === "ultra";
   }
 
-  // 产品线必须在性能、影像两个指标上都不低于需求，才能进入推荐。
-  function lineMeets(line, req) {
-    return line.needs.some((id) => {
-      const rank = needRank(id);
-      return rank && rank[0] >= req.perf && rank[1] >= req.camera;
-    });
+  function budgetLabel(data) {
+    if (isRichBudget(data)) return "不在乎预算";
+    if (data.budget === "unknown") return "不限定预算";
+    const tier = tierById[data.budget];
+    return tier ? `${tier.name} · ${tier.range}` : "未选择预算";
   }
 
-  function linePerfOver(line, req) {
-    return line.needs.some((id) => {
-      const rank = needRank(id);
-      return rank && rank[0] > req.perf;
-    });
-  }
-
-  // 一条产品线在各需求维度上的最高档位（目前每条产品线只有一个需求分组）。
-  function lineRankOf(line) {
-    const ranks = line.needs.map(needRank).filter(Boolean);
-    if (!ranks.length) return null;
-    return [
-      Math.max.apply(null, ranks.map((r) => r[0])),
-      Math.max.apply(null, ranks.map((r) => r[1])),
-    ];
-  }
-
-  function matchLines(profile, budget, filters) {
-    const allowEntry = budget === "entry";
-    const byNeed = LINES.filter(
-      (l) =>
-        lineMeets(l, profile.req) &&
-        (allowEntry || !l.tiers.includes("entry")) &&
-        !(filters.hideHuawei && l.brand === "华为") &&
-        !(filters.hideApple && l.brand === "苹果")
-    );
-    if (budget === "unknown") {
-      return {
-        lines: byNeed.filter((l) => l.needs.includes(profile.primary)),
-        exact: true,
-        overBudget: false,
-        partial: false,
-      };
-    }
-    const budgetRank = TIER_ORDER[budget];
-    const exact = byNeed.filter((l) => l.tiers.includes(budget));
-    if (exact.length >= 3) {
-      return { lines: exact, exact: true, overBudget: false, partial: false };
-    }
-    const near = ADJACENT[budget] || [budget];
-    const nearLines = byNeed.filter((l) => l.tiers.some((t) => near.includes(t)));
-    if (nearLines.length) {
-      return {
-        lines: nearLines,
-        exact: false,
-        overBudget: nearLines.some((l) => lineTierRank(l) > budgetRank),
-        partial: exact.length > 0,
-      };
-    }
-    // 预算内没有匹配：退回到最接近的更高档位，并明确标记为超预算。
-    const above = byNeed.filter((l) => lineTierRank(l) > budgetRank);
-    if (above.length) {
-      const nearest = Math.min.apply(null, above.map(lineTierRank));
-      return {
-        lines: above.filter((l) => lineTierRank(l) === nearest),
-        exact: false,
-        overBudget: true,
-        partial: false,
-      };
-    }
-    return { lines: [], exact: false, overBudget: false, partial: false };
-  }
-
-  // 新款：性能刚好达到需求的产线；老款栏：性能更高、但影像仍然达标的产线。
-  // 若当前结果里没有更高性能的产线，再从全量数据里找最接近的一档补进老款栏。
-  function splitRecommendations(lines, req, filters) {
-    const featured = lines.filter((l) => !linePerfOver(l, req));
-    let alternatives = lines.filter((l) => linePerfOver(l, req));
-
-    if (!alternatives.length) {
-      const allowEntry = filters.budget === "entry";
-      const pool = LINES.filter(
-        (l) =>
-          lineMeets(l, req) &&
-          linePerfOver(l, req) &&
-          (allowEntry || !l.tiers.includes("entry")) &&
-          !(filters.hideHuawei && l.brand === "华为") &&
-          !(filters.hideApple && l.brand === "苹果")
-      );
-      const matchedIds = new Set(lines.map((l) => l.brand + "|" + l.name + "|" + l.example));
-      const candidates = pool.filter(
-        (l) => !matchedIds.has(l.brand + "|" + l.name + "|" + l.example)
-      );
-      if (candidates.length) {
-        const minPerf = Math.min.apply(null, candidates.map((l) => lineRankOf(l)[0]));
-        const step = candidates.filter((l) => lineRankOf(l)[0] === minPerf);
-        const budgetRank = TIER_ORDER[filters.budget];
-        let bestDistance = Infinity;
-        let bestTier = Infinity;
-        step.forEach((l) => {
-          const tier = lineTierRank(l);
-          if (tier == null) return;
-          const distance = budgetRank == null ? tier : Math.abs(tier - budgetRank);
-          if (distance < bestDistance || (distance === bestDistance && tier < bestTier)) {
-            bestDistance = distance;
-            bestTier = tier;
-          }
-        });
-        alternatives = step.filter((l) => lineTierRank(l) === bestTier);
-      }
-    }
-
-    return { featured, alternatives };
+  function updateBudgetMode() {
+    const data = readForm();
+    const rich = isRichBudget(data);
+    needsFields.classList.toggle("hidden", rich);
+    budgetTip.classList.toggle("hidden", !rich);
+    submitBtn.textContent = rich ? "直接看折叠屏 →" : "生成推荐 →";
+    if (rich) hint.textContent = "";
   }
 
   function syncDetails() {
@@ -389,222 +261,224 @@
     });
   }
 
-  function render(data) {
-    const needs = decideNeeds(data.perf, data.camera);
-    const primary = needById[needs[0]];
-    if (!primary) return;
-    const req = { perf: PERF_RANK[data.perf], camera: CAMERA_RANK[data.camera] };
-    const profile = { needs, primary: primary.id, req };
-    const tier = tierById[data.budget] || null;
-    const hideHuawei = data.special.includes("android") || data.special.includes("rhythm");
-    const hideApple = data.special.includes("android");
-    const filters = { hideHuawei, hideApple, budget: data.budget };
-    const matched = matchLines(profile, data.budget, filters);
-    const split = splitRecommendations(matched.lines, req, filters);
-    const featured = split.featured;
-    const alternatives = split.alternatives;
-    const notes = [];
-
-    const altTip = alternatives.length
-      ? "可以优先看「老款 / 低配参考」，或提高预算。"
-      : "可以关注同系列的上一代或减配型号，或提高预算。";
-
-    if (
-      !matched.overBudget &&
-      primary.id === "cameraflag" &&
-      ["entry", "mid"].includes(data.budget)
-    ) {
-      notes.unshift("<strong>预算提醒：</strong>影像旗舰通常落在旗舰价位，你选的预算可能不足以覆盖，建议放宽预算或降低影像要求。");
+  function groupByBrand(list) {
+    const map = new Map();
+    for (const m of list) {
+      if (!map.has(m.brand)) map.set(m.brand, []);
+      map.get(m.brand).push(m);
     }
+    return Array.from(map.entries());
+  }
 
-    if (matched.overBudget) {
-      notes.unshift(
-        matched.partial
-          ? `<strong>部分结果超出预算：</strong>标记为「超预算」的产品线高于你选择的档位；${altTip}`
-          : `<strong>预算不足：</strong>所选预算内没有满足需求的产品线，下面列出的是最接近的需求类型；${altTip}`
-      );
+  function renderChips(m, overBudget) {
+    const chips = [
+      `<span class="mchip mchip-tier">${esc(TIER_LABEL[m.tier] || m.tier)}</span>`,
+      m.performance ? `<span class="mchip">${esc(PERF_CHIP[m.performance] || m.performance)}</span>` : "",
+      m.camera ? `<span class="mchip">${esc(CAMERA_CHIP[m.camera] || m.camera)}</span>` : "",
+      overBudget ? '<span class="mchip mchip-warn">超预算</span>' : "",
+    ];
+    return chips.filter(Boolean).join("");
+  }
+
+  function renderModel(m, overBudget) {
+    const nick = m.nick_name && m.nick_name.length
+      ? `<div class="model-sub">别名：${m.nick_name.map((n) => esc(n)).join(" / ")}</div>`
+      : "";
+    return `
+      <div class="model-row">
+        <div class="model-main">
+          <span class="model-name">${esc(m.name)}</span>
+          ${renderChips(m, overBudget)}
+        </div>
+        ${nick}
+      </div>
+    `;
+  }
+
+  function renderSeries(group, overBudget) {
+    const href = `lines.html?brand=${encodeURIComponent(group.brand)}&series=${encodeURIComponent(group.series)}`;
+    return `
+      <div class="series-group">
+        <div class="series-head">
+          <a class="series-link" href="${href}">${esc(group.series)}</a>
+          <span class="series-count">${group.models.length} 款</span>
+        </div>
+        ${group.models.map((m) => renderModel(m, overBudget)).join("")}
+      </div>
+    `;
+  }
+
+  function renderBrand(brand, models, overBudget) {
+    const groups = window.Recommend.groupBySeries(models);
+    return `
+      <details class="brand-details">
+        <summary class="brand-summary">
+          <span class="brand-name">${esc(brand)}</span>
+          <span class="brand-count">${models.length} 款</span>
+        </summary>
+        <div class="brand-body">
+          ${groups.map((g) => renderSeries(g, overBudget)).join("")}
+        </div>
+      </details>
+    `;
+  }
+
+  function renderBrandSection(list, title, overBudget) {
+    const brands = groupByBrand(list);
+    if (!brands.length) return "";
+    return `
+      <div class="result-block${overBudget ? " over-budget-block" : ""}">
+        <h3>${esc(title)}</h3>
+        <div class="brand-list">
+          ${brands.map(([brand, models]) => renderBrand(brand, models, overBudget)).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  function buildCopyText(data, rec) {
+    const rich = isRichBudget(data);
+    const lines = [
+      "手机推荐结果",
+      `预算：${budgetLabel(data)}`,
+      rich ? "" : `需求：${PERF_LABEL[data.perf]}，${CAMERA_LABEL[data.camera]}`,
+    ];
+
+    if (rec.meta.empty) {
+      lines.push("目前需求过高，建议降低需求或等待新品上市");
     } else {
-      const altOverBudget = alternatives.some(
-        (l) => lineTierRank(l) > TIER_ORDER[data.budget]
-      );
-      if (altOverBudget) {
-        notes.push(
-          "<strong>老款参考超出预算：</strong>带「超预算」标记的系列高于你选择的档位，可以到这些系列里找上一代或减配型号。"
+      for (const [brand, models] of groupByBrand(rec.main)) {
+        lines.push(`${brand}：${models.map((m) => m.name).join("、")}`);
+      }
+      if (rec.overBudget.length) {
+        lines.push(
+          "超预算：" +
+            groupByBrand(rec.overBudget)
+              .map(([brand, models]) => `${brand}（${models.map((m) => m.name).join("、")}）`)
+              .join("；"),
         );
       }
     }
 
-    const lowEndHidden =
-      data.budget !== "entry" &&
-      LINES.some(
-        (l) =>
-          l.tiers.includes("entry") &&
-          lineMeets(l, req) &&
-          !(hideHuawei && l.brand === "华为") &&
-          !(hideApple && l.brand === "苹果")
-      );
-    if (lowEndHidden) {
-      notes.push(
-        "<strong>入门级未推荐：</strong>2000 元以内的低端机只在预算选择「入门级 · 2000 元以内」时推荐。"
-      );
+    if (data.special.length) {
+      lines.push("特殊需求：" + data.special.map((s) => SPECIAL_LABELS[s] || s).join("、"));
     }
+    return lines.filter(Boolean).join("\n");
+  }
 
-    const excludedBrands = [];
-    if (hideHuawei) excludedBrands.push("华为");
-    if (hideApple) excludedBrands.push("iPhone");
-    if (excludedBrands.length) {
-      const reasons = [];
-      if (data.special.includes("android")) reasons.push("小众 Android 应用");
-      if (data.special.includes("rhythm")) reasons.push("音游");
-      notes.push(
-        `<strong>已排除${excludedBrands.join("、")}：</strong>你选择了${reasons.join(" / ")}需求，这些设备可能无法满足对应场景。`
-      );
-    }
+  function bindCopy(data, rec) {
+    const btn = document.getElementById("copy-result");
+    if (!btn) return;
+    btn.addEventListener("click", async function () {
+      try {
+        await navigator.clipboard.writeText(buildCopyText(data, rec));
+        btn.textContent = "已复制";
+        setTimeout(function () {
+          btn.textContent = "复制结论";
+        }, 1600);
+      } catch (e) {
+        btn.textContent = "复制失败";
+      }
+    });
+  }
 
-    if (!featured.length && !alternatives.length) {
-      notes.push(
-        "<strong>没有匹配的产品线：</strong>当前范围内没有同时满足性能与影像要求的产品线，建议提高预算，或明确降低其中一项需求。"
-      );
-    }
+  function render(data) {
+    const rich = isRichBudget(data);
+    const rec = rich
+      ? window.Recommend.build({ need: "rich", special: data.special })
+      : window.Recommend.build({
+          perf: data.perf,
+          camera: data.camera,
+          budget: data.budget,
+          special: data.special,
+        });
 
-    const displayed = featured.concat(alternatives);
-    const linkNeeds = displayed.length
-      ? Array.from(new Set(displayed.flatMap((l) => l.needs))).filter((id) => needById[id])
-      : needs;
-    const linkTiers = displayed.length
-      ? Array.from(new Set(displayed.flatMap((l) => l.tiers)))
+    const tier = data.budget === "unknown" || rich ? null : tierById[data.budget];
+    const label = budgetLabel(data);
+    const verdict = rich
+      ? "直接看折叠屏等超旗舰。"
       : data.budget === "unknown"
-        ? []
-        : [data.budget];
+        ? "按性能和影像需求筛选，不限制价位。"
+        : tier
+          ? `${tier.desc} ${tier.advice}。`
+          : "";
 
-    const needPills = needs
-      .map((n) => `<span class="need-pill">${esc(needById[n].short)}</span>`)
-      .join("");
+    const summaryTags = [
+      `<span class="tag tag-accent">预算：${esc(label)}</span>`,
+      rich ? "" : `<span class="tag">性能：${esc(PERF_LABEL[data.perf])}</span>`,
+      rich ? "" : `<span class="tag">影像：${esc(CAMERA_LABEL[data.camera])}</span>`,
+      ...data.special.map((s) => `<span class="tag">${esc(SPECIAL_LABELS[s] || s)}</span>`),
+    ].filter(Boolean).join("");
 
-    const budgetRank = TIER_ORDER[data.budget];
-    const lineTag = (l) => {
-      const overBudget = budgetRank != null && lineTierRank(l) > budgetRank;
-      return `<a class="tag" href="lines.html?need=${l.needs.join(",")}&tier=${l.tiers.join(",")}">${esc(l.brand)} ${esc(l.name)} · ${esc(l.example)}${
-        overBudget ? ' <span class="small muted">（超预算）</span>' : ""
-      }</a>`;
-    };
-    const lineTags = featured.length
-      ? featured.map(lineTag).join("")
-      : alternatives.length
-        ? '<span class="small muted">没有性能刚好匹配的新款，请看「老款 / 低配参考」。</span>'
-        : '<span class="small muted">暂无可推荐的产品线。</span>';
-    const altTags = alternatives.length
-      ? alternatives.map(lineTag).join("")
-      : '<span class="small muted">暂无性能更高的参考产品线。</span>';
-    const linesHeading =
-      !matched.lines.length || matched.exact
-        ? ""
-        : matched.overBudget
-          ? matched.partial
-            ? "（含超出预算的选项）"
-            : "（超出预算）"
-          : "（含邻近价位）";
+    const notes = [];
+    if (rich) {
+      notes.push("你没有限定预算，下面直接列出折叠屏（I'm rich 档）。如果不想要折叠屏，选择「不限定预算」并说明性能/影像需求。");
+    }
+    if (!rich && rec.meta.atBudgetUsed) {
+      notes.push("低于预算的机型不足，已把同预算档的机型一并列出。");
+    }
+    if (rec.meta.overBudgetUsed) {
+      notes.push("预算内不足，下面「超预算」栏列出的是最近的更高档位。");
+    }
+    if (rec.meta.hiddenBrands.length) {
+      notes.push(`已排除：${rec.meta.hiddenBrands.join("、")}（根据特殊需求）。`);
+    }
+
+    if (rec.meta.empty) {
+      result.innerHTML = `
+        <div class="eyebrow">推荐结果</div>
+        <h2>${esc(label)}</h2>
+        <p class="verdict">${esc(verdict)}</p>
+        <div class="result-block">
+          <h3>你的选择</h3>
+          <div class="result-lines">${summaryTags}</div>
+        </div>
+        <div class="empty-state">目前需求过高，建议降低需求或等待新品上市</div>
+        <div class="btn-row mt-3">
+          <button class="btn btn-ghost" type="button" id="copy-result">复制结论</button>
+        </div>
+      `;
+      result.classList.remove("hidden");
+      bindCopy(data, rec);
+      return;
+    }
+
+    const mainTitle = rich ? "折叠屏与超旗舰" : data.budget === "unknown" ? "按需求推荐" : "预算内推荐";
+    const mainHtml = renderBrandSection(rec.main, mainTitle, false);
+    const overHtml = renderBrandSection(rec.overBudget, "超预算", true);
 
     result.innerHTML = `
-      <div class="eyebrow">需求画像</div>
-      <h2>${esc(PERF_LABEL[data.perf])}，${esc(CAMERA_LABEL[data.camera])}</h2>
-      <p class="verdict">${esc(primary.desc)}</p>
-
+      <div class="eyebrow">推荐结果</div>
+      <h2>${esc(label)}</h2>
+      <p class="verdict">${esc(verdict)}</p>
       <div class="result-block">
-        <h3>最低满足的需求分组</h3>
-        <div>${needPills}</div>
+        <h3>你的选择</h3>
+        <div class="result-lines">${summaryTags}</div>
       </div>
-
-      <div class="result-block">
-        <h3>预算档位</h3>
-        ${
-          tier
-            ? `<p class="mb-0"><strong>${esc(tier.name)}</strong> · ${esc(tier.range)}（${esc(tier.advice)}）<br><span class="small muted">${esc(tier.desc)}</span></p>`
-            : `<p class="mb-0 small muted">尚未确定预算。建议先按产品线范围询价，再倒推能接受的上限。</p>`
-        }
-      </div>
-
-      <div class="result-block">
-        <h3>值得重点看的产品线${linesHeading}</h3>
-        <p class="result-legend small muted"><span>图例</span><span class="tag">品牌 系列 · 示例机型</span> 示例机型仅用于说明该产品线，不是推荐的唯一型号。</p>
-        <div class="result-cols">
-          <div class="result-col">
-            <h4>新款机型</h4>
-            <div class="result-lines">${lineTags}</div>
-          </div>
-          <div class="result-col">
-            <h4>老款 / 低配参考</h4>
-            <div class="result-lines">${altTags}</div>
-          </div>
-        </div>
-        ${matched.exact || matched.overBudget || !matched.lines.length ? "" : '<p class="small muted mt-1">完全匹配的产品线较少，这里同时列出了邻近价位的选项。</p>'}
-        <p class="small muted mt-1 mb-0">「老款 / 低配参考」列出性能高于你需求、但影像仍然达标的产品线；可以到这些系列里找上一代或减配型号，通常更划算。</p>
-      </div>
-
-      ${
-        data.special.length
-          ? `<div class="result-block"><h3>特殊需求</h3><div class="result-lines">${data.special
-              .map((s) => `<span class="tag">${esc(SPECIAL_LABELS[s] || s)}</span>`)
-              .join("")}</div><p class="small muted mt-1 mb-0">对应的要求已在上方 1.3 展开。</p></div>`
-          : ""
-      }
-
       ${
         notes.length
-          ? `<div class="result-block"><h3>注意事项</h3><ul class="small" style="margin-bottom:0">${notes.map((n) => `<li>${n}</li>`).join("")}</ul></div>`
+          ? `<div class="result-block"><h3>说明</h3><ul class="note-list small">${notes
+              .map((n) => `<li>${esc(n)}</li>`)
+              .join("")}</ul></div>`
           : ""
       }
-
+      ${mainHtml}
+      ${overHtml}
       <div class="btn-row mt-3">
-        <a class="btn" href="lines.html?need=${linkNeeds.join(",")}&tier=${linkTiers.join(",")}">在产品线地图中查看 →</a>
         <button class="btn btn-ghost" type="button" id="copy-result">复制结论</button>
       </div>
     `;
     result.classList.remove("hidden");
-
-    const copyBtn = document.getElementById("copy-result");
-    if (copyBtn) {
-      copyBtn.addEventListener("click", async function () {
-        const text = [
-          "手机需求画像",
-          `需求：${PERF_LABEL[data.perf]}，${CAMERA_LABEL[data.camera]}`,
-          tier
-            ? `预算：${tier.name}（${tier.range}）${matched.overBudget ? "（不足）" : ""}`
-            : "预算：未确定",
-          featured.length
-            ? `新款机型：${featured.map((l) => l.brand + " " + l.name).join("、")}`
-            : "",
-          alternatives.length
-            ? `老款/低配参考：${alternatives
-                .map((l) => l.brand + " " + l.name + "（" + l.example + "）")
-                .join("、")}`
-            : "",
-          data.special.length
-            ? "特殊需求：" + data.special.map((s) => SPECIAL_LABELS[s] || s).join("、")
-            : "",
-          notes.length
-            ? "注意：" +
-              notes
-                .map((n) => n.replace(/<[^>]+>/g, "").replace(/。\s*$/, ""))
-                .join("；")
-            : "",
-        ]
-          .filter(Boolean)
-          .join("\n");
-        try {
-          await navigator.clipboard.writeText(text);
-          copyBtn.textContent = "已复制";
-          setTimeout(() => (copyBtn.textContent = "复制结论"), 1600);
-        } catch (e) {
-          copyBtn.textContent = "复制失败";
-        }
-      });
-    }
+    bindCopy(data, rec);
   }
 
   function restore() {
     const saved = store.get(KEY, null);
-    if (!saved) return;
+    if (!saved) return null;
+    if (saved.budget) {
+      const el = form.querySelector(`input[name="budget"][value="${saved.budget}"]`);
+      if (el) el.checked = true;
+    }
     if (saved.perf) {
       const el = form.querySelector(`input[name="perf"][value="${saved.perf}"]`);
       if (el) el.checked = true;
@@ -613,27 +487,71 @@
       const el = form.querySelector(`input[name="camera"][value="${saved.camera}"]`);
       if (el) el.checked = true;
     }
-    if (saved.budget) {
-      const el = form.querySelector(`input[name="budget"][value="${saved.budget}"]`);
-      if (el) el.checked = true;
-    }
     (saved.special || []).forEach((v) => {
       const el = form.querySelector(`input[name="special"][value="${v}"]`);
       if (el) el.checked = true;
     });
     syncDetails();
-    if (saved.perf && saved.camera) render(saved);
+    return saved;
+  }
+
+  function applyPreset() {
+    const presetNeed = param("need");
+    const presetTier = param("tier");
+    let applied = false;
+
+    if (presetTier) {
+      const firstTier = presetTier.split(",")[0];
+      if (firstTier === "unknown" || tierById[firstTier]) {
+        const el = form.querySelector(`input[name="budget"][value="${firstTier}"]`);
+        if (el) {
+          el.checked = true;
+          applied = true;
+        }
+      }
+    }
+
+    if (presetNeed) {
+      const first = presetNeed.split(",")[0];
+      const preset = window.Recommend.NEED_PRESET[first];
+      if (preset) {
+        if (preset.need === "rich") {
+          const el = form.querySelector('input[name="budget"][value="ultra"]');
+          if (el) el.checked = true;
+        }
+        if (preset.perf) {
+          const el = form.querySelector(`input[name="perf"][value="${preset.perf}"]`);
+          if (el) el.checked = true;
+        }
+        if (preset.camera) {
+          const el = form.querySelector(`input[name="camera"][value="${preset.camera}"]`);
+          if (el) el.checked = true;
+        }
+        applied = true;
+      }
+    }
+
+    return applied;
   }
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     const data = readForm();
-    if (!data.perf || !data.camera) {
+
+    if (!data.budget) {
+      hint.textContent = "请先选择预算。";
+      const el = form.querySelector('input[name="budget"]');
+      if (el) el.focus();
+      return;
+    }
+
+    if (!isRichBudget(data) && (!data.perf || !data.camera)) {
       hint.textContent = "请先选择性能与影像需求。";
       const missing = form.querySelector(`input[name="${!data.perf ? "perf" : "camera"}"]`);
       if (missing) missing.focus();
       return;
     }
+
     hint.textContent = "";
     store.set(KEY, data);
     render(data);
@@ -643,6 +561,7 @@
   document.getElementById("reset-btn").addEventListener("click", function () {
     form.reset();
     syncDetails();
+    updateBudgetMode();
     store.remove(KEY);
     result.classList.add("hidden");
     hint.textContent = "已清空。";
@@ -652,21 +571,20 @@
     cb.addEventListener("change", syncDetails);
   });
 
-  // 从产品线页跳回时，若带有 need 参数则预选
-  const presetNeed = param("need");
-  if (presetNeed) {
-    const map = { none: "none", perf: "some", camera: "some", highperf: "high", flagship: "high", cameraflag: "high" };
-    const camMap = { none: "none", perf: "none", camera: "basic", highperf: "none", flagship: "basic", cameraflag: "high" };
-    const first = presetNeed.split(",")[0];
-    if (map[first]) {
-      const p = form.querySelector(`input[name="perf"][value="${map[first]}"]`);
-      if (p) p.checked = true;
-      const c = form.querySelector(`input[name="camera"][value="${camMap[first]}"]`);
-      if (c) c.checked = true;
-    }
-  }
+  form.querySelectorAll('input[name="budget"]').forEach((radio) => {
+    radio.addEventListener("change", updateBudgetMode);
+  });
 
-  restore();
+  const saved = restore();
+  const preset = applyPreset();
+  updateBudgetMode();
+  syncDetails();
+
+  const initial = readForm();
+  const complete = initial.budget && (isRichBudget(initial) || (initial.perf && initial.camera));
+  if ((preset || saved) && complete) {
+    render(initial);
+  }
 })();
 </script>
 </body>

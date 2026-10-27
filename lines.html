@@ -6,9 +6,9 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>产品线地图 · 从零开始的手机选购指南</title>
-<meta name="description" content="按需求分组或按价位分档浏览手机产品线，支持品牌与关键词筛选。">
-<link rel="stylesheet" href="assets/style.css?v=20261020">
+<title>机型地图 · 从零开始的手机选购指南</title>
+<meta name="description" content="按品牌、系列、定位、性能、影像筛选具体手机机型。">
+<link rel="stylesheet" href="assets/style.css?v=20261027c">
 </head>
 <body data-page="lines">
 <header id="site-header"></header>
@@ -17,8 +17,12 @@
   <div class="wrap">
     <div class="page-head">
       <div class="eyebrow">第二步 / 4</div>
-      <h1>锁定型号</h1>
-      <p class="lede">先根据需求确定可以考虑的产品线，再在产品线里挑具体型号。下面的分类是粗粒度的，筛选时不要严格按表执行。</p>
+      <h1>锁定机型</h1>
+      <p class="lede">按品牌、系列、定位、性能、影像筛选具体机型。定位、性能、影像是按系列规则推导的，个别机型可能有偏差。</p>
+    </div>
+
+    <div class="note">
+      <strong>数据可能滞后：</strong>机型名录同步自上游，可能更新不及时或不准确；定位、性能、影像为规则推导，也可能存在偏差。购买前请以厂商官网和实际在售信息为准。
     </div>
 
     <div class="brand-bar">
@@ -36,22 +40,25 @@
 
     <div class="filter-bar">
       <div class="filter-row">
-        <span class="filter-label">需求</span>
-        <div id="need-chips" class="filter-row"></div>
-      </div>
-      <div class="filter-row">
-        <span class="filter-label">价位</span>
+        <span class="filter-label">定位</span>
         <div id="tier-chips" class="filter-row"></div>
       </div>
       <div class="filter-row">
+        <span class="filter-label">性能</span>
+        <div id="perf-chips" class="filter-row"></div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">影像</span>
+        <div id="camera-chips" class="filter-row"></div>
+      </div>
+      <div class="filter-row">
         <span class="filter-label">品牌</span>
-        <select id="brand-select" aria-label="按品牌筛选">
-          <option value="">全部</option>
-        </select>
-        <input type="search" id="search" placeholder="搜索系列 / 示例机型" aria-label="搜索">
+        <select id="brand-select" aria-label="按品牌筛选"></select>
+        <select id="series-select" aria-label="按系列筛选"></select>
+        <input type="search" id="search" placeholder="搜索机型 / 系列 / 别名" aria-label="搜索">
         <select id="view-select" aria-label="视图">
-          <option value="need">按需求分组</option>
-          <option value="tier">按价位分档</option>
+          <option value="series">按系列分组</option>
+          <option value="tier">按定位分组</option>
         </select>
         <button class="btn btn-ghost btn-sm" type="button" id="clear-filters">清除筛选</button>
       </div>
@@ -61,7 +68,7 @@
     <div id="groups"></div>
 
     <div class="note">
-      <strong>别只看表：</strong>这些分类都是比较粗粒度的，部分机型可能处于错误的分类。同时应当关注能力超出你需求的产品线，因为那里可能存在适合你的减配款或老款。“买新不买旧”并不总是成立。
+      <strong>数据说明：</strong>机型名与系列来自上游机型名录；定位、性能、影像按系列规则推导。部分系列的数字命名不连续，较早的机型可能被忽略。买新不买旧并不总是成立，建议结合具体型号与价格判断。
     </div>
 
     <div class="pager">
@@ -73,128 +80,236 @@
 
 <footer id="site-footer"></footer>
 
-<script src="assets/data.js?v=20261020"></script>
-<script src="assets/app.js?v=20261020"></script>
+<script src="assets/data.js?v=20261027"></script>
+<script src="assets/app.js?v=20261027c"></script>
+<script src="data/models.js?v=20261027"></script>
+<script src="data/model-status.js?v=20261027b"></script>
+<script src="assets/recommend.js?v=20261027"></script>
 <script>
 (function () {
-  const { param, esc } = window.App;
-  const { NEEDS, TIERS, LINES, BRANDS } = window.GUIDE;
+  "use strict";
 
-  const needById = Object.fromEntries(NEEDS.map((n) => [n.id, n]));
+  const { param, esc, debounce } = window.App;
+  const { TIERS } = window.GUIDE;
+  const MODEL_STATUS = window.MODEL_STATUS;
+
+  const LEVELS = ["low", "medium", "high"];
+  const LEVEL_LABEL = { low: "低", medium: "中", high: "高" };
+  const LEGACY_PERF = { none: "low", some: "medium", high: "high" };
+  const LEGACY_CAMERA = { none: "low", basic: "medium", high: "high" };
   const tierById = Object.fromEntries(TIERS.map((t) => [t.id, t]));
 
+  const MODELS = MODEL_STATUS.series.flatMap((s) =>
+    s.models.map((m) => ({
+      brand: s.brand,
+      series: s.series,
+      name: m.name,
+      nick_name: m.nick_name || [],
+      tier: m.tier,
+      performance: m.performance,
+      camera: m.camera,
+    })),
+  );
+
+  const BRANDS = [...new Set(MODELS.map((m) => m.brand))];
+  const SERIES = MODEL_STATUS.series.map((s) => ({ brand: s.brand, series: s.series }));
+
   const state = {
-    needs: new Set(),
     tiers: new Set(),
+    perfs: new Set(),
+    cameras: new Set(),
     brand: "",
+    series: "",
     q: "",
-    view: "need",
+    view: "series",
   };
 
-  const needChips = document.getElementById("need-chips");
   const tierChips = document.getElementById("tier-chips");
+  const perfChips = document.getElementById("perf-chips");
+  const cameraChips = document.getElementById("camera-chips");
   const brandSelect = document.getElementById("brand-select");
+  const seriesSelect = document.getElementById("series-select");
   const searchInput = document.getElementById("search");
   const viewSelect = document.getElementById("view-select");
   const groups = document.getElementById("groups");
   const count = document.getElementById("count");
 
   // 初始化控件
-  needChips.innerHTML = NEEDS.map(
-    (n) => `<button class="chip" type="button" data-need="${n.id}" aria-pressed="false">${esc(n.short)}</button>`
-  ).join("");
   tierChips.innerHTML = TIERS.map(
-    (t) => `<button class="chip" type="button" data-tier="${t.id}" aria-pressed="false">${esc(t.name)}</button>`
+    (t) => `<button class="chip" type="button" data-tier="${t.id}" aria-pressed="false">${esc(t.name)}</button>`,
   ).join("");
+  perfChips.innerHTML = LEVELS.map(
+    (l) => `<button class="chip" type="button" data-perf="${l}" aria-pressed="false">${esc(LEVEL_LABEL[l])}</button>`,
+  ).join("");
+  cameraChips.innerHTML = LEVELS.map(
+    (l) => `<button class="chip" type="button" data-camera="${l}" aria-pressed="false">${esc(LEVEL_LABEL[l])}</button>`,
+  ).join("");
+
   brandSelect.innerHTML =
-    '<option value="">全部</option>' +
+    '<option value="">全部品牌</option>' +
     BRANDS.map((b) => `<option value="${esc(b)}">${esc(b)}</option>`).join("");
 
-  // URL 预选（从需求诊断跳转而来）
-  const urlNeeds = (param("need") || "").split(",").filter(Boolean);
-  const urlTiers = (param("tier") || "").split(",").filter(Boolean);
-  urlNeeds.forEach((n) => {
-    if (needById[n]) state.needs.add(n);
+  const byBrand = new Map();
+  SERIES.forEach((s) => {
+    if (!byBrand.has(s.brand)) byBrand.set(s.brand, []);
+    byBrand.get(s.brand).push(s.series);
   });
+  seriesSelect.innerHTML =
+    '<option value="">全部系列</option>' +
+    Array.from(byBrand)
+      .map(
+        ([brand, list]) =>
+          `<optgroup label="${esc(brand)}">${list
+            .map((s) => `<option value="${esc(brand)}|${esc(s)}">${esc(s)}</option>`)
+            .join("")}</optgroup>`,
+      )
+      .join("");
+
+  // URL 预选：新参数 brand / series / tier / perf / camera；兼容旧 need / tier
+  const urlBrand = param("brand");
+  if (urlBrand && BRANDS.includes(urlBrand)) state.brand = urlBrand;
+
+  const urlSeries = param("series");
+  if (urlSeries) {
+    const matches = SERIES.filter((s) => s.series === urlSeries);
+    if (matches.length) {
+      const chosen =
+        state.brand && matches.some((s) => s.brand === state.brand)
+          ? matches.find((s) => s.brand === state.brand)
+          : matches[0];
+      state.brand = chosen.brand;
+      state.series = chosen.series;
+    }
+  }
+
+  const urlTiers = (param("tier") || "").split(",").filter(Boolean);
   urlTiers.forEach((t) => {
     if (tierById[t]) state.tiers.add(t);
   });
 
+  const urlPerfs = (param("perf") || "").split(",").filter(Boolean);
+  urlPerfs.forEach((p) => {
+    if (LEVELS.includes(p)) state.perfs.add(p);
+  });
+
+  const urlCameras = (param("camera") || "").split(",").filter(Boolean);
+  urlCameras.forEach((c) => {
+    if (LEVELS.includes(c)) state.cameras.add(c);
+  });
+
+  const urlView = param("view");
+  if (urlView === "series" || urlView === "tier") state.view = urlView;
+  state.q = param("q") || "";
+
+  // 旧链接带 need 而没有 perf/camera 时，按旧需求映射
+  if (!urlPerfs.length && !urlCameras.length) {
+    const urlNeed = param("need");
+    if (urlNeed && window.Recommend) {
+      urlNeed.split(",").filter(Boolean).forEach((id) => {
+        const preset = window.Recommend.NEED_PRESET[id];
+        if (!preset) return;
+        if (preset.need === "rich") {
+          state.tiers.add("ultra");
+          return;
+        }
+        const p = LEGACY_PERF[preset.perf];
+        const c = LEGACY_CAMERA[preset.camera];
+        if (p) state.perfs.add(p);
+        if (c) state.cameras.add(c);
+      });
+    }
+  }
+
   function syncChips() {
-    needChips.querySelectorAll("[data-need]").forEach((b) => {
-      b.setAttribute("aria-pressed", state.needs.has(b.dataset.need) ? "true" : "false");
-    });
     tierChips.querySelectorAll("[data-tier]").forEach((b) => {
       b.setAttribute("aria-pressed", state.tiers.has(b.dataset.tier) ? "true" : "false");
     });
+    perfChips.querySelectorAll("[data-perf]").forEach((b) => {
+      b.setAttribute("aria-pressed", state.perfs.has(b.dataset.perf) ? "true" : "false");
+    });
+    cameraChips.querySelectorAll("[data-camera]").forEach((b) => {
+      b.setAttribute("aria-pressed", state.cameras.has(b.dataset.camera) ? "true" : "false");
+    });
     brandSelect.value = state.brand;
+    seriesSelect.value = state.brand && state.series ? `${state.brand}|${state.series}` : "";
     searchInput.value = state.q;
     viewSelect.value = state.view;
   }
 
   function filtered() {
     const q = state.q.trim().toLowerCase();
-    return LINES.filter((l) => {
-      if (state.needs.size && !l.needs.some((n) => state.needs.has(n))) return false;
-      if (state.tiers.size && !l.tiers.some((t) => state.tiers.has(t))) return false;
-      if (state.brand && l.brand !== state.brand) return false;
+    return MODELS.filter((m) => {
+      if (state.tiers.size && !state.tiers.has(m.tier)) return false;
+      if (state.perfs.size && !state.perfs.has(m.performance)) return false;
+      if (state.cameras.size && !state.cameras.has(m.camera)) return false;
+      if (state.brand && m.brand !== state.brand) return false;
+      if (state.series && m.series !== state.series) return false;
       if (q) {
-        const hay = [l.brand, l.name, l.example, l.limit || ""].join(" ").toLowerCase();
+        const hay = [m.brand, m.series, m.name, ...m.nick_name].join(" ").toLowerCase();
         if (!hay.includes(q)) return false;
       }
       return true;
     });
   }
 
-  function card(l) {
+  function card(m, showSeries) {
+    const parts = [];
+    if (showSeries) parts.push(m.series);
+    if (m.nick_name.length) parts.push(`别名：${m.nick_name.map((n) => esc(n)).join(" / ")}`);
+    const sub = parts.join(" · ");
+
     return `
       <article class="card line-card">
         <div class="line-head">
-          <span class="brand">${esc(l.brand)}</span>
-          <span class="tag">${esc(tierById[l.tiers[0]] ? tierById[l.tiers[0]].name : "")}</span>
+          <span class="brand">${esc(m.brand)}</span>
+          <span class="tag">${esc(tierById[m.tier] ? tierById[m.tier].name : m.tier)}</span>
         </div>
-        <h3>${esc(l.name)}</h3>
-        <p class="example">如：${esc(l.example)}</p>
-        ${l.limit ? `<p class="limit">限定：${esc(l.limit)}</p>` : ""}
+        <h3>${esc(m.name)}</h3>
+        <p class="example">${sub || "&nbsp;"}</p>
         <div class="tags">
-          ${l.needs
-            .map((n) => `<span class="tag tag-accent">${esc(needById[n] ? needById[n].short : n)}</span>`)
-            .join("")}
+          ${m.performance ? `<span class="tag tag-accent">性能 ${esc(LEVEL_LABEL[m.performance])}</span>` : ""}
+          ${m.camera ? `<span class="tag">影像 ${esc(LEVEL_LABEL[m.camera])}</span>` : ""}
         </div>
       </article>`;
   }
 
   function render() {
     const rows = filtered();
-    count.textContent = `共 ${rows.length} 条产品线`;
+    count.textContent = `共 ${rows.length} 款机型`;
     syncURL();
 
     if (!rows.length) {
-      groups.innerHTML = `<div class="card center" style="padding:3rem 1rem"><p class="mb-0 muted">没有符合当前筛选条件的产品线。</p></div>`;
+      groups.innerHTML = `<div class="card center" style="padding:3rem 1rem"><p class="mb-0 muted">没有符合当前筛选条件的机型。</p></div>`;
       return;
     }
 
     let html = "";
-    if (state.view === "need") {
-      NEEDS.forEach((n) => {
-        const subset = rows.filter((l) => l.needs.includes(n.id));
+    if (state.view === "series") {
+      MODEL_STATUS.series.forEach((s) => {
+        const subset = rows.filter((m) => m.brand === s.brand && m.series === s.series);
         if (!subset.length) return;
         html += `
           <section class="group-block">
-            <div class="group-title"><h2>${esc(n.title)}</h2><span class="tag">${subset.length}</span></div>
-            <p class="group-desc">${esc(n.desc)}</p>
-            <div class="line-grid">${subset.map(card).join("")}</div>
+            <div class="group-title">
+              <h2>${esc(s.brand)} · ${esc(s.series)}</h2>
+              <span class="tag">${subset.length} 款</span>
+            </div>
+            <div class="line-grid">${subset.map((m) => card(m, false)).join("")}</div>
           </section>`;
       });
     } else {
       TIERS.forEach((t) => {
-        const subset = rows.filter((l) => l.tiers.includes(t.id));
+        const subset = rows.filter((m) => m.tier === t.id);
         if (!subset.length) return;
         html += `
           <section class="group-block">
-            <div class="group-title"><h2>${esc(t.name)}</h2><span class="tag">${esc(t.range)}</span><span class="tag">${esc(t.advice)}</span></div>
+            <div class="group-title">
+              <h2>${esc(t.name)}</h2>
+              <span class="tag">${esc(t.range)}</span>
+              <span class="tag">${esc(t.advice)}</span>
+            </div>
             <p class="group-desc">${esc(t.desc)}</p>
-            <div class="line-grid">${subset.map(card).join("")}</div>
+            <div class="line-grid">${subset.map((m) => card(m, true)).join("")}</div>
           </section>`;
       });
     }
@@ -203,8 +318,13 @@
 
   function syncURL() {
     const params = new URLSearchParams();
-    if (state.needs.size) params.set("need", Array.from(state.needs).join(","));
-    if (state.tiers.size === 1) params.set("tier", Array.from(state.tiers)[0]);
+    if (state.brand) params.set("brand", state.brand);
+    if (state.series) params.set("series", state.series);
+    if (state.tiers.size) params.set("tier", Array.from(state.tiers).join(","));
+    if (state.perfs.size) params.set("perf", Array.from(state.perfs).join(","));
+    if (state.cameras.size) params.set("camera", Array.from(state.cameras).join(","));
+    if (state.q.trim()) params.set("q", state.q.trim());
+    if (state.view !== "series") params.set("view", state.view);
     const qs = params.toString();
     try {
       history.replaceState(null, "", qs ? "?" + qs : location.pathname);
@@ -213,37 +333,50 @@
     }
   }
 
-  needChips.addEventListener("click", function (e) {
-    const btn = e.target.closest("[data-need]");
-    if (!btn) return;
-    const id = btn.dataset.need;
-    if (state.needs.has(id)) state.needs.delete(id);
-    else state.needs.add(id);
-    syncChips();
-    render();
-  });
+  function bindChipGroup(container, attr, set) {
+    container.addEventListener("click", function (e) {
+      const btn = e.target.closest(`[${attr}]`);
+      if (!btn) return;
+      const id = btn.getAttribute(attr);
+      if (set.has(id)) set.delete(id);
+      else set.add(id);
+      syncChips();
+      render();
+    });
+  }
 
-  tierChips.addEventListener("click", function (e) {
-    const btn = e.target.closest("[data-tier]");
-    if (!btn) return;
-    const id = btn.dataset.tier;
-    if (state.tiers.has(id)) state.tiers.delete(id);
-    else state.tiers.add(id);
-    syncChips();
-    render();
-  });
+  bindChipGroup(tierChips, "data-tier", state.tiers);
+  bindChipGroup(perfChips, "data-perf", state.perfs);
+  bindChipGroup(cameraChips, "data-camera", state.cameras);
 
   brandSelect.addEventListener("change", function () {
     state.brand = brandSelect.value;
+    if (state.series && !SERIES.some((s) => s.brand === state.brand && s.series === state.series)) {
+      state.series = "";
+    }
+    syncChips();
+    render();
+  });
+
+  seriesSelect.addEventListener("change", function () {
+    const v = seriesSelect.value;
+    if (!v) {
+      state.series = "";
+    } else {
+      const [brand, series] = v.split("|");
+      state.brand = brand;
+      state.series = series;
+    }
+    syncChips();
     render();
   });
 
   searchInput.addEventListener(
     "input",
-    window.App.debounce(function () {
+    debounce(function () {
       state.q = searchInput.value;
       render();
-    }, 180)
+    }, 180),
   );
 
   viewSelect.addEventListener("change", function () {
@@ -252,9 +385,11 @@
   });
 
   document.getElementById("clear-filters").addEventListener("click", function () {
-    state.needs.clear();
     state.tiers.clear();
+    state.perfs.clear();
+    state.cameras.clear();
     state.brand = "";
+    state.series = "";
     state.q = "";
     syncChips();
     render();

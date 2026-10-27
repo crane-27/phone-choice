@@ -1,0 +1,15 @@
+phone-choice
+============
+
+本仓库包含两类不同许可的材料：
+
+1. 源代码（HTML / CSS / JavaScript / 构建脚本等）
+   MIT License — 见 LICENSE.txt
+
+2. data/ 下基于 KHwang9883/MobileModels 生成的衍生数据
+   CC BY-NC-SA 4.0 — 见 data/LICENSE-MobileModels.md
+   上游：https://github.com/KHwang9883/MobileModels
+
+data/MobileModels/ 是上游仓库的本地 clone，已写入 .gitignore，
+不随本仓库分发。使用 data/ 下的衍生数据时，请遵守 CC BY-NC-SA 4.0：
+署名、非商业用途、相同方式共享。
