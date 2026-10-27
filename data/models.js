@@ -14,7 +14,6 @@ window.MOBILE_MODELS = {
   "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
   "upstreamCommit": "19e65a61db7f145492cee9074a1159ea9097fb33",
   "upstreamBranch": "master",
-  "generatedAt": "2026-10-27T08:08:08.307Z",
   "generator": "data/build-models.mjs",
   "stats": {
     "series": 27,

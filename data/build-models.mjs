@@ -3,6 +3,7 @@
  * build-models.mjs — 从 data/MobileModels 上游 Markdown 提取机型名录
  *
  * 用法：node data/build-models.mjs
+ * MOBILEMODELS_DIR 可覆盖上游目录，默认 data/MobileModels
  * 产物：data/models.js（window.MOBILE_MODELS，非 JSON，保持 file:// 可用）
  *
  * 范围：仅 data/提取规则.md 明确列出的文件与系列，不合并海外版本。
@@ -18,7 +19,8 @@ import { execFileSync } from "node:child_process";
 
 const HERE = import.meta.dirname;
 const ROOT = path.resolve(HERE, "..");
-const BRANDS_DIR = path.join(ROOT, "data", "MobileModels", "brands");
+const UPSTREAM_DIR = path.resolve(ROOT, process.env.MOBILEMODELS_DIR || "data/MobileModels");
+const BRANDS_DIR = path.join(UPSTREAM_DIR, "brands");
 const OUT_FILE = path.join(ROOT, "data", "models.js");
 
 /**
@@ -161,7 +163,7 @@ function findSkippedSeries(file, targets) {
 
 function getGitInfo(args) {
   try {
-    return execFileSync("git", ["-C", path.join(ROOT, "data", "MobileModels"), ...args], {
+    return execFileSync("git", ["-C", UPSTREAM_DIR, ...args], {
       encoding: "utf8",
     }).trim();
   } catch {
@@ -170,6 +172,12 @@ function getGitInfo(args) {
 }
 
 function main() {
+  if (!fs.existsSync(BRANDS_DIR)) {
+    throw new Error(
+      `找不到上游目录：${UPSTREAM_DIR}\n请先 git clone https://github.com/KHwang9883/MobileModels <目录>，或设置 MOBILEMODELS_DIR`,
+    );
+  }
+
   const files = [...new Set(TARGETS.map((t) => t.file))];
   const series = [];
 
@@ -197,7 +205,6 @@ function main() {
     licenseUrl: "https://creativecommons.org/licenses/by-nc-sa/4.0/",
     upstreamCommit: getGitInfo(["rev-parse", "HEAD"]),
     upstreamBranch: getGitInfo(["branch", "--show-current"]),
-    generatedAt: new Date().toISOString(),
     generator: "data/build-models.mjs",
     stats,
   };

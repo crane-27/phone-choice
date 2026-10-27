@@ -392,7 +392,6 @@ function main() {
   }
 
   const meta = {
-    generatedAt: new Date().toISOString(),
     sourceModels: "data/models.js",
     sourceRules: "data/rules.js",
     upstreamCommit: models.meta?.upstreamCommit ?? null,

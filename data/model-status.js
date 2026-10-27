@@ -8,7 +8,6 @@
  */
 window.MODEL_STATUS = {
   meta: {
-  "generatedAt": "2026-10-27T12:02:17.061Z",
   "sourceModels": "data/models.js",
   "sourceRules": "data/rules.js",
   "upstreamCommit": "19e65a61db7f145492cee9074a1159ea9097fb33",
