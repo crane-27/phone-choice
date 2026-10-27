@@ -2,7 +2,7 @@
  * 机型定位状态（衍生数据）—— 请勿手工编辑，重新生成请运行 node data/build-status.mjs
  *
  * 输入：data/models.js（机型名录）+ data/rules.js（提取规则）
- * 数据来源：KHwang9883/MobileModels @ 19e65a61db7f145492cee9074a1159ea9097fb33
+ * 数据来源：KHwang9883/MobileModels @ bd712cfc6cc4311787b5145c378bd17f97c4ea98
  * 许可：CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>
  * 本文件不是 MIT 代码。使用、分发或修改本文件时须遵守上述许可。
  */
@@ -10,7 +10,7 @@ window.MODEL_STATUS = {
   meta: {
   "sourceModels": "data/models.js",
   "sourceRules": "data/rules.js",
-  "upstreamCommit": "19e65a61db7f145492cee9074a1159ea9097fb33",
+  "upstreamCommit": "bd712cfc6cc4311787b5145c378bd17f97c4ea98",
   "license": "CC BY-NC-SA 4.0",
   "stats": {
     "series": 31,

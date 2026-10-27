@@ -1,7 +1,7 @@
 /*!
  * 机型名录（衍生数据）—— 请勿手工编辑，重新生成请运行 node data/build-models.mjs
  *
- * 来源：KHwang9883/MobileModels @ 19e65a61db7f145492cee9074a1159ea9097fb33
+ * 来源：KHwang9883/MobileModels @ bd712cfc6cc4311787b5145c378bd17f97c4ea98
  * 许可：CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>
  * 本文件不是 MIT 代码。使用、分发或修改本文件时须遵守上述许可：
  * 署名、非商业用途、相同方式共享。
@@ -12,7 +12,7 @@ window.MOBILE_MODELS = {
   "sourceUrl": "https://github.com/KHwang9883/MobileModels",
   "license": "CC BY-NC-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-  "upstreamCommit": "19e65a61db7f145492cee9074a1159ea9097fb33",
+  "upstreamCommit": "bd712cfc6cc4311787b5145c378bd17f97c4ea98",
   "upstreamBranch": "master",
   "generator": "data/build-models.mjs",
   "stats": {
