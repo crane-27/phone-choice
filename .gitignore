@@ -2,3 +2,5 @@
 data/MobileModels/
 
 # 注意：data/models.js 是生成物，需要提交，供页面直接加载
+# 构建产物
+_site/
