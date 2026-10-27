@@ -1,19 +1,28 @@
 # 数据许可与署名（data/ 下的衍生数据）
 
-本目录中的 `models.js` 及其它由上游数据生成的产物**不是 MIT 代码**，
-而是基于 **KHwang9883/MobileModels** 的衍生数据。
+本目录中的 `models.js`、`model-status.js` 及其它由上游数据生成的产物
+**不是 MIT 代码**，而是基于 **KHwang9883/MobileModels** 的衍生数据。
 
 ## 上游来源
 
 - 仓库：<https://github.com/KHwang9883/MobileModels>
-- 本次生成所用提交：`19e65a61db7f145492cee9074a1159ea9097fb33`（`master`）
+- 本次生成所用提交：以 `data/models.js` 的 `meta.upstreamCommit` 为准
+  （GitHub Actions 自动同步会更新该值，本文件不再固定某个 commit）
 - 上游许可：Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
   （CC BY-NC-SA 4.0）
 - 许可全文：<https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode>
 
 ## 本目录衍生数据的许可
 
-由上游数据生成的 `data/models.js` 同样以 **CC BY-NC-SA 4.0** 发布。
+由上游数据生成的 `data/models.js`、`data/model-status.js` 同样以
+**CC BY-NC-SA 4.0** 发布。
+
+## 自动同步与发布
+
+- `data/models.js`、`data/model-status.js` 由 GitHub Actions 定期从上游重新生成；
+- 每次发布的站点 artifact 都包含本文件、根目录 `NOTICE` 与 `LICENSE.txt`；
+- 上游 commit 以生成物 `meta.upstreamCommit` 为准，本文件不再固定某个 commit；
+- 若同步或校验失败，工作流不会部署，线上保留上一版数据。
 
 ## 署名（Attribution）
 

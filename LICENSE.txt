@@ -19,3 +19,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---------------------------------------------------------------------------
+Scope note (not part of the MIT license text above)
+
+The MIT license applies to the source code, HTML, CSS, JavaScript, build
+scripts and GitHub Actions workflows in this repository.
+
+Data files under data/ that are derived from KHwang9883/MobileModels are
+licensed under CC BY-NC-SA 4.0, not MIT. See NOTICE and
+data/LICENSE-MobileModels.md for attribution and terms. The upstream clone
+under data/MobileModels/ is not distributed with this repository and is not
+part of the GitHub Pages artifact.

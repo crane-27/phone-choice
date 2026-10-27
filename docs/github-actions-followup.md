@@ -1,8 +1,18 @@
 # GitHub Actions 部署与数据同步：后续任务
 
-> 状态：未实施  
-> 目标：由 GitHub Actions 定期拉取 MobileModels、重新生成站点数据并部署 GitHub Pages  
+> 状态：代码、脚本与 workflow 已实施（2026-10-27）；Pages Source 切换与首次
+> `workflow_dispatch` 待人工执行。
+> 目标：由 GitHub Actions 定期拉取 MobileModels、重新生成站点数据并部署 GitHub Pages
 > 适用仓库：`crane-27/phone-choice`，默认分支 `main`
+>
+> 实际实现与本文的差异：
+> - 删除 `generatedAt`，生成物完全确定；
+> - 缓存版本改为所有本地静态资源的内容哈希；
+> - 增加 `push` main 快速路径，避免切到 Actions 后普通页面修改不自动部署；
+> - 部署成功后再提交生成物，避免“提交成功但部署失败”导致下次早退；
+> - 不发布 `.nojekyll`（Actions Pages 不跑 Jekyll，且 artifact 默认排除 dotfiles）；
+> - `data/LICENSE-MobileModels.md` 不再固定上游 commit，改以 `models.js` 的
+>   `meta.upstreamCommit` 为准。
 
 ## 1. 当前状态
 

@@ -1,6 +1,10 @@
 # 手机型号数据自动同步方案（草案）
 
-> 状态：待评审，未实施
+> 状态：**历史方案（2026-10-27）**。当前实现以
+> [`github-actions-followup.md`](github-actions-followup.md) 和
+> `.github/workflows/sync-models.yml` 为准；本文中的 `assets/models/*.js`、
+> 全量 44 个文件、约 1.1 万条等描述已与当前实现不一致，不要再按本文实施。
+>
 > 适用仓库：`crane-27/phone-choice`（默认分支 `main`）
 > 数据源：`KHwang9883/MobileModels`（CC BY-NC-SA 4.0）
 > 目标：在**完全不在本地操作**的前提下，由 GitHub 云端定期同步上游型号数据并自动发布
