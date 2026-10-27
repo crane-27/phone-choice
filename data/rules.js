@@ -157,11 +157,19 @@ window.MODEL_RULES = {
           id: "main",
           rules: [
             {
+              patterns: ["HUAWEI nova [num] Pro", "HUAWEI nova [num] Ultra"],
+              window: 2,
+              tier: "upper",
+              noTierDecay: true,
+              perf: { mode: "fixed", level: "medium" },
+              camera: "medium",
+            },
+            {
               patterns: ["HUAWEI nova [num][?...]"],
               window: 2,
               tier: "mid",
               noTierDecay: true,
-              perf: { mode: "fixed", level: "medium" },
+              perf: { mode: "fixed", level: "low" },
               camera: "medium",
             },
           ],
@@ -358,11 +366,19 @@ window.MODEL_RULES = {
           id: "main",
           rules: [
             {
-              patterns: ["OPPO Reno[num][?...]"],
+              patterns: ["OPPO Reno[num] Pro[?...]"],
               window: 2,
               tier: "upper",
               noTierDecay: true,
               perf: { mode: "fixed", level: "medium" },
+              camera: "medium",
+            },
+            {
+              patterns: ["OPPO Reno[num][?...]"],
+              window: 2,
+              tier: "mid",
+              noTierDecay: true,
+              perf: { mode: "fixed", level: "low" },
               camera: "medium",
             },
           ],
@@ -522,11 +538,19 @@ window.MODEL_RULES = {
           id: "main",
           rules: [
             {
-              patterns: ["vivo S[num][?...]"],
+              patterns: ["vivo S[num] Pro[?...]"],
               window: 2,
               tier: "upper",
               noTierDecay: true,
               perf: { mode: "fixed", level: "medium" },
+              camera: "medium",
+            },
+            {
+              patterns: ["vivo S[num][?...]"],
+              window: 2,
+              tier: "mid",
+              noTierDecay: true,
+              perf: { mode: "fixed", level: "low" },
               camera: "medium",
             },
           ],
@@ -667,11 +691,19 @@ window.MODEL_RULES = {
           id: "main",
           rules: [
             {
-              patterns: ["荣耀 [num][?...]"],
+              patterns: ["荣耀 [num] Pro[?...]"],
               window: 2,
               tier: "upper",
               noTierDecay: true,
               perf: { mode: "fixed", level: "medium" },
+              camera: "medium",
+            },
+            {
+              patterns: ["荣耀 [num][?...]"],
+              window: 2,
+              tier: "mid",
+              noTierDecay: true,
+              perf: { mode: "fixed", level: "low" },
               camera: "medium",
             },
           ],

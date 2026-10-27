@@ -16,9 +16,11 @@
  *
  * 匹配原则：
  *   1. 性能、影像必须同时达到最低要求，绝不放宽
- *   2. 定位低于预算的优先；不足 TARGET 条时补同预算档
- *   3. 仍不足时取更高定位，放入独立的 overBudget 栏
+ *   2. 非 ultra 预算：按定位从高到低逐档选取，达到 10 台即停
+ *      单档超过 10 台时全部保留；不足 10 台时继续列出下一档全部机型
+ *   3. 预算内不足 TARGET 条时，取最近更高档位放入独立的 overBudget 栏
  *   4. I'm rich 独立处理：只取 tier=ultra，不看预算与性能/影像
+ *   5. 性能与影像均为低的机型，只在入门预算（entry）出现
  */
 (function (global) {
   "use strict";
@@ -43,6 +45,7 @@
   };
 
   var TARGET = 3;
+  var RESULT_TARGET = 10;
 
   function requireStatus() {
     if (!global.MODEL_STATUS || !Array.isArray(global.MODEL_STATUS.series)) {
@@ -78,11 +81,6 @@
     return Object.prototype.hasOwnProperty.call(TIER_RANK, v) ? TIER_RANK[v] : -1;
   }
 
-  function margin(m, req) {
-    return levelRank(m.performance) - levelRank(req.performance) +
-      levelRank(m.camera) - levelRank(req.camera);
-  }
-
   function contains(arr, v) {
     return arr.indexOf(v) !== -1;
   }
@@ -110,7 +108,12 @@
     return true;
   }
 
-  function decorate(model, budgetStatus, req) {
+  /** 性能与影像均为低：只在入门预算展示。 */
+  function lowEndOnly(model) {
+    return model.performance === "low" && model.camera === "low";
+  }
+
+  function decorate(model, budgetStatus) {
     return {
       brand: model.brand,
       series: model.series,
@@ -120,34 +123,50 @@
       performance: model.performance,
       camera: model.camera,
       budgetStatus: budgetStatus,
-      _margin: margin(model, req),
       _order: model._order,
     };
   }
 
-  /** 预算内：定位高者优先，其次超出要求更多者，最后按数据顺序。 */
-  function sortWithinBudget(a, b) {
-    if (a._margin !== b._margin) return b._margin - a._margin;
-    return a._order - b._order;
-  }
-
+  /** 预算内：定位高者优先，同档按数据顺序。 */
   function sortWithinBudgetByTier(a, b) {
     var t = tierRank(b.tier) - tierRank(a.tier);
     if (t !== 0) return t;
-    return sortWithinBudget(a, b);
+    return a._order - b._order;
   }
 
-  /** 预算外：离预算最近者优先，其次超出要求更多者，最后按数据顺序。 */
+  /** 预算外：离预算最近者优先，同档按数据顺序。 */
   function sortAboveBudget(a, b) {
     var t = tierRank(a.tier) - tierRank(b.tier);
     if (t !== 0) return t;
-    return sortWithinBudget(a, b);
+    return a._order - b._order;
+  }
+
+  /**
+   * 已按定位降序排好的列表，按整档累计：
+   * 单档超过目标台数时全部保留；不足时继续下一档，直到达到目标。
+   */
+  function pickTiersByTarget(sortedList) {
+    var groups = {};
+    sortedList.forEach(function (m) {
+      if (!groups[m.tier]) groups[m.tier] = [];
+      groups[m.tier].push(m);
+    });
+
+    var list = [];
+    var tiers = [];
+    for (var i = TIERS.length - 1; i >= 0; i--) {
+      var group = groups[TIERS[i]];
+      if (!group || !group.length) continue;
+      list = list.concat(group);
+      tiers.push(TIERS[i]);
+      if (list.length >= RESULT_TARGET) break;
+    }
+    return { list: list, tiers: tiers };
   }
 
   function stripInternal(list) {
     return list.map(function (m) {
       var copy = Object.assign({}, m);
-      delete copy._margin;
       delete copy._order;
       return copy;
     });
@@ -156,7 +175,9 @@
   function build(input) {
     var data = pickInput(input);
     var all = flatten().filter(function (m) {
-      return specialAllowed(m, data);
+      if (!specialAllowed(m, data)) return false;
+      if (data.budget !== "entry" && lowEndOnly(m)) return false;
+      return true;
     });
 
     // I'm rich：独立档位，不看预算、不看性能/影像
@@ -166,7 +187,7 @@
           return m.tier === "ultra";
         })
         .map(function (m) {
-          return decorate(m, "rich", { performance: "low", camera: "low" });
+          return decorate(m, "rich");
         });
       return {
         input: data,
@@ -175,7 +196,9 @@
         overBudget: [],
         meta: {
           target: TARGET,
+          resultTarget: RESULT_TARGET,
           total: rich.length,
+          expanded: false,
           rich: true,
           overBudgetUsed: false,
           atBudgetUsed: false,
@@ -197,13 +220,16 @@
       );
     });
 
-    // 预算未知：不做档位筛选
+    // 预算未知：不做档位筛选，同样按整档累计
     if (data.budget === "unknown") {
-      var mainUnknown = eligible
-        .map(function (m) {
-          return decorate(m, "unknown", requirements);
-        })
-        .sort(sortWithinBudgetByTier);
+      var pickedUnknown = pickTiersByTarget(
+        eligible
+          .map(function (m) {
+            return decorate(m, "unknown");
+          })
+          .sort(sortWithinBudgetByTier),
+      );
+      var mainUnknown = pickedUnknown.list;
 
       return {
         input: data,
@@ -212,7 +238,9 @@
         overBudget: [],
         meta: {
           target: TARGET,
+          resultTarget: RESULT_TARGET,
           total: mainUnknown.length,
+          expanded: pickedUnknown.tiers.length > 1,
           rich: false,
           overBudgetUsed: false,
           atBudgetUsed: false,
@@ -223,41 +251,33 @@
     }
 
     var budgetRank = tierRank(data.budget);
-    var below = [];
-    var at = [];
+    var inBudget = [];
     var above = [];
 
     eligible.forEach(function (m) {
       var rank = tierRank(m.tier);
-      if (rank < budgetRank) below.push(m);
-      else if (rank === budgetRank) at.push(m);
+      if (rank <= budgetRank) inBudget.push(m);
       else above.push(m);
     });
 
-    var belowDecorated = below
+    // 预算内按定位从高到低排序，优先选取更接近预算上限的机型。
+    var inBudgetDecorated = inBudget
       .map(function (m) {
-        return decorate(m, "below", requirements);
-      })
-      .sort(sortWithinBudgetByTier);
-
-    var atDecorated = at
-      .map(function (m) {
-        return decorate(m, "at", requirements);
+        return decorate(m, tierRank(m.tier) === budgetRank ? "at" : "below");
       })
       .sort(sortWithinBudgetByTier);
 
     var aboveDecorated = above
       .map(function (m) {
-        return decorate(m, "above", requirements);
+        return decorate(m, "above");
       })
       .sort(sortAboveBudget);
 
-    // 低于预算足够时，只列低于预算的；不足才把同预算档全部并入。
-    var main = belowDecorated.length >= TARGET
-      ? belowDecorated.slice()
-      : belowDecorated.concat(atDecorated);
+    var picked = pickTiersByTarget(inBudgetDecorated);
+    var main = picked.list;
+    var expanded = picked.tiers.length > 1;
 
-    // 仍不足时，取最近的更高档位，全部放入独立的超预算栏。
+    // 预算内不足时，取最近的更高档位，放入独立的超预算栏。
     var overBudget = [];
     if (main.length < TARGET && aboveDecorated.length) {
       var aboveRanks = [];
@@ -281,7 +301,9 @@
       overBudget: stripInternal(overBudget),
       meta: {
         target: TARGET,
+        resultTarget: RESULT_TARGET,
         total: main.length + overBudget.length,
+        expanded: expanded,
         rich: false,
         overBudgetUsed: overBudget.length > 0,
         atBudgetUsed: main.some(function (m) {
@@ -321,6 +343,7 @@
     build: build,
     groupBySeries: groupBySeries,
     TARGET: TARGET,
+    RESULT_TARGET: RESULT_TARGET,
     TIERS: TIERS.slice(),
     PERF_REQ: Object.assign({}, PERF_REQ),
     CAM_REQ: Object.assign({}, CAM_REQ),

@@ -79,13 +79,15 @@ check("I'm rich 只取 ultra，且不看预算", () => {
   assert.ok(r.main.some((m) => m.name === "HUAWEI Mate XT 2 非凡大师"));
 });
 
-check("较高性能 + 基本影像 + 旗舰预算：优先列出低于预算的机型", () => {
+check("旗舰预算：优先列出预算内更高定位的机型", () => {
   const r = build({ perf: "high", camera: "basic", budget: "flagship" });
   assert.ok(r.main.length >= 1);
   r.main.forEach((m) => {
     assert.ok(["entry", "mid", "upper", "flagship"].includes(m.tier));
     assert.ok(["below", "at"].includes(m.budgetStatus));
   });
+  const maxTier = Math.max(...r.main.map((m) => TIER[m.tier]));
+  assert.equal(TIER[r.main[0].tier], maxTier);
   assertMeets(r, "high", "medium");
   assertNoDup(r);
 });
@@ -114,9 +116,10 @@ check("较高性能 + 基本影像 + 入门预算：主栏为空，超预算栏�
   assertNoDup(r);
 });
 
-check("一定性能 + 无影像 + 中端预算：只按性能下限过滤", () => {
+check("一定性能 + 无影像 + 中端预算：预算内优先中端机型", () => {
   const r = build({ perf: "some", camera: "none", budget: "mid" });
   assert.ok(r.main.length >= 3);
+  assert.equal(r.main[0].tier, "mid");
   r.main.forEach((m) => {
     assert.ok(["entry", "mid"].includes(m.tier));
   });
@@ -124,11 +127,54 @@ check("一定性能 + 无影像 + 中端预算：只按性能下限过滤", () =
   assertNoDup(r);
 });
 
-check("入门预算：同预算档全部列出", () => {
+check("入门预算：同一档超过 10 台也全部列出", () => {
   const r = build({ perf: "none", camera: "none", budget: "entry" });
-  assert.ok(r.main.length >= 3);
+  assert.ok(r.main.length > R.RESULT_TARGET);
   assert.equal(r.overBudget.length, 0);
   r.main.forEach((m) => assert.equal(m.tier, "entry"));
+});
+
+check("中高端预算：upper 档超过 10 台时全部保留", () => {
+  const r = build({ perf: "some", camera: "basic", budget: "upper" });
+  assert.ok(r.main.length > R.RESULT_TARGET);
+  assert.equal(r.main[0].tier, "upper");
+  assert.ok(r.main.every((m) => m.tier === "upper"));
+  assert.equal(r.overBudget.length, 0);
+});
+
+check("中高端预算：upper 档不足 10 台时补入 mid 档", () => {
+  const r = build({ perf: "some", camera: "high", budget: "upper" });
+  assert.equal(r.main.length, R.RESULT_TARGET);
+  const tiers = new Set(r.main.map((m) => m.tier));
+  assert.deepEqual([...tiers].sort(), ["mid", "upper"]);
+});
+
+check("主列表按定位从高到低", () => {
+  for (const budget of ["entry", "mid", "upper", "flagship", "unknown"]) {
+    for (const perf of ["none", "some", "high"]) {
+      for (const camera of ["none", "basic", "high"]) {
+        const r = build({ perf, camera, budget });
+        for (let i = 1; i < r.main.length; i++) {
+          assert.ok(
+            TIER[r.main[i - 1].tier] >= TIER[r.main[i].tier],
+            `${budget}/${perf}/${camera} 主列表未按定位降序`,
+          );
+        }
+      }
+    }
+  }
+});
+
+check("性能与影像均为低：不会出现在非入门预算", () => {
+  for (const budget of ["mid", "upper", "flagship", "unknown"]) {
+    const r = build({ perf: "none", camera: "none", budget });
+    allItems(r).forEach((m) => {
+      assert.ok(
+        !(m.performance === "low" && m.camera === "low"),
+        `${budget} 预算不应出现低性能 + 低影像机型：${m.name}`,
+      );
+    });
+  }
 });
 
 check("groupBySeries 分组不丢机型", () => {
@@ -153,7 +199,7 @@ check("特殊需求 android：排除华为与苹果", () => {
   assert.deepEqual(r.meta.hiddenBrands.sort(), ["华为", "苹果"].sort());
 });
 
-check("预算未知：不做档位筛选，全部按定位从高到低", () => {
+check("预算未知：按定位逐档选取", () => {
   const r = build({ perf: "high", camera: "basic", budget: "unknown" });
   assert.equal(r.overBudget.length, 0);
   assert.ok(r.main.length >= 3);
@@ -164,14 +210,29 @@ check("预算未知：不做档位筛选，全部按定位从高到低", () => {
   assertMeets(r, "high", "medium");
 });
 
-check("一定性能 + 基本影像 + 中高端预算：低于预算优先", () => {
+check("一定性能 + 基本影像 + 中高端预算：优先预算内更高定位", () => {
   const r = build({ perf: "some", camera: "basic", budget: "upper" });
   assert.ok(r.main.length >= 3);
+  assert.equal(r.main[0].tier, "upper");
   r.main.forEach((m) => {
     assert.ok(["entry", "mid", "upper"].includes(m.tier));
   });
   assertMeets(r, "medium", "medium");
   assertNoDup(r);
+});
+
+check("中高端 / 性能中 / 影像中：同档机型完整列出", () => {
+  const r = build({ perf: "some", camera: "basic", budget: "upper" });
+  for (const name of [
+    "HUAWEI Mate 80 Pro",
+    "Xiaomi 17",
+    "OPPO Find X9",
+    "vivo X300",
+    "iQOO 15",
+    "荣耀 Magic8",
+  ]) {
+    assert.ok(r.main.some((m) => m.name === name), `${name} 未列出`);
+  }
 });
 
 check("较高性能 + 较高影像：当前数据为空，不强行放宽条件", () => {

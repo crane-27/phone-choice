@@ -641,14 +641,16 @@ table.compare td.best input { color: var(--accent); font-weight: 650; }
 .price-item input[data-price-field="price"] { width: 78px; }
 .price-item.best input { color: var(--accent); font-weight: 650; }
 
-.soc-q-head {
+.soc-q {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
 }
-.soc-q p { white-space: pre-line; }
+.soc-q .mono { min-width: 0; overflow-wrap: anywhere; }
+.soc-q .copy-soc { flex-shrink: 0; }
 .price-item .del-price {
   border: 0;
   background: transparent;

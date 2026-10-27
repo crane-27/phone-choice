@@ -8,7 +8,7 @@
 <meta http-equiv="Expires" content="0">
 <title>机型对比台 · 从零开始的手机选购指南</title>
 <meta name="description" content="机型为列、配置为行，逐项对比 SoC、影像、电池、屏幕与多存储规格价格，并生成问 AI 的对比模板。">
-<link rel="stylesheet" href="assets/style.css?v=20261027c">
+<link rel="stylesheet" href="assets/style.css?v=20261027d">
 </head>
 <body data-page="compare">
 <header id="site-header"></header>
@@ -93,7 +93,7 @@
         <h2>逐 SoC 判断定位</h2>
       </div>
       <p class="small muted">
-        从表格里的 SoC 自动生成，每颗一段、分别询问，避免 AI 把多颗芯片混在一起比较。定位只分档，不需要查制程和规格。
+        从表格里的 SoC 自动生成，每颗一个复制按钮、分别询问，避免 AI 把多颗芯片混在一起比较。定位只分档，不需要查制程和规格。复制提问后，请在 AI 工具中<strong>开启联网搜索</strong>。
       </p>
       <div class="btn-row" style="margin-bottom: 12px">
         <button class="btn btn-ghost btn-sm" type="button" id="refresh-soc">根据表格更新</button>
@@ -250,6 +250,7 @@
       "已保存 · " + new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" });
   }
 
+  /** 支持“×”“x”“X”“*”作为宽高分隔符。 */
   function parseDims(value) {
     const m = String(value || "").match(/(\d+(?:\.\d+)?)\s*[×xX*]\s*(\d+(?:\.\d+)?)/);
     return m ? [parseFloat(m[1]), parseFloat(m[2])] : null;
@@ -286,7 +287,7 @@
 
   /* ---------- 逐 SoC 判断定位 ---------- */
   function buildSocPrompt(soc) {
-    return `请先开启联网搜索，再判断手机 SoC「${soc}」的定位，不需要展开制程、CPU、GPU 等规格。
+    return `判断手机 SoC「${soc}」的定位，不需要展开制程、CPU、GPU 等规格。
 
 这里的“定位”指：这颗芯片在同期手机芯片中的性能与市场层级，用于粗略排序，而不是精确跑分。分为五档：
 5 当代旗舰：最新最强的那**一颗**SoC
@@ -318,11 +319,8 @@
     socBox.innerHTML = list
       .map(
         (s) => `<div class="card soc-q" data-soc="${esc(s)}">
-          <div class="soc-q-head">
-            <strong class="mono">${esc(s)}</strong>
-            <button class="btn btn-ghost btn-sm copy-soc" type="button">复制提问</button>
-          </div>
-          <p class="small muted mb-0">${esc(buildSocPrompt(s))}</p>
+          <strong class="mono">${esc(s)}</strong>
+          <button class="btn btn-ghost btn-sm copy-soc" type="button">复制提问</button>
         </div>`
       )
       .join("");
@@ -515,42 +513,15 @@
     rows = [
       {
         id: uid(),
-        name: "示例机型 A",
-        soc: "当代旗舰 SoC",
-        socTier: "5",
-        camera: "50MP 主摄 + 50MP 超广 + 50MP 3× 长焦",
+        name: "小米18 Pro",
+        soc: "骁龙 8 Elite Gen 6",
+        socTier: "",
+        camera: "前摄OV51D，主摄SCC80XS，超广角OV51D，潜望S5KHP5",
         battery: "7000",
-        res: "2712×1220",
-        size: "162.9×75.4",
-        note: "演示数据",
-        prices: [
-          { storage: "12+256", price: "4999" },
-          { storage: "16+512", price: "5499" },
-        ],
-      },
-      {
-        id: uid(),
-        name: "示例机型 B",
-        soc: "上代旗舰 SoC",
-        socTier: "4",
-        camera: "50MP 主摄 + 50MP 超广",
-        battery: "6500",
-        res: "2800×1260",
-        size: "160.0×74.0",
-        note: "演示数据",
-        prices: [{ storage: "12+512", price: "3299" }],
-      },
-      {
-        id: uid(),
-        name: "示例机型 C",
-        soc: "中端 SoC",
-        socTier: "2",
-        camera: "50MP 主摄",
-        battery: "6000",
-        res: "2400×1080",
-        size: "163.0×76.0",
-        note: "演示数据",
-        prices: [{ storage: "8+256", price: "1799" }],
+        res: "2436×1120",
+        size: "151.8×72",
+        note: "无",
+        prices: [{ storage: "12+256", price: "5999" }],
       },
     ];
     render();

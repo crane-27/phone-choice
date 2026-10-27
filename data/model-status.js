@@ -8,7 +8,7 @@
  */
 window.MODEL_STATUS = {
   meta: {
-  "generatedAt": "2026-10-27T09:18:17.237Z",
+  "generatedAt": "2026-10-27T12:02:17.061Z",
   "sourceModels": "data/models.js",
   "sourceRules": "data/rules.js",
   "upstreamCommit": "19e65a61db7f145492cee9074a1159ea9097fb33",
@@ -88,14 +88,14 @@ window.MODEL_STATUS = {
       brand: "华为",
       series: "nova系列",
       models: [
-        {"name":"HUAWEI nova 15","tier":"mid","performance":"medium","camera":"medium"},
-        {"name":"HUAWEI nova 15 Pro","tier":"mid","performance":"medium","camera":"medium"},
-        {"name":"HUAWEI nova 15 Ultra","tier":"mid","performance":"medium","camera":"medium"},
-        {"name":"HUAWEI nova 16","tier":"mid","performance":"medium","camera":"medium"},
-        {"name":"HUAWEI nova 16 Pro","tier":"mid","performance":"medium","camera":"medium"},
-        {"name":"HUAWEI nova 16 Ultra","tier":"mid","performance":"medium","camera":"medium"},
-        {"name":"HUAWEI nova 16z","tier":"mid","performance":"medium","camera":"medium"},
-        {"name":"HUAWEI nova 16 SE","tier":"mid","performance":"medium","camera":"medium"}
+        {"name":"HUAWEI nova 15","tier":"mid","performance":"low","camera":"medium"},
+        {"name":"HUAWEI nova 15 Pro","tier":"upper","performance":"medium","camera":"medium"},
+        {"name":"HUAWEI nova 15 Ultra","tier":"upper","performance":"medium","camera":"medium"},
+        {"name":"HUAWEI nova 16","tier":"mid","performance":"low","camera":"medium"},
+        {"name":"HUAWEI nova 16 Pro","tier":"upper","performance":"medium","camera":"medium"},
+        {"name":"HUAWEI nova 16 Ultra","tier":"upper","performance":"medium","camera":"medium"},
+        {"name":"HUAWEI nova 16z","tier":"mid","performance":"low","camera":"medium"},
+        {"name":"HUAWEI nova 16 SE","tier":"mid","performance":"low","camera":"medium"}
       ]
     },
     {
@@ -186,10 +186,10 @@ window.MODEL_STATUS = {
       brand: "OPPO",
       series: "Reno系列",
       models: [
-        {"name":"OPPO Reno15","tier":"upper","performance":"medium","camera":"medium"},
+        {"name":"OPPO Reno15","tier":"mid","performance":"low","camera":"medium"},
         {"name":"OPPO Reno15 Pro","tier":"upper","performance":"medium","camera":"medium"},
-        {"name":"OPPO Reno15c","tier":"upper","performance":"medium","camera":"medium"},
-        {"name":"OPPO Reno16","nick_name":["OPPO Reno16t"],"tier":"upper","performance":"medium","camera":"medium"},
+        {"name":"OPPO Reno15c","tier":"mid","performance":"low","camera":"medium"},
+        {"name":"OPPO Reno16","nick_name":["OPPO Reno16t"],"tier":"mid","performance":"low","camera":"medium"},
         {"name":"OPPO Reno16 Pro","tier":"upper","performance":"medium","camera":"medium"}
       ]
     },
@@ -271,11 +271,11 @@ window.MODEL_STATUS = {
       brand: "vivo",
       series: "S系列",
       models: [
-        {"name":"vivo S50","nick_name":["vivo S50t","vivo S50t 元气版"],"tier":"upper","performance":"medium","camera":"medium"},
+        {"name":"vivo S50","nick_name":["vivo S50t","vivo S50t 元气版"],"tier":"mid","performance":"low","camera":"medium"},
         {"name":"vivo S50 Pro mini","tier":"upper","performance":"medium","camera":"medium"},
-        {"name":"vivo S60","tier":"upper","performance":"medium","camera":"medium"},
-        {"name":"vivo S60 元气版","tier":"upper","performance":"medium","camera":"medium"},
-        {"name":"vivo S60t","tier":"upper","performance":"medium","camera":"medium"}
+        {"name":"vivo S60","tier":"mid","performance":"low","camera":"medium"},
+        {"name":"vivo S60 元气版","tier":"mid","performance":"low","camera":"medium"},
+        {"name":"vivo S60t","tier":"mid","performance":"low","camera":"medium"}
       ]
     },
     {
@@ -342,9 +342,9 @@ window.MODEL_STATUS = {
       brand: "荣耀",
       series: "数字系列",
       models: [
-        {"name":"荣耀 500","tier":"upper","performance":"medium","camera":"medium"},
+        {"name":"荣耀 500","tier":"mid","performance":"low","camera":"medium"},
         {"name":"荣耀 500 Pro","tier":"upper","performance":"medium","camera":"medium"},
-        {"name":"荣耀 600","tier":"upper","performance":"medium","camera":"medium"},
+        {"name":"荣耀 600","tier":"mid","performance":"low","camera":"medium"},
         {"name":"荣耀 600 Pro","tier":"upper","performance":"medium","camera":"medium"}
       ]
     },

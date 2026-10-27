@@ -190,8 +190,8 @@
 <script src="assets/data.js?v=20261027"></script>
 <script src="assets/app.js?v=20261027c"></script>
 <script src="data/models.js?v=20261027"></script>
-<script src="data/model-status.js?v=20261027b"></script>
-<script src="assets/recommend.js?v=20261027"></script>
+<script src="data/model-status.js?v=20261027c"></script>
+<script src="assets/recommend.js?v=20261027e"></script>
 <script>
 (function () {
   "use strict";
@@ -414,8 +414,8 @@
     if (rich) {
       notes.push("你没有限定预算，下面直接列出折叠屏（I'm rich 档）。如果不想要折叠屏，选择「不限定预算」并说明性能/影像需求。");
     }
-    if (!rich && rec.meta.atBudgetUsed) {
-      notes.push("低于预算的机型不足，已把同预算档的机型一并列出。");
+    if (!rich && data.budget !== "unknown" && rec.meta.expanded) {
+      notes.push("当前定位档符合要求的机型不足 10 台，已继续列出下一档的全部机型。");
     }
     if (rec.meta.overBudgetUsed) {
       notes.push("预算内不足，下面「超预算」栏列出的是最近的更高档位。");
