@@ -43,7 +43,8 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     env:
-      MOBILEMODELS_DIR: ${{ runner.temp }}/MobileModels
+      # 放在仓库工作区的兄弟目录，避免进入 checkout / artifact
+      MOBILEMODELS_DIR: ${{ github.workspace }}/../MobileModels
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
