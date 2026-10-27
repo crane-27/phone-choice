@@ -1,0 +1,175 @@
+name: Sync phone data and deploy Pages
+
+on:
+  schedule:
+    # 北京时间每周一 02:00（UTC 周日 18:00）
+    - cron: "0 18 * * 0"
+  workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: "数据无变化时也重新部署"
+        type: boolean
+        default: false
+  push:
+    branches:
+      - main
+    paths:
+      - "*.html"
+      - "assets/**"
+      - "data/models.js"
+      - "data/model-status.js"
+      - "data/rules.js"
+      - "data/LICENSE-MobileModels.md"
+      - "NOTICE"
+      - "LICENSE.txt"
+      - "CNAME"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-deploy:
+    name: build-deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    env:
+      MOBILEMODELS_DIR: ${{ runner.temp }}/MobileModels
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Clone MobileModels upstream
+        if: github.event_name != 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$MOBILEMODELS_DIR"
+
+          cloned=0
+          for attempt in 1 2 3; do
+            if git clone --depth 1 --single-branch https://github.com/KHwang9883/MobileModels.git "$MOBILEMODELS_DIR"; then
+              cloned=1
+              break
+            fi
+            echo "::warning::git clone failed (attempt $attempt/3), retrying in 5s"
+            rm -rf "$MOBILEMODELS_DIR"
+            sleep 5
+          done
+
+          if [ "$cloned" -ne 1 ]; then
+            echo "::error::Failed to clone MobileModels after 3 attempts"
+            exit 1
+          fi
+
+          test -f "$MOBILEMODELS_DIR/brands/apple_cn.md"
+          git -C "$MOBILEMODELS_DIR" rev-parse HEAD
+
+      - name: Build model data from upstream
+        if: github.event_name != 'push'
+        run: node data/build-models.mjs
+
+      - name: Build model status
+        run: node data/build-status.mjs
+
+      - name: Check data
+        run: node scripts/check-data.mjs
+
+      - name: Test recommendation
+        run: node data/test-recommend.mjs
+
+      - name: Stamp assets
+        run: node scripts/stamp-assets.mjs
+
+      - name: Detect data changes
+        id: diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- data/models.js data/model-status.js index.html needs.html lines.html compare.html soc.html final.html glossary.html; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No data changes detected."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Data changes detected."
+          fi
+
+      - name: Decide whether to deploy
+        id: decide
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          FORCE_DEPLOY: ${{ inputs.force_deploy }}
+          CHANGED: ${{ steps.diff.outputs.changed }}
+        run: |
+          set -euo pipefail
+          deploy=false
+          if [ "$EVENT_NAME" = "push" ]; then
+            deploy=true
+          elif [ "$CHANGED" = "true" ]; then
+            deploy=true
+          elif [ "$EVENT_NAME" = "workflow_dispatch" ] && [ "$FORCE_DEPLOY" = "true" ]; then
+            deploy=true
+          fi
+          echo "deploy=$deploy" >> "$GITHUB_OUTPUT"
+          echo "deploy=$deploy (event=$EVENT_NAME, changed=$CHANGED, force=$FORCE_DEPLOY)"
+
+      - name: Build site
+        if: steps.decide.outputs.deploy == 'true'
+        run: node scripts/build-site.mjs
+
+      - name: Configure Pages
+        if: steps.decide.outputs.deploy == 'true'
+        uses: actions/configure-pages@v6
+
+      - name: Upload Pages artifact
+        if: steps.decide.outputs.deploy == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        if: steps.decide.outputs.deploy == 'true'
+        uses: actions/deploy-pages@v5
+
+      # 提交放在部署之后：部署失败时仓库保持不变，下次运行会重试。
+      - name: Commit data changes
+        if: steps.diff.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -- data/models.js data/model-status.js index.html needs.html lines.html compare.html soc.html final.html glossary.html
+
+          if git diff --cached --quiet; then
+            echo "Nothing staged; skipping commit."
+            exit 0
+          fi
+
+          if [ -d "$MOBILEMODELS_DIR/.git" ]; then
+            short_sha="$(git -C "$MOBILEMODELS_DIR" rev-parse --short HEAD)"
+            git commit -m "chore(data): sync MobileModels $short_sha"
+          else
+            git commit -m "chore(data): regenerate model data"
+          fi
+
+          git push origin HEAD:main
