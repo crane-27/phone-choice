@@ -68,5 +68,7 @@ GitHub Pages，并把生成物与页面版本号提交回仓库。发布 artifac
 ## 注意
 
 - `models.js`、`model-status.js` 是**衍生数据，不是 MIT**，遵守 CC BY-NC-SA 4.0。
+- `assets/data.js` 虽位于 `assets/`，但含上游机型 / 系列名称与示例，同样按
+  CC BY-NC-SA 4.0 发布，不属于 MIT 代码。
 - 不要手工编辑生成物，改动会在下次生成时丢失；应改 `build-*.mjs` 或 `rules.js`。
 - 上游不含价格、上市时间、硬件规格；这些信息只能由业务规则侧提供。

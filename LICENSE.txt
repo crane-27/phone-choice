@@ -24,10 +24,13 @@ SOFTWARE.
 Scope note (not part of the MIT license text above)
 
 The MIT license applies to the source code, HTML, CSS, JavaScript, build
-scripts and GitHub Actions workflows in this repository.
+scripts and GitHub Actions workflows in this repository, except for:
 
-Data files under data/ that are derived from KHwang9883/MobileModels are
-licensed under CC BY-NC-SA 4.0, not MIT. See NOTICE and
-data/LICENSE-MobileModels.md for attribution and terms. The upstream clone
-under data/MobileModels/ is not distributed with this repository and is not
-part of the GitHub Pages artifact.
+- assets/data.js, which contains product-line, model-name and example data
+  derived from KHwang9883/MobileModels and is licensed CC BY-NC-SA 4.0;
+- data/models.js and data/model-status.js, which are generated derivative
+  data and are licensed CC BY-NC-SA 4.0.
+
+See NOTICE and data/LICENSE-MobileModels.md for attribution and terms. The
+upstream clone under data/MobileModels/ is not distributed with this
+repository and is not part of the GitHub Pages artifact.

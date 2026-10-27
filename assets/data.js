@@ -1,4 +1,11 @@
-/* 产品线与需求分组的共享数据。原文内容，仅做结构化。 */
+/*!
+ * 产品线与需求分组的共享数据。
+ *
+ * 许可说明：本文件包含基于 KHwang9883/MobileModels 的机型 / 系列名称与示例，
+ * 整体按 CC BY-NC-SA 4.0 发布，不是 MIT 代码。
+ * 上游：https://github.com/KHwang9883/MobileModels
+ * 完整署名与条款见根目录 NOTICE、LICENSE.txt 与 data/LICENSE-MobileModels.md。
+ */
 window.GUIDE = (function () {
   const NEEDS = [
     {

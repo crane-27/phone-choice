@@ -3,16 +3,20 @@ phone-choice
 
 本仓库包含两类不同许可的材料：
 
-1. 源代码（HTML / CSS / JavaScript / 构建脚本 / GitHub Actions workflow 等）
+1. 源代码（HTML / CSS / JavaScript / 构建脚本 / GitHub Actions workflow 等，
+   但 assets/data.js 与 data/ 下衍生数据除外）
    MIT License — 见 LICENSE.txt
 
-2. data/ 下基于 KHwang9883/MobileModels 生成的衍生数据
+2. 基于 KHwang9883/MobileModels 的衍生数据
+   - data/models.js
+   - data/model-status.js
+   - assets/data.js（产品线、机型示例与需求分组，含上游机型 / 系列名称）
    CC BY-NC-SA 4.0 — 见 data/LICENSE-MobileModels.md
    上游：https://github.com/KHwang9883/MobileModels
 
 data/MobileModels/ 是上游仓库的本地或 CI 临时 clone，已写入 .gitignore，
-不随本仓库分发，也不会进入 GitHub Pages 发布 artifact。使用 data/ 下的
-衍生数据时，请遵守 CC BY-NC-SA 4.0：署名、非商业用途、相同方式共享。
+不随本仓库分发，也不会进入 GitHub Pages 发布 artifact。使用上述衍生数据时，
+请遵守 CC BY-NC-SA 4.0：署名、非商业用途、相同方式共享。
 
-GitHub Actions 的发布 artifact 会包含本 NOTICE、LICENSE.txt 和
-data/LICENSE-MobileModels.md；上游 commit 记录在生成数据的 meta 中。
+GitHub Actions 的发布 artifact 会包含本 NOTICE、LICENSE.txt、assets/data.js
+和 data/LICENSE-MobileModels.md；上游 commit 记录在生成数据的 meta 中。

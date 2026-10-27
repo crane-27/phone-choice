@@ -170,9 +170,12 @@ checkout
 
 ## 9. 许可
 
-`data/` 下的衍生数据继续遵守 CC BY-NC-SA 4.0。workflow 部署的 artifact 必须包含：
+`data/` 下的衍生数据与 `assets/data.js` 继续遵守 CC BY-NC-SA 4.0。
+workflow 部署的 artifact 必须包含：
 
 - `NOTICE`
+- `LICENSE.txt`
+- `assets/data.js`（含上游机型 / 系列名称与示例）
 - `data/LICENSE-MobileModels.md`
 - 上游仓库与 commit 信息（已写入生成物 `meta`）
 

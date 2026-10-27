@@ -17,7 +17,7 @@
 `assets/` 下是共享样式与脚本：
 
 - `style.css`：全站样式，跟随系统深色模式，含打印样式
-- `data.js`：人工维护的需求分组、价位档位与产品线概览
+- `data.js`：需求分组、价位档位与产品线概览；含上游机型 / 系列名称，按 CC BY-NC-SA 4.0 发布
 - `app.js`：导航注入、localStorage 封装、通用工具
 - `recommend.js`：机型推荐内核，读取 `data/model-status.js`
 
@@ -95,9 +95,10 @@ node data/test-recommend.mjs
 
 ## 许可
 
-- 源代码（含 GitHub Actions workflow）：MIT，见 [`LICENSE.txt`](LICENSE.txt)
+- 源代码（含 GitHub Actions workflow）：MIT，但 `assets/data.js` 与 `data/` 衍生数据除外，见 [`LICENSE.txt`](LICENSE.txt)
+- `assets/data.js`：含上游机型 / 系列名称与示例，CC BY-NC-SA 4.0
 - `data/` 下基于 MobileModels 的衍生数据：CC BY-NC-SA 4.0，见 [`data/LICENSE-MobileModels.md`](data/LICENSE-MobileModels.md)
-- 每次发布的站点 artifact 都包含 `NOTICE`、`LICENSE.txt` 与上述数据许可文件
+- 每次发布的站点 artifact 都包含 `NOTICE`、`LICENSE.txt`、`assets/data.js` 与上述数据许可文件
 - 自动同步只更新衍生数据与缓存版本号，不改变许可；上游 commit 以 `data/models.js` 的 `meta.upstreamCommit` 为准
 - 项目为非商业个人项目；分发衍生数据时需保留署名、注明修改、相同方式共享；广告、返利、付费等商业用途需先获得上游许可
 

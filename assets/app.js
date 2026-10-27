@@ -41,7 +41,7 @@
           <span>示例机型仅用于说明产品线，价格与型号请以官方渠道为准</span>
           <span>最后整理：2026-10</span>
           <span class="footer-license">
-            机型数据来自
+            机型名录与产品线数据来自
             <a href="https://github.com/KHwang9883/MobileModels" target="_blank" rel="noopener">KHwang9883/MobileModels</a>，
             按 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>
             使用（已提取、筛选与重组）。
@@ -75,12 +75,13 @@
             <li>移除型号码、主板代号与别名，仅保留品牌 / 系列 / 机型名；</li>
             <li>同一系列内按机型名去重，生成 <code>data/models.js</code>；</li>
             <li>按自定义规则推导定位、性能、影像，生成 <code>data/model-status.js</code>；</li>
+            <li>产品线、机型示例与需求分组整理在 <code>assets/data.js</code>，其中包含上游机型 / 系列名称；</li>
             <li>推荐页对上述衍生数据做筛选、分组与展示。</li>
           </ul>
           <h3>许可范围</h3>
           <ul>
-            <li>由上游数据生成的 <code>data/models.js</code>、<code>data/model-status.js</code> 及 <code>data/</code> 下的相关衍生数据，继续以 CC BY-NC-SA 4.0 发布；</li>
-            <li>本站其余代码以 MIT 许可发布；</li>
+            <li>由上游数据生成或包含上游名称的 <code>data/models.js</code>、<code>data/model-status.js</code>、<code>assets/data.js</code>，继续以 CC BY-NC-SA 4.0 发布；</li>
+            <li>除上述数据文件外，本站其余代码以 MIT 许可发布；</li>
             <li>本站为非商业个人项目，与上游作者无隶属关系；</li>
             <li>使用或分发衍生数据时，请保留署名、注明修改，并遵守相同方式共享。</li>
           </ul>
