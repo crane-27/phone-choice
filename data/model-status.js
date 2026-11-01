@@ -2,7 +2,7 @@
  * 机型定位状态（衍生数据）—— 请勿手工编辑，重新生成请运行 node data/build-status.mjs
  *
  * 输入：data/models.js（机型名录）+ data/rules.js（提取规则）
- * 数据来源：KHwang9883/MobileModels @ bd712cfc6cc4311787b5145c378bd17f97c4ea98
+ * 数据来源：KHwang9883/MobileModels @ ad990316ba318779e2bfd9fb739db727e17c18d5
  * 许可：CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>
  * 本文件不是 MIT 代码。使用、分发或修改本文件时须遵守上述许可。
  */
@@ -10,14 +10,14 @@ window.MODEL_STATUS = {
   meta: {
   "sourceModels": "data/models.js",
   "sourceRules": "data/rules.js",
-  "upstreamCommit": "bd712cfc6cc4311787b5145c378bd17f97c4ea98",
+  "upstreamCommit": "ad990316ba318779e2bfd9fb739db727e17c18d5",
   "license": "CC BY-NC-SA 4.0",
   "stats": {
     "series": 31,
-    "models": 177,
-    "sourceModels": 1088,
+    "models": 178,
+    "sourceModels": 1092,
     "droppedNoRule": 198,
-    "droppedOutOfWindow": 712,
+    "droppedOutOfWindow": 715,
     "mergedAliases": 1
   }
 },
@@ -80,7 +80,8 @@ window.MODEL_STATUS = {
         {"name":"HUAWEI Pura 80 Ultra","tier":"mid","performance":"medium","camera":"medium"},
         {"name":"HUAWEI Pura 90","tier":"upper","performance":"medium","camera":"medium"},
         {"name":"HUAWEI Pura 90 Pro","tier":"upper","performance":"medium","camera":"medium"},
-        {"name":"HUAWEI Pura 90 Pro Max","tier":"upper","performance":"medium","camera":"medium"}
+        {"name":"HUAWEI Pura 90 Pro Max","tier":"upper","performance":"medium","camera":"medium"},
+        {"name":"HUAWEI Pura 90 Plus","tier":"upper","performance":"medium","camera":"medium"}
       ]
     },
     {
@@ -101,9 +102,9 @@ window.MODEL_STATUS = {
       brand: "华为",
       series: "畅享系列",
       models: [
-        {"name":"华为畅享 90","tier":"entry","performance":"low","camera":"low"},
-        {"name":"华为畅享 90 Plus","nick_name":["华为畅享 90m Plus"],"tier":"entry","performance":"low","camera":"low"},
-        {"name":"华为畅享 90 Pro Max","tier":"entry","performance":"low","camera":"low"}
+        {"name":"华为畅享 100","tier":"entry","performance":"low","camera":"low"},
+        {"name":"华为畅享 100 Pro","tier":"entry","performance":"low","camera":"low"},
+        {"name":"华为畅享 100 Pro Max","tier":"entry","performance":"low","camera":"low"}
       ]
     },
     {
@@ -242,7 +243,7 @@ window.MODEL_STATUS = {
       series: "Turbo系列",
       models: [
         {"name":"一加 Turbo 6","nick_name":["一加 Nord 6"],"tier":"entry","performance":"low","camera":"low"},
-        {"name":"一加 Turbo 6V","nick_name":["一加 Nord CE 6"],"tier":"entry","performance":"low","camera":"low"},
+        {"name":"一加 Turbo 6V","nick_name":["一加 Turbo 6Vs","一加 Nord CE 6"],"tier":"entry","performance":"low","camera":"low"},
         {"name":"一加 Turbo 6X","tier":"entry","performance":"low","camera":"low"},
         {"name":"一加 Turbo 6X Pro","tier":"entry","performance":"low","camera":"low"}
       ]
