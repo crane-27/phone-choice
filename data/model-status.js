@@ -2,7 +2,7 @@
  * 机型定位状态（衍生数据）—— 请勿手工编辑，重新生成请运行 node data/build-status.mjs
  *
  * 输入：data/models.js（机型名录）+ data/rules.js（提取规则）
- * 数据来源：KHwang9883/MobileModels @ ad990316ba318779e2bfd9fb739db727e17c18d5
+ * 数据来源：KHwang9883/MobileModels @ c3934f31591874ef8b4d3e70221c5d126ebf73dc
  * 许可：CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>
  * 本文件不是 MIT 代码。使用、分发或修改本文件时须遵守上述许可。
  */
@@ -10,7 +10,7 @@ window.MODEL_STATUS = {
   meta: {
   "sourceModels": "data/models.js",
   "sourceRules": "data/rules.js",
-  "upstreamCommit": "ad990316ba318779e2bfd9fb739db727e17c18d5",
+  "upstreamCommit": "c3934f31591874ef8b4d3e70221c5d126ebf73dc",
   "license": "CC BY-NC-SA 4.0",
   "stats": {
     "series": 31,
@@ -102,7 +102,7 @@ window.MODEL_STATUS = {
       brand: "华为",
       series: "畅享系列",
       models: [
-        {"name":"华为畅享 100","tier":"entry","performance":"low","camera":"low"},
+        {"name":"华为畅享 100","nick_name":["华为畅享 100m"],"tier":"entry","performance":"low","camera":"low"},
         {"name":"华为畅享 100 Pro","tier":"entry","performance":"low","camera":"low"},
         {"name":"华为畅享 100 Pro Max","tier":"entry","performance":"low","camera":"low"}
       ]
