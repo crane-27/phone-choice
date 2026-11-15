@@ -2,7 +2,7 @@
  * 机型定位状态（衍生数据）—— 请勿手工编辑，重新生成请运行 node data/build-status.mjs
  *
  * 输入：data/models.js（机型名录）+ data/rules.js（提取规则）
- * 数据来源：KHwang9883/MobileModels @ c3934f31591874ef8b4d3e70221c5d126ebf73dc
+ * 数据来源：KHwang9883/MobileModels @ 65a6f7b7cd4d82de76f56d37abf241ab2c20c1c0
  * 许可：CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>
  * 本文件不是 MIT 代码。使用、分发或修改本文件时须遵守上述许可。
  */
@@ -10,14 +10,14 @@ window.MODEL_STATUS = {
   meta: {
   "sourceModels": "data/models.js",
   "sourceRules": "data/rules.js",
-  "upstreamCommit": "c3934f31591874ef8b4d3e70221c5d126ebf73dc",
+  "upstreamCommit": "65a6f7b7cd4d82de76f56d37abf241ab2c20c1c0",
   "license": "CC BY-NC-SA 4.0",
   "stats": {
     "series": 31,
     "models": 178,
-    "sourceModels": 1092,
+    "sourceModels": 1097,
     "droppedNoRule": 198,
-    "droppedOutOfWindow": 715,
+    "droppedOutOfWindow": 720,
     "mergedAliases": 1
   }
 },
@@ -186,11 +186,10 @@ window.MODEL_STATUS = {
       brand: "OPPO",
       series: "Reno系列",
       models: [
-        {"name":"OPPO Reno15","tier":"mid","performance":"low","camera":"medium"},
-        {"name":"OPPO Reno15 Pro","tier":"upper","performance":"medium","camera":"medium"},
-        {"name":"OPPO Reno15c","tier":"mid","performance":"low","camera":"medium"},
         {"name":"OPPO Reno16","nick_name":["OPPO Reno16t"],"tier":"mid","performance":"low","camera":"medium"},
-        {"name":"OPPO Reno16 Pro","tier":"upper","performance":"medium","camera":"medium"}
+        {"name":"OPPO Reno16 Pro","tier":"upper","performance":"medium","camera":"medium"},
+        {"name":"OPPO Reno17","tier":"mid","performance":"low","camera":"medium"},
+        {"name":"OPPO Reno17 Pro","tier":"upper","performance":"medium","camera":"medium"}
       ]
     },
     {
@@ -342,10 +341,11 @@ window.MODEL_STATUS = {
       brand: "荣耀",
       series: "数字系列",
       models: [
-        {"name":"荣耀 500","tier":"mid","performance":"low","camera":"medium"},
-        {"name":"荣耀 500 Pro","tier":"upper","performance":"medium","camera":"medium"},
         {"name":"荣耀 600","tier":"mid","performance":"low","camera":"medium"},
-        {"name":"荣耀 600 Pro","tier":"upper","performance":"medium","camera":"medium"}
+        {"name":"荣耀 600 Pro","tier":"upper","performance":"medium","camera":"medium"},
+        {"name":"荣耀 700","tier":"mid","performance":"low","camera":"medium"},
+        {"name":"荣耀 700S","tier":"mid","performance":"low","camera":"medium"},
+        {"name":"荣耀 700 Pro","tier":"upper","performance":"medium","camera":"medium"}
       ]
     },
     {
